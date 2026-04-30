@@ -1,0 +1,741 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>הזמנת מפעל – נירוסטה</title>
+  <style>
+    :root {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #f5f7fb;
+      color: #111827;
+    }
+    body {
+      margin: 0;
+      padding: 2rem 1rem 3rem;
+      display: flex;
+      justify-content: center;
+      direction: rtl;
+    }
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 18px 45px rgba(15, 23, 42, 0.18);
+      padding: 1.75rem 1.75rem 2rem;
+      box-sizing: border-box;
+    }
+    h1 {
+      margin: 0 0 0.25rem;
+      font-size: 1.8rem;
+      text-align: center;
+    }
+    .subtitle {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      color: #6b7280;
+      font-size: 0.95rem;
+    }
+    .top-links {
+      display: flex;
+      justify-content: flex-end;
+      gap: 1.5rem;
+      margin-bottom: 0.75rem;
+      flex-wrap: wrap;
+    }
+    .top-links a {
+      color: #2563eb;
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+    .top-links a:hover {
+      text-decoration: underline;
+    }
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      align-items: flex-end;
+      margin-bottom: 1.5rem;
+      border-radius: 0.75rem;
+      background: #f3f4ff;
+      padding: 0.75rem 1rem;
+    }
+    .control-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      font-size: 0.9rem;
+    }
+    label {
+      font-weight: 600;
+    }
+    input[type="text"], input[type="number"], select {
+      padding: 0.35rem 0.45rem;
+      border-radius: 0.5rem;
+      border: 1px solid #d1d5db;
+      font-size: 0.85rem;
+      box-sizing: border-box;
+      background: #ffffff;
+    }
+    input[type="text"] { min-width: 180px; }
+    input[type="number"] { width: 90px; }
+    .checkbox-line {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-weight: 600;
+      white-space: nowrap;
+      padding-top: 0.35rem;
+    }
+    .checkbox-line input {
+      transform: translateY(1px);
+    }
+    button {
+      padding: 0.45rem 0.9rem;
+      border-radius: 999px;
+      border: none;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      background: linear-gradient(135deg, #2563eb, #0891b2);
+      color: #ffffff;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      box-shadow: 0 10px 25px rgba(37, 99, 235, 0.35);
+      white-space: nowrap;
+    }
+    button.small {
+      padding: 0.25rem 0.6rem;
+      font-size: 0.75rem;
+      box-shadow: none;
+      background: #6b7280;
+    }
+    button.secondary {
+      background: #6b7280;
+      box-shadow: none;
+    }
+    button span.icon {
+      font-size: 1rem;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.8rem;
+      margin-top: 0.5rem;
+    }
+    thead {
+      background: linear-gradient(90deg, #111827, #1f2937);
+      color: #f9fafb;
+    }
+    th, td {
+      padding: 0.45rem 0.35rem;
+      text-align: center;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    th {
+      font-weight: 700;
+      font-size: 0.78rem;
+      white-space: nowrap;
+    }
+    tbody tr:nth-child(even) {
+      background: #f9fafb;
+    }
+    tbody tr:hover {
+      background: #eff6ff;
+    }
+    td.num {
+      font-variant-numeric: tabular-nums;
+      direction: ltr;
+    }
+    .category-row {
+      background: #e5e7eb;
+      font-weight: 700;
+      text-align: right;
+    }
+    .category-row td {
+      padding-top: 0.7rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 1px solid #d1d5db;
+      font-size: 0.9rem;
+    }
+    .category-name-en {
+      font-size: 0.8rem;
+      color: #374151;
+      margin-right: 0.5rem;
+    }
+    .empty-state {
+      padding: 1.5rem;
+      border: 1px dashed #d1d5db;
+      border-radius: 0.75rem;
+      color: #374151;
+      background: #f9fafb;
+      text-align: center;
+    }
+    .notes {
+      min-width: 150px;
+    }
+    @media (max-width: 900px) {
+      .container {
+        padding: 1.25rem 0.7rem 1.5rem;
+        border-radius: 0;
+      }
+      .controls {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      table {
+        font-size: 0.75rem;
+      }
+      th, td {
+        padding: 0.35rem 0.25rem;
+      }
+      input[type="text"] { min-width: 140px; }
+      .notes { min-width: 120px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="top-links">
+      <a href="stainless_pricing_with_markup.html" target="_blank" rel="noopener">פתח ניהול (Admin)</a>
+      <a href="stainless_pricing_customer.html" target="_blank" rel="noopener">פתח מחיר ללקוח</a>
+    </div>
+
+    <h1>הזמנת מפעל (נירוסטה)</h1>
+    <div class="subtitle">סה״כ <span id="modelCount">-</span> פריטים מוצגים</div>
+
+    <div id="emptyState" class="empty-state" style="display:none"></div>
+
+    <div class="controls" id="controls" style="display:none">
+      <div class="control-group">
+        <label for="search">חיפוש</label>
+        <input id="search" type="text" placeholder="קטגוריה / מידה / מזהה">
+      </div>
+      <div class="control-group">
+        <label class="checkbox-line">
+          <input id="onlyOrder" type="checkbox" checked>
+          רק בהזמנה
+        </label>
+      </div>
+      <div class="control-group">
+        <label class="checkbox-line">
+          <input id="onlySelected" type="checkbox">
+          רק מסומנים
+        </label>
+      </div>
+      <div class="control-group">
+        <button type="button" class="secondary" id="clearOrderBtn">נקה הזמנה</button>
+      </div>
+      <div class="control-group">
+        <button type="button" id="csvBtn">יצוא הזמנה למפעל (CSV)</button>
+      </div>
+      <div class="control-group">
+        <button type="button" id="waBtn">שלח הזמנה למפעל (WhatsApp)</button>
+      </div>
+    </div>
+
+    <table id="tbl" style="display:none">
+      <thead>
+        <tr>
+          <th style="width:40px"><input id="selectAllVisible" type="checkbox" aria-label="בחר הכל"></th>
+          <th>קטגוריה</th>
+          <th>מידה בסיס</th>
+          <th>דגם</th>
+          <th class="num">כמות להזמנה</th>
+          <th>מידה להזמנה</th>
+          <th>נירוסטה</th>
+          <th>עובי</th>
+          <th>הערות</th>
+        </tr>
+      </thead>
+      <tbody id="products-body"></tbody>
+    </table>
+  </div>
+
+  <script>
+    function escapeHtml(value) {
+      const div = document.createElement("div");
+      div.textContent = String(value ?? "");
+      return div.innerHTML;
+    }
+
+    function normalizeSizeWithDefaultHeight(size) {
+      const raw = String(size ?? "").trim();
+      if (!raw) return "";
+
+      const normalized = raw.replace(/\s+/g, "");
+      const parts = normalized.split("×");
+      if (parts.length === 2 && parts[0] && parts[1]) {
+        return parts[0] + "×" + parts[1] + "×900";
+      }
+      return raw;
+    }
+
+    function loadBackupStateFromStorage() {
+      const raw = window.localStorage.getItem("backup_state_v1");
+      if (!raw) return null;
+      try {
+        return JSON.parse(raw);
+      } catch (err) {
+        return null;
+      }
+    }
+
+    function saveBackupStateToStorage(payload) {
+      try {
+        window.localStorage.setItem("backup_state_v1", JSON.stringify(payload));
+      } catch (err) {
+      }
+    }
+
+    function patchProductInBackup(id, patch) {
+      const backup = loadBackupStateFromStorage();
+      if (!backup || !Array.isArray(backup.products)) return;
+      const products = backup.products;
+      const idx = products.findIndex(p => String(p?.id || "").trim() === id);
+      if (idx < 0) return;
+
+      const next = Object.assign({}, products[idx], patch);
+      const nextProducts = products.slice();
+      nextProducts[idx] = next;
+
+      const nextBackup = Object.assign({}, backup, {
+        products: nextProducts
+      });
+
+      saveBackupStateToStorage(nextBackup);
+    }
+
+    function groupProductsByCategory(products) {
+      const groups = new Map();
+      products.forEach(p => {
+        const he = String(p?.categoryHe || "").trim();
+        const en = String(p?.categoryEn || "").trim();
+        const key = he + "||" + en;
+        if (!groups.has(key)) groups.set(key, { he, en, items: [] });
+        groups.get(key).items.push(p);
+      });
+      return Array.from(groups.values());
+    }
+
+    function rebuildProductsTable(products) {
+      const tbody = document.getElementById("products-body");
+      tbody.innerHTML = "";
+
+      const groups = groupProductsByCategory(products);
+      const colCount = document.querySelectorAll("#tbl thead th").length;
+
+      groups.forEach(g => {
+        const catRow = document.createElement("tr");
+        catRow.className = "category-row";
+        const td = document.createElement("td");
+        td.colSpan = colCount;
+        const title = String(g.he || g.en || "קטגוריה").trim();
+        td.innerHTML = escapeHtml(title) + (g.en ? ' <span class="category-name-en">(' + escapeHtml(g.en) + ")</span>" : "");
+        catRow.appendChild(td);
+        tbody.appendChild(catRow);
+
+        g.items.forEach(p => {
+          const row = document.createElement("tr");
+          row.className = "data-row";
+
+          const id = String(p?.id || "").trim();
+          const baseSize = String(p?.size || "").trim();
+          const rowCategory = String(p?.rowCategory || p?.categoryEn || "").trim();
+
+          const orderQty = parseInt(p?.orderQty, 10);
+          const orderSize = normalizeSizeWithDefaultHeight(p?.orderSize || baseSize);
+          const orderStainless = String(p?.orderStainless || "201/304").trim() || "201/304";
+          const orderThickness = String(p?.orderThickness || "0.8").trim() || "0.8";
+          const orderNotes = String(p?.orderNotes || "");
+
+          row.dataset.id = id;
+
+          const tdSel = document.createElement("td");
+          const sel = document.createElement("input");
+          sel.type = "checkbox";
+          sel.className = "row-select";
+          tdSel.appendChild(sel);
+
+          const tdCat = document.createElement("td");
+          tdCat.textContent = rowCategory;
+
+          const tdBaseSize = document.createElement("td");
+          tdBaseSize.className = "num";
+          tdBaseSize.textContent = baseSize;
+
+          const tdId = document.createElement("td");
+          tdId.textContent = id;
+
+          const tdQty = document.createElement("td");
+          tdQty.className = "num";
+          const qtyInput = document.createElement("input");
+          qtyInput.type = "number";
+          qtyInput.min = "0";
+          qtyInput.step = "1";
+          qtyInput.value = String(isNaN(orderQty) || orderQty < 0 ? 0 : orderQty);
+          qtyInput.className = "order-qty";
+          tdQty.appendChild(qtyInput);
+
+          const tdOrderSize = document.createElement("td");
+          const sizeInput = document.createElement("input");
+          sizeInput.type = "text";
+          sizeInput.value = orderSize;
+          sizeInput.className = "order-size";
+          tdOrderSize.appendChild(sizeInput);
+
+          const tdSt = document.createElement("td");
+          const stSel = document.createElement("select");
+          stSel.className = "order-stainless";
+          ["201/304"].forEach(v => {
+            const o = document.createElement("option");
+            o.value = v;
+            o.textContent = v;
+            stSel.appendChild(o);
+          });
+          stSel.value = orderStainless;
+          tdSt.appendChild(stSel);
+
+          const tdTh = document.createElement("td");
+          const thSel = document.createElement("select");
+          thSel.className = "order-thickness";
+          ["0.7", "0.8", "0.9", "1.0", "1.2"].forEach(v => {
+            const o = document.createElement("option");
+            o.value = v;
+            o.textContent = v;
+            thSel.appendChild(o);
+          });
+          thSel.value = orderThickness;
+          if (!thSel.value) thSel.value = "0.8";
+          tdTh.appendChild(thSel);
+
+          const tdNotes = document.createElement("td");
+          const notesInput = document.createElement("input");
+          notesInput.type = "text";
+          notesInput.value = orderNotes;
+          notesInput.className = "order-notes notes";
+          tdNotes.appendChild(notesInput);
+
+          row.appendChild(tdSel);
+          row.appendChild(tdCat);
+          row.appendChild(tdBaseSize);
+          row.appendChild(tdId);
+          row.appendChild(tdQty);
+          row.appendChild(tdOrderSize);
+          row.appendChild(tdSt);
+          row.appendChild(tdTh);
+          row.appendChild(tdNotes);
+
+          tbody.appendChild(row);
+
+          const persistToLocalStorage = () => {
+            if (!id) return;
+            const qty = parseInt(qtyInput.value, 10);
+            window.localStorage.setItem("order_qty_" + id, String(isNaN(qty) || qty < 0 ? 0 : qty));
+            window.localStorage.setItem("order_size_" + id, normalizeSizeWithDefaultHeight(sizeInput.value));
+            window.localStorage.setItem("order_stainless_" + id, String(stSel.value || "201/304"));
+            window.localStorage.setItem("order_thickness_" + id, String(thSel.value || "0.8"));
+            window.localStorage.setItem("order_notes_" + id, String(notesInput.value || ""));
+          };
+
+          const persistToBackup = () => {
+            if (!id) return;
+            const qty = parseInt(qtyInput.value, 10);
+            patchProductInBackup(id, {
+              orderQty: isNaN(qty) || qty < 0 ? 0 : qty,
+              orderSize: normalizeSizeWithDefaultHeight(sizeInput.value),
+              orderStainless: String(stSel.value || "201/304"),
+              orderThickness: String(thSel.value || "0.8"),
+              orderNotes: String(notesInput.value || "")
+            });
+          };
+
+          qtyInput.addEventListener("input", function () {
+            persistToLocalStorage();
+            applyFilters();
+          });
+          qtyInput.addEventListener("change", function () {
+            persistToLocalStorage();
+            persistToBackup();
+            applyFilters();
+          });
+
+          sizeInput.addEventListener("input", function () {
+            persistToLocalStorage();
+          });
+          sizeInput.addEventListener("blur", function () {
+            persistToLocalStorage();
+            persistToBackup();
+          });
+
+          stSel.addEventListener("change", function () {
+            persistToLocalStorage();
+            persistToBackup();
+          });
+
+          thSel.addEventListener("change", function () {
+            persistToLocalStorage();
+            persistToBackup();
+          });
+
+          notesInput.addEventListener("input", function () {
+            persistToLocalStorage();
+          });
+          notesInput.addEventListener("blur", function () {
+            persistToLocalStorage();
+            persistToBackup();
+          });
+
+          sel.addEventListener("change", function () {
+            applyFilters();
+          });
+        });
+      });
+    }
+
+    function updateModelCount() {
+      const rows = Array.from(document.querySelectorAll("#products-body tr.data-row"));
+      const visible = rows.filter(r => r.style.display !== "none").length;
+      const el = document.getElementById("modelCount");
+      if (el) el.textContent = String(visible);
+    }
+
+    function applyFilters() {
+      const q = String(document.getElementById("search").value || "").trim().toLowerCase();
+      const onlySelected = !!document.getElementById("onlySelected").checked;
+      const onlyOrder = !!document.getElementById("onlyOrder").checked;
+
+      const tbody = document.getElementById("products-body");
+      const rows = Array.from(tbody.querySelectorAll("tr"));
+
+      let currentCategoryRow = null;
+      let currentCategoryHasVisible = false;
+
+      const flushCategory = () => {
+        if (!currentCategoryRow) return;
+        currentCategoryRow.style.display = currentCategoryHasVisible ? "" : "none";
+      };
+
+      rows.forEach(row => {
+        if (row.classList.contains("category-row")) {
+          flushCategory();
+          currentCategoryRow = row;
+          currentCategoryHasVisible = false;
+          return;
+        }
+
+        if (!row.classList.contains("data-row")) return;
+
+        const txt = row.textContent.toLowerCase();
+        const id = String(row.dataset.id || "").toLowerCase();
+        const qtyInput = row.querySelector(".order-qty");
+        const qty = qtyInput ? parseInt(qtyInput.value, 10) : 0;
+        const sel = row.querySelector(".row-select");
+        const isSelected = !!(sel && sel.checked);
+
+        let ok = true;
+
+        if (q) ok = (txt.includes(q) || id.includes(q));
+        if (ok && onlyOrder) ok = (isNaN(qty) ? 0 : qty) > 0;
+        if (ok && onlySelected) ok = isSelected;
+
+        row.style.display = ok ? "" : "none";
+        if (ok) currentCategoryHasVisible = true;
+      });
+
+      flushCategory();
+
+      const headerSel = document.getElementById("selectAllVisible");
+      if (headerSel) headerSel.checked = false;
+
+      updateModelCount();
+    }
+
+    function selectAllVisibleRows(checked) {
+      const rows = Array.from(document.querySelectorAll("#products-body tr.data-row"));
+      rows.forEach(r => {
+        if (r.style.display === "none") return;
+        const sel = r.querySelector(".row-select");
+        if (sel) sel.checked = checked;
+      });
+      const headerSel = document.getElementById("selectAllVisible");
+      if (headerSel) headerSel.checked = checked;
+      applyFilters();
+    }
+
+    function getFactoryOrderRows() {
+      const onlySelected = !!document.getElementById("onlySelected").checked;
+      const rows = Array.from(document.querySelectorAll("#products-body tr.data-row"));
+      return rows.filter(r => {
+        const qtyInput = r.querySelector(".order-qty");
+        const qty = qtyInput ? parseInt(qtyInput.value, 10) : 0;
+        if (!(isNaN(qty) ? 0 : qty) > 0) return false;
+        if (!onlySelected) return true;
+        const sel = r.querySelector(".row-select");
+        return !!(sel && sel.checked);
+      });
+    }
+
+    function exportFactoryOrderToCSV() {
+      const rows = getFactoryOrderRows();
+      if (rows.length === 0) {
+        alert("אין פריטים בהזמנה (כמות להזמנה = 0)." );
+        return;
+      }
+
+      const header = ["דגם", "מידה להזמנה", "כמות", "נירוסטה", "עובי", "הערות"];
+      const lines = [header.join(",")];
+
+      rows.forEach(row => {
+        const id = String(row.dataset.id || "").trim();
+        const sizeInput = row.querySelector(".order-size");
+        const qtyInput = row.querySelector(".order-qty");
+        const stSel = row.querySelector(".order-stainless");
+        const thSel = row.querySelector(".order-thickness");
+        const notesInput = row.querySelector(".order-notes");
+
+        const orderSize = normalizeSizeWithDefaultHeight(sizeInput ? sizeInput.value : "");
+        const qty = qtyInput ? parseInt(qtyInput.value, 10) : 0;
+        const stainless = String(stSel ? stSel.value : "201/304");
+        const thickness = String(thSel ? thSel.value : "0.8");
+        const notes = String(notesInput ? notesInput.value : "");
+
+        const rowVals = [id, orderSize, isNaN(qty) ? 0 : qty, stainless, thickness, notes].map(v => {
+          const s = String(v ?? "");
+          const escaped = s.replace(/"/g, '""');
+          return '"' + escaped + '"';
+        });
+
+        lines.push(rowVals.join(","));
+      });
+
+      const csv = "\uFEFF" + lines.join("\n");
+      const blob = new Blob([csv], { type: "text/csv;charset=UTF-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "factory_order.csv";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    }
+
+    function shareFactoryOrderToWhatsApp() {
+      const rows = getFactoryOrderRows();
+      if (rows.length === 0) {
+        alert("אין פריטים בהזמנה (כמות להזמנה = 0)." );
+        return;
+      }
+
+      const now = new Date();
+      const dateStr = now.toLocaleString("he-IL");
+
+      let text = "הזמנה למפעל\n";
+      text += "תאריך: " + dateStr + "\n\n";
+
+      rows.forEach(row => {
+        const id = String(row.dataset.id || "").trim();
+        const sizeInput = row.querySelector(".order-size");
+        const qtyInput = row.querySelector(".order-qty");
+        const stSel = row.querySelector(".order-stainless");
+        const thSel = row.querySelector(".order-thickness");
+        const notesInput = row.querySelector(".order-notes");
+
+        const orderSize = normalizeSizeWithDefaultHeight(sizeInput ? sizeInput.value : "");
+        const qty = qtyInput ? parseInt(qtyInput.value, 10) : 0;
+        const stainless = String(stSel ? stSel.value : "201/304");
+        const thickness = String(thSel ? thSel.value : "0.8");
+        const notes = String(notesInput ? notesInput.value : "");
+
+        let line = id + " | " + orderSize + " | כמות: " + String(isNaN(qty) ? 0 : qty) + " | " + stainless + " | עובי: " + thickness;
+        if (String(notes || "").trim()) line += " | הערות: " + String(notes).trim();
+        text += line + "\n";
+      });
+
+      const url = "https://wa.me/?text=" + encodeURIComponent(text);
+      window.open(url, "_blank");
+    }
+
+    function clearFactoryOrder() {
+      const backup = loadBackupStateFromStorage();
+      if (!backup || !Array.isArray(backup.products)) return;
+
+      const nextProducts = backup.products.map(p => {
+        const id = String(p?.id || "").trim();
+        if (!id) return p;
+
+        const baseSize = String(p?.size || "").trim();
+
+        window.localStorage.setItem("order_qty_" + id, "0");
+        window.localStorage.setItem("order_size_" + id, String(baseSize || ""));
+        window.localStorage.setItem("order_stainless_" + id, "201/304");
+        window.localStorage.setItem("order_thickness_" + id, "0.8");
+        window.localStorage.setItem("order_notes_" + id, "");
+
+        return Object.assign({}, p, {
+          orderQty: 0,
+          orderSize: normalizeSizeWithDefaultHeight(baseSize),
+          orderStainless: "201/304",
+          orderThickness: "0.8",
+          orderNotes: ""
+        });
+      });
+
+      const nextBackup = Object.assign({}, backup, { products: nextProducts });
+      saveBackupStateToStorage(nextBackup);
+    }
+
+    function init() {
+      const backup = loadBackupStateFromStorage();
+      const emptyState = document.getElementById("emptyState");
+      const tbl = document.getElementById("tbl");
+      const controls = document.getElementById("controls");
+
+      if (!backup || !Array.isArray(backup.products) || backup.products.length === 0) {
+        emptyState.style.display = "";
+        emptyState.innerHTML = "אין נתונים להצגה. פתח קודם את קובץ הניהול (Admin), וודא שיש נתונים (הדף שומר אותם בדפדפן).";
+        tbl.style.display = "none";
+        controls.style.display = "none";
+        updateModelCount();
+        return;
+      }
+
+      emptyState.style.display = "none";
+      tbl.style.display = "";
+      controls.style.display = "flex";
+
+      rebuildProductsTable(backup.products);
+      applyFilters();
+
+      document.getElementById("search").addEventListener("input", applyFilters);
+      document.getElementById("onlySelected").addEventListener("change", applyFilters);
+      document.getElementById("onlyOrder").addEventListener("change", applyFilters);
+
+      document.getElementById("selectAllVisible").addEventListener("change", function () {
+        selectAllVisibleRows(!!this.checked);
+      });
+
+      document.getElementById("clearOrderBtn").addEventListener("click", function () {
+        if (!confirm("לנקות את כל ההזמנה?")) return;
+        clearFactoryOrder();
+      });
+
+      document.getElementById("csvBtn").addEventListener("click", exportFactoryOrderToCSV);
+      document.getElementById("waBtn").addEventListener("click", shareFactoryOrderToWhatsApp);
+
+      window.addEventListener("storage", function (e) {
+        if (e && e.key === "backup_state_v1") {
+          init();
+        }
+      });
+    }
+
+    window.addEventListener("DOMContentLoaded", init);
+  </script>
+</body>
+</html>

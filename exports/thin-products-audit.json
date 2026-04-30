@@ -1,0 +1,15 @@
+{
+  "generatedAt": "2026-04-25T00:44:21.589Z",
+  "site_url_base": "https://www.vipo-group.com\\r\n",
+  "thresholds": {
+    "thin_hard": 100,
+    "thin_recommended_min": 300
+  },
+  "summary": {
+    "total_indexable_products": 293,
+    "thin_under_100": 0,
+    "thin_under_300": 0,
+    "thin_total": 0
+  },
+  "products": []
+}

@@ -1,0 +1,93 @@
+<!doctype html>
+<html dir="rtl" lang="he">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ניקוי Cache מוצרים</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        margin: 0;
+      }
+      .container {
+        background: white;
+        padding: 40px;
+        border-radius: 20px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        text-align: center;
+        max-width: 500px;
+      }
+      h1 {
+        color: #333;
+        margin-bottom: 20px;
+      }
+      button {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        padding: 15px 40px;
+        font-size: 18px;
+        border-radius: 10px;
+        cursor: pointer;
+        margin: 10px;
+        transition: transform 0.2s;
+      }
+      button:hover {
+        transform: scale(1.05);
+      }
+      .success {
+        color: green;
+        font-weight: bold;
+        margin-top: 20px;
+        display: none;
+      }
+      .info {
+        background: #f0f0f0;
+        padding: 20px;
+        border-radius: 10px;
+        margin-top: 20px;
+        text-align: right;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>🔄 ניקוי Cache מוצרים</h1>
+      <p>לחץ על הכפתור למטה כדי לנקות את ה-cache ולטעון את התמונות החדשות</p>
+
+      <button onclick="clearCache()">נקה Cache וטען מחדש</button>
+
+      <div class="success" id="success">
+        ✅ ה-Cache נוקה בהצלחה!<br />
+        העמוד ייטען מחדש תוך 2 שניות...
+      </div>
+
+      <div class="info">
+        <strong>מה הכפתור הזה עושה?</strong><br />
+        - מוחק את המוצרים השמורים מה-localStorage<br />
+        - טוען את המוצרים המעודכנים עם התמונות החדשות<br />
+        - מרענן את הדף אוטומטית
+      </div>
+    </div>
+
+    <script>
+      function clearCache() {
+        // מחיקת כל נתוני המוצרים מ-localStorage
+        localStorage.removeItem('vipo_products');
+
+        // הצגת הודעת הצלחה
+        document.getElementById('success').style.display = 'block';
+
+        // המתנה של 2 שניות ואז מעבר לדף המוצרים
+        setTimeout(() => {
+          window.location.href = '/products';
+        }, 2000);
+      }
+    </script>
+  </body>
+</html>

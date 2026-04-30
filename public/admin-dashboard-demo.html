@@ -1,0 +1,1402 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VIPO - דשבורד מנהל ראשי | דמו עיצוב</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --primary: #1e3a8a;
+    --secondary: #0891b2;
+    --gradient: linear-gradient(135deg, #1e3a8a 0%, #0891b2 100%);
+    --gradient-hover: linear-gradient(135deg, #0891b2 0%, #1e3a8a 100%);
+    --bg: #f0f2f5;
+    --card-bg: #ffffff;
+    --text-primary: #1e293b;
+    --text-secondary: #64748b;
+    --text-muted: #94a3b8;
+    --border: #e2e8f0;
+    --success: #16a34a;
+    --warning: #f59e0b;
+    --danger: #dc2626;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+    --shadow-lg: 0 8px 30px rgba(0,0,0,0.12);
+    --radius: 16px;
+  }
+
+  body {
+    font-family: 'Heebo', sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ===== TOP HEADER ===== */
+  .top-header {
+    background: var(--gradient);
+    padding: 0 32px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 20px rgba(30, 58, 138, 0.3);
+  }
+
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .logo {
+    font-size: 28px;
+    font-weight: 800;
+    color: white;
+    letter-spacing: -1px;
+  }
+
+  .header-nav {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .header-nav-btn {
+    background: rgba(255,255,255,0.12);
+    border: none;
+    color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    position: relative;
+  }
+
+  .header-nav-btn:hover {
+    background: rgba(255,255,255,0.25);
+  }
+
+  .header-nav-btn svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .badge-dot {
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    width: 10px;
+    height: 10px;
+    background: #ef4444;
+    border-radius: 50%;
+    border: 2px solid #1e3a8a;
+  }
+
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .admin-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 600;
+    font-size: 14px;
+  }
+
+  .admin-name {
+    color: rgba(255,255,255,0.9);
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .admin-role {
+    color: rgba(255,255,255,0.6);
+    font-size: 11px;
+  }
+
+  /* ===== MAIN CONTENT ===== */
+  .main-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 24px 32px;
+  }
+
+  /* ===== PAGE TITLE ===== */
+  .page-title-section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+  }
+
+  .page-title {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--text-primary);
+  }
+
+  .page-subtitle {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-top: 2px;
+  }
+
+  .quick-actions {
+    display: flex;
+    gap: 10px;
+  }
+
+  .quick-action-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 18px;
+    border: none;
+    border-radius: 12px;
+    font-family: 'Heebo', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .quick-action-btn.primary {
+    background: var(--gradient);
+    color: white;
+    box-shadow: 0 4px 15px rgba(8, 145, 178, 0.3);
+  }
+
+  .quick-action-btn.primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(8, 145, 178, 0.4);
+  }
+
+  .quick-action-btn.outline {
+    background: white;
+    color: var(--primary);
+    border: 1.5px solid var(--border);
+  }
+
+  .quick-action-btn.outline:hover {
+    border-color: var(--secondary);
+    background: #f0fdfa;
+  }
+
+  .quick-action-btn svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  /* ===== KPI CARDS ===== */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .kpi-card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    padding: 20px;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s;
+    animation: slideUp 0.5s ease forwards;
+    opacity: 0;
+  }
+
+  .kpi-card:nth-child(1) { animation-delay: 0.05s; }
+  .kpi-card:nth-child(2) { animation-delay: 0.1s; }
+  .kpi-card:nth-child(3) { animation-delay: 0.15s; }
+  .kpi-card:nth-child(4) { animation-delay: 0.2s; }
+  .kpi-card:nth-child(5) { animation-delay: 0.25s; }
+
+  .kpi-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+    border-color: rgba(8, 145, 178, 0.2);
+  }
+
+  .kpi-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: 3px;
+    background: var(--gradient);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .kpi-card:hover::after {
+    opacity: 1;
+  }
+
+  .kpi-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+  }
+
+  .kpi-label {
+    font-size: 13px;
+    color: var(--text-secondary);
+    font-weight: 500;
+  }
+
+  .kpi-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .kpi-icon svg { width: 18px; height: 18px; }
+
+  .kpi-icon.blue { background: rgba(30, 58, 138, 0.08); color: var(--primary); }
+  .kpi-icon.teal { background: rgba(8, 145, 178, 0.08); color: var(--secondary); }
+  .kpi-icon.green { background: rgba(22, 163, 74, 0.08); color: var(--success); }
+  .kpi-icon.orange { background: rgba(245, 158, 11, 0.08); color: var(--warning); }
+  .kpi-icon.purple { background: rgba(124, 58, 237, 0.08); color: #7c3aed; }
+
+  .kpi-value {
+    font-size: 30px;
+    font-weight: 800;
+    color: var(--text-primary);
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+
+  .kpi-change {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  .kpi-change.up { color: var(--success); }
+  .kpi-change.down { color: var(--danger); }
+
+  .kpi-change svg { width: 14px; height: 14px; }
+
+  .kpi-sparkline {
+    margin-top: 12px;
+    height: 40px;
+  }
+
+  .kpi-sparkline svg {
+    width: 100%;
+    height: 40px;
+  }
+
+  /* ===== BENTO GRID ===== */
+  .bento-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-auto-rows: minmax(100px, auto);
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .bento-card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border);
+    overflow: hidden;
+    transition: all 0.3s;
+    animation: slideUp 0.5s ease forwards;
+    opacity: 0;
+  }
+
+  .bento-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+    border-color: rgba(8, 145, 178, 0.2);
+  }
+
+  .bento-card.chart { grid-column: span 8; grid-row: span 3; animation-delay: 0.3s; }
+  .bento-card.activity { grid-column: span 4; grid-row: span 3; animation-delay: 0.35s; }
+  .bento-card.tenants { grid-column: span 6; grid-row: span 3; animation-delay: 0.4s; }
+  .bento-card.system { grid-column: span 3; grid-row: span 3; animation-delay: 0.45s; }
+  .bento-card.container { grid-column: span 3; grid-row: span 3; animation-delay: 0.5s; }
+
+  .bento-header {
+    padding: 20px 20px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .bento-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .bento-title svg { width: 18px; height: 18px; color: var(--secondary); }
+
+  .bento-badge {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 20px;
+    background: rgba(8, 145, 178, 0.08);
+    color: var(--secondary);
+  }
+
+  .bento-body {
+    padding: 16px 20px 20px;
+  }
+
+  /* ===== CHART PLACEHOLDER ===== */
+  .chart-area {
+    width: 100%;
+    height: 220px;
+    position: relative;
+    margin-top: 10px;
+  }
+
+  .chart-bars {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+    height: 180px;
+    padding: 0 10px;
+  }
+
+  .chart-bar-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .chart-bar {
+    width: 100%;
+    max-width: 40px;
+    border-radius: 6px 6px 2px 2px;
+    transition: all 0.3s;
+    cursor: pointer;
+    position: relative;
+  }
+
+  .chart-bar:hover {
+    opacity: 0.8;
+    transform: scaleY(1.02);
+    transform-origin: bottom;
+  }
+
+  .chart-bar.primary {
+    background: var(--gradient);
+  }
+
+  .chart-bar.secondary {
+    background: rgba(8, 145, 178, 0.2);
+  }
+
+  .chart-label {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+
+  .chart-legend {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 10px 20px;
+  }
+
+  .chart-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--text-secondary);
+  }
+
+  .chart-legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 3px;
+  }
+
+  .chart-legend-dot.primary { background: var(--gradient); }
+  .chart-legend-dot.secondary { background: rgba(8, 145, 178, 0.3); }
+
+  /* ===== ACTIVITY FEED ===== */
+  .activity-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .activity-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+    transition: background 0.2s;
+    cursor: pointer;
+  }
+
+  .activity-item:last-child { border-bottom: none; }
+
+  .activity-item:hover {
+    background: #f8fafc;
+    margin: 0 -20px;
+    padding: 12px 20px;
+    border-radius: 8px;
+  }
+
+  .activity-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .activity-icon svg { width: 16px; height: 16px; }
+  .activity-icon.order { background: rgba(30, 58, 138, 0.08); color: var(--primary); }
+  .activity-icon.payment { background: rgba(22, 163, 74, 0.08); color: var(--success); }
+  .activity-icon.agent { background: rgba(124, 58, 237, 0.08); color: #7c3aed; }
+  .activity-icon.alert { background: rgba(245, 158, 11, 0.08); color: var(--warning); }
+
+  .activity-text {
+    font-size: 13px;
+    color: var(--text-primary);
+    font-weight: 500;
+    line-height: 1.4;
+  }
+
+  .activity-time {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+
+  .activity-amount {
+    margin-right: auto;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--success);
+    white-space: nowrap;
+  }
+
+  /* ===== TENANT TABLE ===== */
+  .tenant-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .tenant-table th {
+    text-align: right;
+    font-size: 11px;
+    color: var(--text-muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--border);
+    letter-spacing: 0.5px;
+  }
+
+  .tenant-table td {
+    padding: 12px;
+    font-size: 13px;
+    border-bottom: 1px solid #f1f5f9;
+    vertical-align: middle;
+  }
+
+  .tenant-table tr:hover td {
+    background: #f8fafc;
+  }
+
+  .tenant-name {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+  }
+
+  .tenant-logo {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 13px;
+    color: white;
+  }
+
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+  }
+
+  .status-badge.active {
+    background: rgba(22, 163, 74, 0.08);
+    color: var(--success);
+  }
+
+  .status-badge .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+  }
+
+  .tenant-enter-btn {
+    background: none;
+    border: 1.5px solid var(--border);
+    color: var(--text-secondary);
+    padding: 5px 12px;
+    border-radius: 8px;
+    font-family: 'Heebo', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .tenant-enter-btn:hover {
+    border-color: var(--secondary);
+    color: var(--secondary);
+    background: rgba(8, 145, 178, 0.04);
+  }
+
+  /* ===== SYSTEM STATUS ===== */
+  .system-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .system-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 14px;
+    background: #f8fafc;
+    border-radius: 10px;
+    transition: all 0.2s;
+  }
+
+  .system-item:hover {
+    background: #f0f4f8;
+  }
+
+  .system-item-name {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-primary);
+  }
+
+  .system-status {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  .system-status.ok { color: var(--success); }
+  .system-status.warn { color: var(--warning); }
+  .system-status.error { color: var(--danger); }
+
+  .system-status .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: currentColor;
+    animation: pulse 2s infinite;
+  }
+
+  /* ===== CONTAINER PROGRESS ===== */
+  .container-progress {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    padding-top: 10px;
+  }
+
+  .progress-ring {
+    position: relative;
+    width: 140px;
+    height: 140px;
+  }
+
+  .progress-ring svg {
+    transform: rotate(-90deg);
+  }
+
+  .progress-ring-bg {
+    fill: none;
+    stroke: #e2e8f0;
+    stroke-width: 10;
+  }
+
+  .progress-ring-fill {
+    fill: none;
+    stroke: url(#progressGradient);
+    stroke-width: 10;
+    stroke-linecap: round;
+    stroke-dasharray: 408;
+    stroke-dashoffset: 163;
+    transition: stroke-dashoffset 1s ease;
+  }
+
+  .progress-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+  }
+
+  .progress-value {
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--text-primary);
+    line-height: 1;
+  }
+
+  .progress-unit {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+
+  .container-stats {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .container-stat {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    padding: 6px 0;
+    border-bottom: 1px solid #f1f5f9;
+  }
+
+  .container-stat:last-child { border: none; }
+
+  .container-stat-label { color: var(--text-secondary); }
+  .container-stat-value { font-weight: 700; color: var(--text-primary); }
+
+  /* ===== MANAGEMENT GRID ===== */
+  .management-section {
+    margin-top: 8px;
+  }
+
+  .management-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .management-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+  }
+
+  .mgmt-card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    padding: 20px;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border);
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    animation: slideUp 0.5s ease forwards;
+    opacity: 0;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .mgmt-card:nth-child(1) { animation-delay: 0.55s; }
+  .mgmt-card:nth-child(2) { animation-delay: 0.6s; }
+  .mgmt-card:nth-child(3) { animation-delay: 0.65s; }
+  .mgmt-card:nth-child(4) { animation-delay: 0.7s; }
+  .mgmt-card:nth-child(5) { animation-delay: 0.75s; }
+  .mgmt-card:nth-child(6) { animation-delay: 0.8s; }
+  .mgmt-card:nth-child(7) { animation-delay: 0.85s; }
+  .mgmt-card:nth-child(8) { animation-delay: 0.9s; }
+
+  .mgmt-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+    border-color: rgba(8, 145, 178, 0.3);
+  }
+
+  .mgmt-card:hover .mgmt-icon {
+    transform: scale(1.1);
+  }
+
+  .mgmt-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    background: var(--gradient);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: transform 0.3s;
+  }
+
+  .mgmt-icon svg { width: 22px; height: 22px; color: white; }
+
+  .mgmt-info { flex: 1; }
+
+  .mgmt-name {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 2px;
+  }
+
+  .mgmt-desc {
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  .mgmt-count {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--secondary);
+    background: rgba(8, 145, 178, 0.08);
+    padding: 2px 10px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+
+  .mgmt-arrow {
+    color: var(--text-muted);
+    transition: all 0.3s;
+  }
+
+  .mgmt-card:hover .mgmt-arrow {
+    color: var(--secondary);
+    transform: translateX(-4px);
+  }
+
+  .mgmt-arrow svg { width: 18px; height: 18px; }
+
+  /* ===== ANIMATIONS ===== */
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+
+  @keyframes countUp {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  /* ===== SCROLLBAR ===== */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+  ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 1200px) {
+    .kpi-grid { grid-template-columns: repeat(3, 1fr); }
+    .bento-card.chart { grid-column: span 12; }
+    .bento-card.activity { grid-column: span 12; }
+    .bento-card.tenants { grid-column: span 12; }
+    .bento-card.system { grid-column: span 6; }
+    .bento-card.container { grid-column: span 6; }
+    .management-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (max-width: 768px) {
+    .main-content { padding: 16px; }
+    .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+    .management-grid { grid-template-columns: 1fr; }
+    .page-title-section { flex-direction: column; align-items: flex-start; gap: 12px; }
+    .quick-actions { width: 100%; overflow-x: auto; }
+    .bento-card.system, .bento-card.container { grid-column: span 12; }
+  }
+
+  /* Demo banner */
+  .demo-banner {
+    background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+    color: #78350f;
+    text-align: center;
+    padding: 10px;
+    font-size: 13px;
+    font-weight: 700;
+  }
+</style>
+</head>
+<body>
+
+<div class="demo-banner">
+  זוהי דמו ויזואלית בלבד - לצפייה בעיצוב המוצע לדשבורד מנהל ראשי
+</div>
+
+<!-- ===== HEADER ===== -->
+<header class="top-header">
+  <div class="header-right">
+    <div class="logo">VIPO</div>
+    <nav class="header-nav">
+      <button class="header-nav-btn" title="דף הבית">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+      </button>
+      <button class="header-nav-btn" title="הגדרות">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+      </button>
+      <button class="header-nav-btn" title="התראות">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+        <span class="badge-dot"></span>
+      </button>
+      <button class="header-nav-btn" title="עגלת קניות">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z"/></svg>
+      </button>
+    </nav>
+  </div>
+  <div class="header-left">
+    <div style="text-align: left;">
+      <div class="admin-name">מנהל ראשי</div>
+      <div class="admin-role">Super Admin</div>
+    </div>
+    <div class="admin-avatar">M</div>
+  </div>
+</header>
+
+<!-- ===== MAIN CONTENT ===== -->
+<main class="main-content">
+
+  <!-- Page Title -->
+  <div class="page-title-section">
+    <div>
+      <h1 class="page-title">דשבורד מנהל</h1>
+      <p class="page-subtitle">סקירה כללית של המערכת | עדכון אחרון: היום, 09:45</p>
+    </div>
+    <div class="quick-actions">
+      <button class="quick-action-btn primary">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+        הוסף מוצר
+      </button>
+      <button class="quick-action-btn outline">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+        צור סוכן
+      </button>
+      <button class="quick-action-btn outline">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+        יצוא דוחות
+      </button>
+    </div>
+  </div>
+
+  <!-- KPI Cards -->
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-header">
+        <span class="kpi-label">הכנסות החודש</span>
+        <div class="kpi-icon blue">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        </div>
+      </div>
+      <div class="kpi-value">&#8362;47,850</div>
+      <div class="kpi-change up">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+        +12.5% מהחודש שעבר
+      </div>
+      <div class="kpi-sparkline">
+        <svg viewBox="0 0 200 40" preserveAspectRatio="none">
+          <defs><linearGradient id="sparkGrad1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1e3a8a" stop-opacity="0.3"/><stop offset="100%" stop-color="#1e3a8a" stop-opacity="0"/></linearGradient></defs>
+          <path d="M0 35 L25 28 L50 30 L75 22 L100 25 L125 18 L150 15 L175 10 L200 8 L200 40 L0 40Z" fill="url(#sparkGrad1)"/>
+          <path d="M0 35 L25 28 L50 30 L75 22 L100 25 L125 18 L150 15 L175 10 L200 8" fill="none" stroke="#1e3a8a" stroke-width="2"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="kpi-card">
+      <div class="kpi-header">
+        <span class="kpi-label">הזמנות פעילות</span>
+        <div class="kpi-icon teal">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>
+        </div>
+      </div>
+      <div class="kpi-value">31</div>
+      <div class="kpi-change up">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+        +8 חדשות היום
+      </div>
+      <div class="kpi-sparkline">
+        <svg viewBox="0 0 200 40" preserveAspectRatio="none">
+          <defs><linearGradient id="sparkGrad2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0891b2" stop-opacity="0.3"/><stop offset="100%" stop-color="#0891b2" stop-opacity="0"/></linearGradient></defs>
+          <path d="M0 30 L25 25 L50 28 L75 20 L100 22 L125 15 L150 18 L175 12 L200 10 L200 40 L0 40Z" fill="url(#sparkGrad2)"/>
+          <path d="M0 30 L25 25 L50 28 L75 20 L100 22 L125 15 L150 18 L175 12 L200 10" fill="none" stroke="#0891b2" stroke-width="2"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="kpi-card">
+      <div class="kpi-header">
+        <span class="kpi-label">סוכנים פעילים</span>
+        <div class="kpi-icon green">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+        </div>
+      </div>
+      <div class="kpi-value">18</div>
+      <div class="kpi-change up">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+        3 אונליין עכשיו
+      </div>
+    </div>
+
+    <div class="kpi-card">
+      <div class="kpi-header">
+        <span class="kpi-label">חנויות פעילות</span>
+        <div class="kpi-icon orange">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+        </div>
+      </div>
+      <div class="kpi-value">6</div>
+      <div class="kpi-change">
+        <span style="color: var(--text-muted);">כולן פעילות</span>
+      </div>
+    </div>
+
+    <div class="kpi-card">
+      <div class="kpi-header">
+        <span class="kpi-label">עמלת פלטפורמה</span>
+        <div class="kpi-icon purple">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 8h6m-5 0a3 3 0 110 6H9l3 3m-3-6h6m6 1a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        </div>
+      </div>
+      <div class="kpi-value">&#8362;2,392</div>
+      <div class="kpi-change up">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+        5% מהמכירות
+      </div>
+    </div>
+  </div>
+
+  <!-- Bento Grid -->
+  <div class="bento-grid">
+
+    <!-- Sales Chart -->
+    <div class="bento-card chart">
+      <div class="bento-header">
+        <span class="bento-title">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+          סיכום מכירות
+        </span>
+        <span class="bento-badge">6 חודשים אחרונים</span>
+      </div>
+      <div class="chart-legend">
+        <div class="chart-legend-item"><div class="chart-legend-dot primary"></div>הכנסות</div>
+        <div class="chart-legend-item"><div class="chart-legend-dot secondary"></div>עמלות סוכנים</div>
+      </div>
+      <div class="chart-area">
+        <div class="chart-bars">
+          <div class="chart-bar-group"><div style="display:flex;gap:4px;align-items:flex-end;height:180px;width:100%"><div class="chart-bar primary" style="height:55%"></div><div class="chart-bar secondary" style="height:22%"></div></div><span class="chart-label">ספט'</span></div>
+          <div class="chart-bar-group"><div style="display:flex;gap:4px;align-items:flex-end;height:180px;width:100%"><div class="chart-bar primary" style="height:65%"></div><div class="chart-bar secondary" style="height:28%"></div></div><span class="chart-label">אוק'</span></div>
+          <div class="chart-bar-group"><div style="display:flex;gap:4px;align-items:flex-end;height:180px;width:100%"><div class="chart-bar primary" style="height:48%"></div><div class="chart-bar secondary" style="height:18%"></div></div><span class="chart-label">נוב'</span></div>
+          <div class="chart-bar-group"><div style="display:flex;gap:4px;align-items:flex-end;height:180px;width:100%"><div class="chart-bar primary" style="height:75%"></div><div class="chart-bar secondary" style="height:32%"></div></div><span class="chart-label">דצמ'</span></div>
+          <div class="chart-bar-group"><div style="display:flex;gap:4px;align-items:flex-end;height:180px;width:100%"><div class="chart-bar primary" style="height:82%"></div><div class="chart-bar secondary" style="height:35%"></div></div><span class="chart-label">ינו'</span></div>
+          <div class="chart-bar-group"><div style="display:flex;gap:4px;align-items:flex-end;height:180px;width:100%"><div class="chart-bar primary" style="height:92%"></div><div class="chart-bar secondary" style="height:40%"></div></div><span class="chart-label">פבר'</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Activity Feed -->
+    <div class="bento-card activity">
+      <div class="bento-header">
+        <span class="bento-title">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+          פעילות אחרונה
+        </span>
+        <span class="bento-badge">חי</span>
+      </div>
+      <div class="bento-body">
+        <div class="activity-list">
+          <div class="activity-item">
+            <div class="activity-icon order">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+            </div>
+            <div>
+              <div class="activity-text">הזמנה חדשה #1247</div>
+              <div class="activity-time">לפני 3 דקות - חנות VIPO</div>
+            </div>
+            <span class="activity-amount">&#8362;1,250</span>
+          </div>
+          <div class="activity-item">
+            <div class="activity-icon payment">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            </div>
+            <div>
+              <div class="activity-text">תשלום התקבל</div>
+              <div class="activity-time">לפני 15 דקות</div>
+            </div>
+            <span class="activity-amount">&#8362;3,400</span>
+          </div>
+          <div class="activity-item">
+            <div class="activity-icon agent">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/></svg>
+            </div>
+            <div>
+              <div class="activity-text">סוכן חדש נרשם</div>
+              <div class="activity-time">לפני 32 דקות - יוסי כהן</div>
+            </div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-icon alert">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+            </div>
+            <div>
+              <div class="activity-text">בקשת משיכה ממתינה</div>
+              <div class="activity-time">לפני שעה - דני לוי</div>
+            </div>
+            <span class="activity-amount" style="color: var(--warning);">&#8362;850</span>
+          </div>
+          <div class="activity-item">
+            <div class="activity-icon order">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+            </div>
+            <div>
+              <div class="activity-text">הזמנה חדשה #1246</div>
+              <div class="activity-time">לפני שעתיים - חנות דקור</div>
+            </div>
+            <span class="activity-amount">&#8362;890</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tenants Overview -->
+    <div class="bento-card tenants">
+      <div class="bento-header">
+        <span class="bento-title">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+          סקירת חנויות
+        </span>
+        <span class="bento-badge">6 חנויות</span>
+      </div>
+      <div class="bento-body">
+        <table class="tenant-table">
+          <thead>
+            <tr>
+              <th>חנות</th>
+              <th>מכירות החודש</th>
+              <th>סוכנים</th>
+              <th>סטטוס</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <div class="tenant-name">
+                  <div class="tenant-logo" style="background: linear-gradient(135deg, #1e3a8a, #0891b2)">V</div>
+                  VIPO
+                </div>
+              </td>
+              <td style="font-weight: 600;">&#8362;18,200</td>
+              <td>7</td>
+              <td><span class="status-badge active"><span class="dot"></span>פעיל</span></td>
+              <td><button class="tenant-enter-btn">כניסה</button></td>
+            </tr>
+            <tr>
+              <td>
+                <div class="tenant-name">
+                  <div class="tenant-logo" style="background: linear-gradient(135deg, #7c3aed, #a78bfa)">D</div>
+                  דקור פלוס
+                </div>
+              </td>
+              <td style="font-weight: 600;">&#8362;12,400</td>
+              <td>4</td>
+              <td><span class="status-badge active"><span class="dot"></span>פעיל</span></td>
+              <td><button class="tenant-enter-btn">כניסה</button></td>
+            </tr>
+            <tr>
+              <td>
+                <div class="tenant-name">
+                  <div class="tenant-logo" style="background: linear-gradient(135deg, #059669, #34d399)">S</div>
+                  סטיל הום
+                </div>
+              </td>
+              <td style="font-weight: 600;">&#8362;9,850</td>
+              <td>3</td>
+              <td><span class="status-badge active"><span class="dot"></span>פעיל</span></td>
+              <td><button class="tenant-enter-btn">כניסה</button></td>
+            </tr>
+            <tr>
+              <td>
+                <div class="tenant-name">
+                  <div class="tenant-logo" style="background: linear-gradient(135deg, #dc2626, #f87171)">M</div>
+                  מגה סטור
+                </div>
+              </td>
+              <td style="font-weight: 600;">&#8362;7,400</td>
+              <td>4</td>
+              <td><span class="status-badge active"><span class="dot"></span>פעיל</span></td>
+              <td><button class="tenant-enter-btn">כניסה</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- System Status -->
+    <div class="bento-card system">
+      <div class="bento-header">
+        <span class="bento-title">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+          בריאות המערכת
+        </span>
+      </div>
+      <div class="bento-body">
+        <div class="system-list">
+          <div class="system-item">
+            <span class="system-item-name">MongoDB</span>
+            <span class="system-status ok"><span class="dot"></span>תקין</span>
+          </div>
+          <div class="system-item">
+            <span class="system-item-name">PayPlus</span>
+            <span class="system-status ok"><span class="dot"></span>פעיל</span>
+          </div>
+          <div class="system-item">
+            <span class="system-item-name">Priority ERP</span>
+            <span class="system-status ok"><span class="dot"></span>מחובר</span>
+          </div>
+          <div class="system-item">
+            <span class="system-item-name">WhatsApp</span>
+            <span class="system-status ok"><span class="dot"></span>פעיל</span>
+          </div>
+          <div class="system-item">
+            <span class="system-item-name">Cloudinary</span>
+            <span class="system-status ok"><span class="dot"></span>תקין</span>
+          </div>
+          <div class="system-item">
+            <span class="system-item-name">Uptime</span>
+            <span class="system-status ok">99.9%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Container Progress -->
+    <div class="bento-card container">
+      <div class="bento-header">
+        <span class="bento-title">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+          מילוי מכולה
+        </span>
+      </div>
+      <div class="bento-body">
+        <div class="container-progress">
+          <div class="progress-ring">
+            <svg width="140" height="140" viewBox="0 0 140 140">
+              <defs>
+                <linearGradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#1e3a8a"/>
+                  <stop offset="100%" stop-color="#0891b2"/>
+                </linearGradient>
+              </defs>
+              <circle class="progress-ring-bg" cx="70" cy="70" r="65"/>
+              <circle class="progress-ring-fill" cx="70" cy="70" r="65"/>
+            </svg>
+            <div class="progress-center">
+              <div class="progress-value">60%</div>
+              <div class="progress-unit">40.8 / 68 CBM</div>
+            </div>
+          </div>
+          <div class="container-stats">
+            <div class="container-stat">
+              <span class="container-stat-label">הזמנות ששולמו</span>
+              <span class="container-stat-value">24</span>
+            </div>
+            <div class="container-stat">
+              <span class="container-stat-label">ממתינות לתשלום</span>
+              <span class="container-stat-value" style="color: var(--warning);">7</span>
+            </div>
+            <div class="container-stat">
+              <span class="container-stat-label">נותר למילוי</span>
+              <span class="container-stat-value">27.2 CBM</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Management Cards -->
+  <div class="management-section">
+    <h2 class="management-title">ניהול מערכת</h2>
+    <div class="management-grid">
+      <a class="mgmt-card" href="#">
+        <div class="mgmt-icon">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+        </div>
+        <div class="mgmt-info">
+          <div class="mgmt-name">ניהול משתמשים</div>
+          <div class="mgmt-desc">משתמשים, סוכנים, הרשאות</div>
+        </div>
+        <span class="mgmt-count">24 משתמשים</span>
+        <div class="mgmt-arrow">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+        </div>
+      </a>
+      <a class="mgmt-card" href="#">
+        <div class="mgmt-icon">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+        </div>
+        <div class="mgmt-info">
+          <div class="mgmt-name">קטלוג ומכירות</div>
+          <div class="mgmt-desc">מוצרים, קטגוריות, מלאי</div>
+        </div>
+        <span class="mgmt-count">25 מוצרים</span>
+        <div class="mgmt-arrow">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+        </div>
+      </a>
+      <a class="mgmt-card" href="#">
+        <div class="mgmt-icon">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        </div>
+        <div class="mgmt-info">
+          <div class="mgmt-name">כספים ודוחות</div>
+          <div class="mgmt-desc">עמלות, משיכות, חשבוניות</div>
+        </div>
+        <span class="mgmt-count">3 ממתינות</span>
+        <div class="mgmt-arrow">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+        </div>
+      </a>
+      <a class="mgmt-card" href="#">
+        <div class="mgmt-icon">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+        </div>
+        <div class="mgmt-info">
+          <div class="mgmt-name">CRM - ניהול לקוחות</div>
+          <div class="mgmt-desc">לקוחות, צ'אט, אוטומציות</div>
+        </div>
+        <span class="mgmt-count">156 לקוחות</span>
+        <div class="mgmt-arrow">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+        </div>
+      </a>
+      <a class="mgmt-card" href="#">
+        <div class="mgmt-icon">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+        </div>
+        <div class="mgmt-info">
+          <div class="mgmt-name">הגדרות ושיווק</div>
+          <div class="mgmt-desc">עיצוב, SEO, התראות</div>
+        </div>
+        <div class="mgmt-arrow">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+        </div>
+      </a>
+      <a class="mgmt-card" href="#">
+        <div class="mgmt-icon">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+        </div>
+        <div class="mgmt-info">
+          <div class="mgmt-name">מערכות וחיבורים</div>
+          <div class="mgmt-desc">Priority, PayPlus, WhatsApp</div>
+        </div>
+        <div class="mgmt-arrow">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+        </div>
+      </a>
+      <a class="mgmt-card" href="#">
+        <div class="mgmt-icon">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"/></svg>
+        </div>
+        <div class="mgmt-info">
+          <div class="mgmt-name">גיבוי ועדכון</div>
+          <div class="mgmt-desc">גיבוי נתונים, עדכוני מערכת</div>
+        </div>
+        <span class="mgmt-count" style="background: rgba(22, 163, 74, 0.08); color: #16a34a;">מעודכן</span>
+        <div class="mgmt-arrow">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+        </div>
+      </a>
+      <a class="mgmt-card" href="#">
+        <div class="mgmt-icon">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+        </div>
+        <div class="mgmt-info">
+          <div class="mgmt-name">דוחות מערכת</div>
+          <div class="mgmt-desc">אנליטיקס, ביצועים, לוגים</div>
+        </div>
+        <div class="mgmt-arrow">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+        </div>
+      </a>
+    </div>
+  </div>
+
+</main>
+
+</body>
+</html>

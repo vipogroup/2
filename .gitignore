@@ -23,6 +23,16 @@ Thumbs.db
 
 # Editor
 .vscode/
+.cursor/
+
+# Vercel link metadata (do not commit)
+.vercel/
+
+# Sensitive local artifacts
+*.cookies.txt
+**/login_body.json
+**/login_headers.txt
+**/products_search_hits.txt
 
 # Coverage
 coverage/
@@ -36,6 +46,19 @@ public/tmp/
 
 # Build artifacts
 dist/
+
+# Database / local backups (do not commit)
+/backups/
+backups/
+
+# Local tooling / artifacts
+.git.broken-worktree-pointer
+test-results/
+logs/
+*.log
+
+# Local image studio tree (large; not web app)
+vipo */
 
 # Caches
 *.local

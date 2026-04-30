@@ -1,0 +1,51 @@
+name: VIPO Image Studio - Build & Release (Windows)
+
+on:
+  push:
+    tags:
+      - 'studio-v*'
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: |
+            vipo  סטודיו תמונות/package-lock.json
+
+      - name: Install dependencies (Studio)
+        working-directory: "vipo  סטודיו תמונות"
+        run: npm ci
+
+      - name: Build + Package (NSIS + Portable)
+        working-directory: "vipo  סטודיו תמונות"
+        run: npm run dist
+
+      - name: List release artifacts
+        working-directory: "vipo  סטודיו תמונות"
+        shell: pwsh
+        run: |
+          Write-Host "Release directory:" 
+          Get-ChildItem -Path release -Recurse | Select-Object FullName, Length | Format-Table -AutoSize
+
+      - name: Upload artifacts to GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            vipo  סטודיו תמונות/release/**
+          fail_on_unmatched_files: true
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

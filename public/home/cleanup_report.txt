@@ -1,0 +1,79 @@
+דו"ח ניקוי - קונים חכם (Konim Hacham)
+תאריך: 2025-10-21
+
+תקציר
+- בוצעה סריקת קבצים מלאה (HTML/CSS/JS, images/, mp4/, manifest, service worker).
+- זוהו קטעי CSS לא בשימוש והוסרו בבטחה.
+- מולטו נכסים מקושרים מול קבצים חסרים.
+ - בוצעה מחיקה בטוחה של קבצים לא בשימוש (ללא גיבוי, לפי בקשתך).
+
+ספריית פרויקט: c:\Users\ALFA DPM\Downloads\vipo grop\ניסוי מרים\בעבודה\‏‏1 - עותק\
+
+KEEP (להשאיר)
+- index.html
+- css/style.css, css/responsive.css, css/accessibility.css
+- js/main.js, js/slider.js, js/lazy-load.js, js/register-sw.js
+- service-worker.js (מומלץ עדכון רשימת קבצים – ראה "תיקונים מומלצים")
+- 404.html, 500.html
+- images/1.jpg (רקע hero)
+- images/favicon.ico (קיים אך בגודל 0 – מומלץ להחליף)
+- images/image prodect/ (יש רפרנסים בדף הראשי – כרגע תיקייה ריקה)
+- images/products/ (יש רפרנסים בדף הראשי – כרגע תיקייה ריקה)
+- images/icons/ (נדרש עבור manifest – כרגע תיקייה ריקה)
+- mp4/media/video.mp4 (בשימוש ע"י index.html)
+- manifest.json, robots.txt, sitemap.xml, README.md ו-checklists
+
+ARCHIVE (לארכיון/לשימור, לא בשימוש באתר הראשי)
+ - אין כרגע פריטים בארכיון.
+
+DELETE (בוצע בקוד – CSS בלבד)
+- הוסר מ-`css/style.css` קוד לא בשימוש:
+  - `.video-placeholder`, `.video-thumbnail`, `.play-button`, `:hover` של `.play-button`
+  - `.video-download-container` (כולל הסלקטורים הפנימיים `i`, `p`)
+  - `.testimonial-image` (כולל `img` פנימי)
+- הוסר מ-`css/responsive.css` קוד לא בשימוש:
+  - כל בלוקי `.testimonial-image`
+
+DELETE (בוצע – קבצים)
+ - mp4/index.html
+ - mp4/media/subtitles.srt
+ - images/testimonials/ (תיקייה ריקה)
+
+MISSING ASSETS (קבצים חסרים אך מקושרים)
+- images/image prodect/surf.jpg (index.html)
+- images/image prodect/massage.jpg (index.html)
+- images/image prodect/mixer.jpg (index.html)
+- images/products/product4.jpg (index.html – פעמיים)
+- images/video-thumbnail.jpg (poster עבור הווידאו)
+- images/logo.png (בשימוש ב-404/500 וב-service worker)
+- images/logo-white.png (service worker)
+- images/hero-bg.jpg (service worker)
+- images/icons/icon-*.png (נדרש ע"י manifest)
+
+ממצאים/הערות
+- Service Worker: `ASSETS_TO_CACHE` כולל קבצים חסרים – התקנה תיכשל (cache.addAll). האתר ייטען, אך SW לא יופעל.
+- register-sw.js: רישום SW בנתיב מוחלט "/service-worker.js" ועל file:// זה נכשל. מומלץ לרשום רק ב-https/localhost.
+- css/style.css: שימוש ב-`var(--text-dark)` ב-`.video-caption` ללא הגדרה ב-`:root`. מומלץ להשתמש ב-`var(--dark-color)` או להגדיר משתנה.
+- images/favicon.ico בגודל 0 – מומלץ להחליף באייקון תקין.
+
+תיקונים מומלצים (לא הורסים תאימות)
+1) עדכון Service Worker לרשום רק נכסים קיימים בפועל (להסיר קבצים חסרים), למשל להשתמש בנתיבים יחסיים `./`.
+2) לרשום SW רק ב-https/localhost ובנתיב יחסי:
+   אם (`'serviceWorker' in navigator` && (https או localhost)) אז register('service-worker.js', { scope: './' })
+3) להגדיר `--text-dark` או להחליף ל-`--dark-color`.
+4) לספק את התמונות החסרות או לעדכן רפרנסים.
+
+בדיקות/Build
+- מומלץ להריץ שרת מקומי כדי לבדוק התנהגות נתיבים ו-SW:
+  python -m http.server 5500
+  פתח: http://localhost:5500/
+- בדוק בקונסול 404 על נכסים חסרים ורישום SW.
+
+גיבוי לפני ניקוי
+- יצירת תיקייה בשם `backup_before_cleanup` מחוץ לתיקייה הנוכחית והעתקת כל הפרויקט אליה (כולל תיקיות ריקות).
+  דוגמה (PowerShell):
+  robocopy "<project_dir>" "<parent>\backup_before_cleanup" /E
+
+שלבי המשך
+ - החלת תיקוני SW ורישום (ראו "תיקונים מומלצים").
+ - אספקת תמונות חסרות או עדכון רפרנסים.

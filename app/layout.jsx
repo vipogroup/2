@@ -1,5 +1,6 @@
 import "./globals.css";
 import { ThemeProvider } from "@/app/context/ThemeContext";
+import { CartProvider } from "@/app/context/CartContext";
 import UserHeader from "@/app/components/UserHeader";
 import ReferralTracker from "@/app/components/ReferralTracker";
 
@@ -26,12 +27,14 @@ export default function RootLayout({ children }) {
       </head>
       <body>
         <ThemeProvider>
-          <ReferralTracker />
-          <UserHeader />
-          <div className="container py-4">
-            {children}
+          <CartProvider>
+            <ReferralTracker />
+            <UserHeader />
+            <div className="container py-4">
+              {children}
             <footer className="mt-12 py-8 text-center text-sm text-gray-500">© VIPO</footer>
-          </div>
+            </div>
+          </CartProvider>
         </ThemeProvider>
       </body>
     </html>

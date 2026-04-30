@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="he">
+<head>
+    <meta charset="UTF-8">
+    <title>בדיקת מלאי</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            border-bottom: 2px solid #10b981;
+            padding-bottom: 10px;
+        }
+        .stock-item {
+            margin: 10px 0;
+            padding: 10px;
+            background: #f8f8f8;
+            border-left: 4px solid #10b981;
+        }
+        .stock-key {
+            font-weight: bold;
+            color: #065f46;
+        }
+        .stock-value {
+            color: #dc2626;
+            font-family: monospace;
+        }
+        button {
+            background: linear-gradient(135deg, #1e3a8a, #0891b2);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 10px 5px;
+        }
+        button:hover {
+            opacity: 0.9;
+        }
+        .warning {
+            background: #fef3c7;
+            border: 1px solid #fbbf24;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+        }
+        .success {
+            background: #d1fae5;
+            border: 1px solid #10b981;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 בדיקת מלאי ב-localStorage</h1>
+        
+        <div id="stockList"></div>
+        
+        <div style="margin-top: 20px;">
+            <button onclick="checkStock()">רענן רשימה</button>
+            <button onclick="fixStockFormat()">תקן פורמט מלאי</button>
+            <button onclick="clearAllStock()">נקה הכל</button>
+        </div>
+        
+        <div id="messages"></div>
+    </div>
+
+    <script>
+        function checkStock() {
+            const stockList = document.getElementById('stockList');
+            const messages = document.getElementById('messages');
+            
+            let html = '<h2>מצב נוכחי של המלאי:</h2>';
+            let foundStock = false;
+            
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key.includes('stock')) {
+                    foundStock = true;
+                    const value = localStorage.getItem(key);
+                    const parsed = parseInt(value, 10);
+                    
+                    html += `<div class="stock-item">
+                        <span class="stock-key">${key}:</span>
+                        <span class="stock-value">"${value}"</span>
+                        (parsed as number: ${parsed})
+                        ${isNaN(parsed) ? '⚠️ NOT A VALID NUMBER!' : '✓'}
+                    </div>`;
+                }
+            }
+            
+            if (!foundStock) {
+                html += '<div class="warning">לא נמצא מלאי ב-localStorage!</div>';
+            }
+            
+            stockList.innerHTML = html;
+            
+            // בדיקת דוגמה
+            const testId = '2L-100-60-90';
+            const testStock = localStorage.getItem('stock_current_' + testId);
+            
+            messages.innerHTML = `
+                <h3>בדיקת דוגמה למוצר ${testId}:</h3>
+                <div class="stock-item">
+                    Key: stock_current_${testId}<br>
+                    Value: "${testStock}"<br>
+                    Parsed: ${parseInt(testStock, 10)}<br>
+                    Is > 0: ${parseInt(testStock, 10) > 0}
+                </div>
+            `;
+        }
+        
+        function fixStockFormat() {
+            let fixed = 0;
+            
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key.includes('stock_current_')) {
+                    const value = localStorage.getItem(key);
+                    const parsed = parseInt(value, 10);
+                    
+                    if (!isNaN(parsed)) {
+                        // שמירה מחדש כמספר נקי
+                        localStorage.setItem(key, parsed.toString());
+                        fixed++;
+                    }
+                }
+            }
+            
+            document.getElementById('messages').innerHTML = 
+                `<div class="success">תוקנו ${fixed} ערכי מלאי</div>`;
+            
+            checkStock();
+        }
+        
+        function clearAllStock() {
+            if (!confirm('האם למחוק את כל נתוני המלאי?')) return;
+            
+            const keysToRemove = [];
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key.includes('stock')) {
+                    keysToRemove.push(key);
+                }
+            }
+            
+            keysToRemove.forEach(key => localStorage.removeItem(key));
+            
+            document.getElementById('messages').innerHTML = 
+                `<div class="success">נמחקו ${keysToRemove.length} ערכי מלאי</div>`;
+            
+            checkStock();
+        }
+        
+        // טעינה ראשונית
+        window.onload = checkStock;
+    </script>
+</body>
+</html>

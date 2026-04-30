@@ -1,0 +1,1564 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VIPO - מרכז ניהול | עסקים, סוכנים ומשתמשים</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  
+  :root {
+    --primary: #1e3a8a;
+    --secondary: #0891b2;
+    --gradient: linear-gradient(135deg, #1e3a8a 0%, #0891b2 100%);
+    --gradient-reverse: linear-gradient(135deg, #0891b2 0%, #1e3a8a 100%);
+    --bg: #f0f4f8;
+    --card: #ffffff;
+    --text: #1e293b;
+    --text-secondary: #64748b;
+    --border: #e2e8f0;
+    --success: #16a34a;
+    --warning: #eab308;
+    --danger: #dc2626;
+    --radius: 12px;
+    --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 12px rgba(30,58,138,0.06);
+    --shadow-lg: 0 4px 20px rgba(8,145,178,0.12);
+  }
+
+  body {
+    font-family: 'Rubik', 'Assistant', 'Segoe UI', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* ============ TOP HEADER ============ */
+  .top-header {
+    background: var(--gradient);
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 12px rgba(30,58,138,0.3);
+  }
+  .top-header .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #fff;
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+  .top-header .logo svg { width: 28px; height: 28px; }
+  .top-header .user-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: rgba(255,255,255,0.9);
+    font-size: 13px;
+  }
+  .top-header .user-avatar {
+    width: 36px; height: 36px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 600; font-size: 14px; color: #fff;
+  }
+
+  /* ============ PAGE CONTAINER ============ */
+  .page-container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 24px 20px;
+  }
+
+  /* ============ PAGE HEADER ============ */
+  .page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .page-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .page-title-icon {
+    width: 48px; height: 48px;
+    background: var(--gradient);
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 12px rgba(30,58,138,0.25);
+  }
+  .page-title-icon svg { width: 24px; height: 24px; color: #fff; }
+  .page-title h1 {
+    font-size: 24px;
+    font-weight: 700;
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .page-title p { 
+    font-size: 13px; 
+    color: var(--text-secondary); 
+    -webkit-text-fill-color: var(--text-secondary);
+  }
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  /* ============ KPI CARDS ============ */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  .kpi-card {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 20px;
+    box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .kpi-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+  }
+  .kpi-card::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0; left: 0;
+    height: 3px;
+    background: var(--gradient);
+  }
+  .kpi-card .kpi-value {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 4px;
+  }
+  .kpi-card .kpi-label {
+    font-size: 13px;
+    color: var(--text-secondary);
+    font-weight: 500;
+  }
+  .kpi-card .kpi-icon {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    width: 40px; height: 40px;
+    background: linear-gradient(135deg, rgba(30,58,138,0.08), rgba(8,145,178,0.08));
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .kpi-card .kpi-icon svg { width: 20px; height: 20px; color: var(--secondary); }
+  .kpi-card .kpi-change {
+    font-size: 12px;
+    margin-top: 6px;
+    display: flex; align-items: center; gap: 4px;
+  }
+  .kpi-change.up { color: var(--success); }
+  .kpi-change.down { color: var(--danger); }
+
+  /* ============ TABS ============ */
+  .tabs-container {
+    background: var(--card);
+    border-radius: var(--radius) var(--radius) 0 0;
+    box-shadow: var(--shadow);
+    display: flex;
+    align-items: center;
+    padding: 0 8px;
+    gap: 4px;
+    border-bottom: 2px solid var(--border);
+    overflow-x: auto;
+  }
+  .tab-btn {
+    padding: 14px 24px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    position: relative;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: color 0.2s;
+    border-radius: 8px 8px 0 0;
+  }
+  .tab-btn:hover {
+    color: var(--primary);
+    background: rgba(30,58,138,0.04);
+  }
+  .tab-btn.active {
+    color: var(--primary);
+  }
+  .tab-btn.active::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    right: 0; left: 0;
+    height: 3px;
+    background: var(--gradient);
+    border-radius: 3px 3px 0 0;
+  }
+  .tab-btn svg { width: 18px; height: 18px; }
+  .tab-badge {
+    background: var(--gradient);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 20px;
+    min-width: 22px;
+    text-align: center;
+  }
+
+  /* ============ FILTERS BAR ============ */
+  .filters-bar {
+    background: var(--card);
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    border-bottom: 1px solid var(--border);
+  }
+  .search-input {
+    flex: 1;
+    min-width: 200px;
+    position: relative;
+  }
+  .search-input input {
+    width: 100%;
+    padding: 10px 40px 10px 16px;
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    font-size: 14px;
+    font-family: inherit;
+    transition: border-color 0.2s;
+    outline: none;
+  }
+  .search-input input:focus {
+    border-color: var(--secondary);
+    box-shadow: 0 0 0 3px rgba(8,145,178,0.1);
+  }
+  .search-input svg {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 18px; height: 18px;
+    color: var(--text-secondary);
+  }
+  .filter-select {
+    padding: 10px 16px;
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    font-size: 14px;
+    font-family: inherit;
+    background: #fff;
+    cursor: pointer;
+    outline: none;
+  }
+  .filter-select:focus {
+    border-color: var(--secondary);
+  }
+
+  /* ============ BUTTONS ============ */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: inherit;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .btn svg { width: 18px; height: 18px; }
+  .btn-primary {
+    background: var(--gradient);
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(30,58,138,0.25);
+  }
+  .btn-primary:hover {
+    background: var(--gradient-reverse);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(30,58,138,0.3);
+  }
+  .btn-outline {
+    background: transparent;
+    color: var(--text-secondary);
+    border: 2px solid var(--border);
+  }
+  .btn-outline:hover {
+    border-color: var(--secondary);
+    color: var(--secondary);
+    background: rgba(8,145,178,0.04);
+  }
+  .btn-danger {
+    background: #fef2f2;
+    color: var(--danger);
+    border: 2px solid #fecaca;
+  }
+  .btn-danger:hover {
+    background: #fee2e2;
+  }
+  .btn-sm {
+    padding: 6px 14px;
+    font-size: 13px;
+    border-radius: 8px;
+  }
+  .btn-sm svg { width: 15px; height: 15px; }
+
+  /* ============ TABLE ============ */
+  .table-container {
+    background: var(--card);
+    border-radius: 0 0 var(--radius) var(--radius);
+    box-shadow: var(--shadow);
+    overflow-x: auto;
+  }
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 800px;
+  }
+  .data-table thead {
+    background: linear-gradient(135deg, rgba(30,58,138,0.04), rgba(8,145,178,0.04));
+  }
+  .data-table thead th {
+    padding: 14px 16px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--primary);
+    text-align: right;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid var(--secondary);
+  }
+  .data-table tbody tr {
+    border-bottom: 1px solid var(--border);
+    transition: background 0.15s;
+  }
+  .data-table tbody tr:hover {
+    background: rgba(8,145,178,0.03);
+  }
+  .data-table tbody td {
+    padding: 14px 16px;
+    font-size: 14px;
+    vertical-align: middle;
+  }
+
+  /* ============ BADGES ============ */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .badge-success { background: #dcfce7; color: #15803d; }
+  .badge-warning { background: #fef9c3; color: #a16207; }
+  .badge-danger  { background: #fee2e2; color: #b91c1c; }
+  .badge-info    { background: #dbeafe; color: #1e40af; }
+  .badge-gray    { background: #f1f5f9; color: #475569; }
+
+  /* ============ ENTITY ROW ============ */
+  .entity-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .entity-avatar {
+    width: 42px; height: 42px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 15px;
+    color: #fff;
+    flex-shrink: 0;
+  }
+  .entity-name { font-weight: 600; color: var(--text); font-size: 14px; }
+  .entity-sub  { font-size: 12px; color: var(--text-secondary); margin-top: 2px; }
+
+  /* ============ ACTION BUTTONS ============ */
+  .actions-row {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .action-btn {
+    width: 34px; height: 34px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+    background: transparent;
+  }
+  .action-btn svg { width: 16px; height: 16px; }
+  .action-btn:hover { transform: scale(1.1); }
+  .action-btn.edit     { color: var(--secondary); }
+  .action-btn.edit:hover { background: #ecfeff; }
+  .action-btn.view     { color: #7c3aed; }
+  .action-btn.view:hover { background: #f5f3ff; }
+  .action-btn.products { color: #8b5cf6; }
+  .action-btn.products:hover { background: #f5f3ff; }
+  .action-btn.orders   { color: #4f46e5; }
+  .action-btn.orders:hover { background: #eef2ff; }
+  .action-btn.catalog  { color: #0891b2; }
+  .action-btn.catalog:hover { background: #ecfeff; }
+  .action-btn.admin    { color: #0891b2; }
+  .action-btn.admin:hover { background: #ecfeff; }
+  .action-btn.shield   { color: #d97706; }
+  .action-btn.shield:hover { background: #fffbeb; }
+  .action-btn.delete   { color: var(--danger); }
+  .action-btn.delete:hover { background: #fef2f2; }
+  .action-btn.activate { color: var(--success); }
+  .action-btn.activate:hover { background: #f0fdf4; }
+
+  /* ============ STATS MINI ============ */
+  .stats-mini {
+    display: flex;
+    gap: 12px;
+    font-size: 12px;
+    color: var(--text-secondary);
+  }
+  .stats-mini span {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .stats-mini .num {
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  /* ============ REGISTRATION LINK ============ */
+  .reg-link-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    padding: 8px 14px;
+    border-radius: 10px;
+    font-size: 13px;
+  }
+  .reg-link-bar svg { width: 16px; height: 16px; color: var(--success); flex-shrink: 0; }
+  .reg-link-bar code {
+    background: #fff;
+    padding: 4px 10px;
+    border-radius: 6px;
+    border: 1px solid #d1fae5;
+    font-size: 12px;
+    color: #475569;
+    font-family: monospace;
+  }
+  .copy-btn {
+    width: 30px; height: 30px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--success);
+    transition: background 0.15s;
+  }
+  .copy-btn:hover { background: #dcfce7; }
+  .copy-btn svg { width: 16px; height: 16px; }
+
+  /* ============ TABS CONTENT ============ */
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  /* ============ COUPON CODE ============ */
+  .coupon-code {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #f8fafc;
+    padding: 4px 10px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--primary);
+    letter-spacing: 1px;
+  }
+
+  /* ============ LINK STYLE ============ */
+  .domain-link {
+    color: var(--secondary);
+    text-decoration: none;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .domain-link:hover { text-decoration: underline; }
+  .domain-link svg { width: 12px; height: 12px; }
+
+  /* ============ EMPTY STATE ============ */
+  .empty-state {
+    padding: 60px 20px;
+    text-align: center;
+    color: var(--text-secondary);
+  }
+  .empty-state .empty-icon {
+    width: 64px; height: 64px;
+    margin: 0 auto 16px;
+    background: linear-gradient(135deg, rgba(30,58,138,0.08), rgba(8,145,178,0.08));
+    border-radius: 16px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .empty-state .empty-icon svg { width: 28px; height: 28px; color: var(--secondary); }
+
+  /* ============ TOOLTIP ============ */
+  [data-tooltip] {
+    position: relative;
+  }
+  [data-tooltip]:hover::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: calc(100% + 6px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: #1e293b;
+    color: #fff;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    white-space: nowrap;
+    pointer-events: none;
+    z-index: 10;
+  }
+
+  /* ============ EXPANDED ROW ============ */
+  .expanded-row {
+    display: none;
+    background: #f8fafc;
+  }
+  .expanded-row.open {
+    display: table-row;
+  }
+  .expanded-content {
+    padding: 16px 20px;
+  }
+  .expanded-agents {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .mini-agent-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 16px;
+    min-width: 200px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: box-shadow 0.2s;
+  }
+  .mini-agent-card:hover {
+    box-shadow: var(--shadow);
+  }
+  .mini-agent-avatar {
+    width: 36px; height: 36px;
+    background: var(--gradient);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-weight: 700; font-size: 13px;
+    flex-shrink: 0;
+  }
+
+  /* ============ ROLE CHIPS ============ */
+  .role-chip {
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: inherit;
+    border: 2px solid var(--border);
+    background: #fff;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .role-chip:hover {
+    border-color: var(--secondary);
+    color: var(--secondary);
+  }
+  .role-chip.active {
+    background: var(--gradient);
+    color: #fff;
+    border-color: transparent;
+    box-shadow: 0 2px 8px rgba(30,58,138,0.25);
+  }
+
+  /* ============ RESPONSIVE ============ */
+  @media (max-width: 768px) {
+    .page-header { flex-direction: column; align-items: stretch; }
+    .header-actions { justify-content: flex-start; }
+    .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+    .filters-bar { flex-direction: column; }
+    .search-input { min-width: 100%; }
+    .tabs-container { padding: 0 4px; }
+    .tab-btn { padding: 12px 16px; font-size: 13px; }
+    .reg-link-bar { flex-wrap: wrap; }
+    .page-title h1 { font-size: 20px; }
+  }
+
+  @media (max-width: 640px) {
+    .page-container { padding: 16px 12px; }
+    .kpi-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+    .kpi-card { padding: 14px; }
+    .kpi-card .kpi-value { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ======== TOP HEADER ======== -->
+<div class="top-header">
+  <div class="logo">
+    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0a1 1 0 01-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 01-1 1h-2z"/></svg>
+    VIPO
+  </div>
+  <div class="user-info">
+    <span>m0587009938@gmail.com</span>
+    <div class="user-avatar">M</div>
+  </div>
+</div>
+
+<!-- ======== PAGE ======== -->
+<div class="page-container">
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="page-title">
+      <div class="page-title-icon">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+      </div>
+      <div>
+        <h1>מרכז ניהול</h1>
+        <p>ניהול עסקים, סוכנים, משתמשים וקטלוג - Management Hub</p>
+      </div>
+    </div>
+    <div class="header-actions">
+      <div class="reg-link-bar">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101"/></svg>
+        <span style="color:#15803d;font-weight:600;">קישור הרשמה:</span>
+        <code>https://vipo.co.il/register-business</code>
+        <button class="copy-btn" data-tooltip="העתק קישור">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+        </button>
+      </div>
+      <button class="btn btn-primary" onclick="alert('פתיחת טופס הוספה')">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+        הוסף חדש
+      </button>
+    </div>
+  </div>
+
+  <!-- KPI Cards -->
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-icon">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5"/></svg>
+      </div>
+      <div class="kpi-value">6</div>
+      <div class="kpi-label">סה"כ עסקים</div>
+      <div class="kpi-change up">
+        <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 15l7-7 7 7"/></svg>
+        +2 החודש
+      </div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-icon">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+      </div>
+      <div class="kpi-value">7</div>
+      <div class="kpi-label">סה"כ סוכנים</div>
+      <div class="kpi-change up">
+        <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 15l7-7 7 7"/></svg>
+        +3 החודש
+      </div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-icon">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+      </div>
+      <div class="kpi-value">12</div>
+      <div class="kpi-label">סה"כ משתמשים</div>
+      <div class="kpi-change up">
+        <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 15l7-7 7 7"/></svg>
+        +5 החודש
+      </div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-icon">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      </div>
+      <div class="kpi-value" style="color:var(--success)">5</div>
+      <div class="kpi-label">עסקים פעילים</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-icon">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+      </div>
+      <div class="kpi-value">33</div>
+      <div class="kpi-label">סה"כ הזמנות</div>
+      <div class="kpi-change up">
+        <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 15l7-7 7 7"/></svg>
+        +8 החודש
+      </div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-icon">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+      </div>
+      <div class="kpi-value">29</div>
+      <div class="kpi-label">סה"כ מוצרים</div>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs-container">
+    <button class="tab-btn active" onclick="switchTab('tenants')">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5"/></svg>
+      עסקים
+      <span class="tab-badge">6</span>
+    </button>
+    <button class="tab-btn" onclick="switchTab('agents')">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+      סוכנים
+      <span class="tab-badge">7</span>
+    </button>
+    <button class="tab-btn" onclick="switchTab('users')">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+      משתמשים
+      <span class="tab-badge">12</span>
+    </button>
+    <button class="tab-btn" onclick="switchTab('catalog')">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>
+      Catalog Manager
+    </button>
+  </div>
+
+  <!-- Filter Bar -->
+  <div class="filters-bar" id="filters-bar">
+    <div class="search-input">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+      <input type="text" placeholder="חיפוש לפי שם, דומיין, slug..." id="searchInput" oninput="filterTable()">
+    </div>
+    <select class="filter-select" id="statusFilter" onchange="filterTable()">
+      <option value="">כל הסטטוסים</option>
+      <option value="active">פעיל</option>
+      <option value="pending">ממתין</option>
+      <option value="inactive">לא פעיל</option>
+      <option value="suspended">מושהה</option>
+    </select>
+    <button class="btn btn-outline btn-sm" onclick="filterTable()">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+      רענון
+    </button>
+  </div>
+
+  <!-- =================== TENANTS TAB =================== -->
+  <div class="tab-content active" id="tab-tenants">
+    <div class="table-container">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>עסק</th>
+            <th>דומיין</th>
+            <th>סטטוס</th>
+            <th>עמלה</th>
+            <th>סטטיסטיקות</th>
+            <th>פעולות</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Tenant 1 -->
+          <tr class="tenant-row" data-name="חנות בית גן" data-status="active">
+            <td>
+              <div class="entity-info">
+                <div class="entity-avatar" style="background:linear-gradient(135deg,#16a34a,#059669)">BG</div>
+                <div>
+                  <div class="entity-name">חנות בית גן</div>
+                  <div class="entity-sub">home-1770784371470</div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <a href="#" class="domain-link">
+                home-test.vipo.co.il
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+              </a>
+            </td>
+            <td><span class="badge badge-success">פעיל</span></td>
+            <td><span style="font-weight:600;color:var(--primary)">5%</span></td>
+            <td>
+              <div class="stats-mini">
+                <span><span class="num">7</span> מוצרים</span>
+                <span><span class="num">5</span> הזמנות</span>
+                <span><span class="num">1</span> משתמשים</span>
+              </div>
+            </td>
+            <td>
+              <div class="actions-row">
+                <button class="action-btn catalog" data-tooltip="דשבורד">
+                  <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7"/></svg>
+                </button>
+                <button class="action-btn products" data-tooltip="מוצרים">
+                  <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+                </button>
+                <button class="action-btn orders" data-tooltip="הזמנות">
+                  <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+                </button>
+                <button class="action-btn catalog" data-tooltip="Catalog Manager" onclick="switchTab('catalog')">
+                  <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>
+                </button>
+                <button class="action-btn admin" data-tooltip="הוסף מנהל">
+                  <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/></svg>
+                </button>
+                <button class="action-btn shield" data-tooltip="הרשאות">
+                  <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                </button>
+                <button class="action-btn edit" data-tooltip="עריכה">
+                  <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                </button>
+                <button class="action-btn delete" data-tooltip="מחיקה">
+                  <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                </button>
+              </div>
+            </td>
+          </tr>
+
+          <!-- Tenant 2 -->
+          <tr class="tenant-row" data-name="חנות אופנה" data-status="active">
+            <td>
+              <div class="entity-info">
+                <div class="entity-avatar" style="background:linear-gradient(135deg,#ec4899,#db2777)">FA</div>
+                <div>
+                  <div class="entity-name">חנות אופנה</div>
+                  <div class="entity-sub">fashion-1770784370956</div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <a href="#" class="domain-link">
+                fashion-test.vipo.co.il
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+              </a>
+            </td>
+            <td><span class="badge badge-success">פעיל</span></td>
+            <td><span style="font-weight:600;color:var(--primary)">5%</span></td>
+            <td>
+              <div class="stats-mini">
+                <span><span class="num">4</span> מוצרים</span>
+                <span><span class="num">5</span> הזמנות</span>
+                <span><span class="num">1</span> משתמשים</span>
+              </div>
+            </td>
+            <td>
+              <div class="actions-row">
+                <button class="action-btn catalog" data-tooltip="דשבורד"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7"/></svg></button>
+                <button class="action-btn products" data-tooltip="מוצרים"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg></button>
+                <button class="action-btn orders" data-tooltip="הזמנות"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg></button>
+                <button class="action-btn catalog" data-tooltip="Catalog Manager" onclick="switchTab('catalog')"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg></button>
+                <button class="action-btn edit" data-tooltip="עריכה"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg></button>
+                <button class="action-btn delete" data-tooltip="מחיקה"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button>
+              </div>
+            </td>
+          </tr>
+
+          <!-- Tenant 3 -->
+          <tr class="tenant-row" data-name="חנות אלקטרוניקה" data-status="active">
+            <td>
+              <div class="entity-info">
+                <div class="entity-avatar" style="background:linear-gradient(135deg,#3b82f6,#2563eb)">EL</div>
+                <div>
+                  <div class="entity-name">חנות אלקטרוניקה</div>
+                  <div class="entity-sub">electronics-1770784369679</div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <a href="#" class="domain-link">
+                electronics-test.vipo.co.il
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+              </a>
+            </td>
+            <td><span class="badge badge-success">פעיל</span></td>
+            <td><span style="font-weight:600;color:var(--primary)">5%</span></td>
+            <td>
+              <div class="stats-mini">
+                <span><span class="num">4</span> מוצרים</span>
+                <span><span class="num">5</span> הזמנות</span>
+                <span><span class="num">1</span> משתמשים</span>
+              </div>
+            </td>
+            <td>
+              <div class="actions-row">
+                <button class="action-btn catalog" data-tooltip="דשבורד"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7"/></svg></button>
+                <button class="action-btn products" data-tooltip="מוצרים"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg></button>
+                <button class="action-btn orders" data-tooltip="הזמנות"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg></button>
+                <button class="action-btn edit" data-tooltip="עריכה"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg></button>
+                <button class="action-btn delete" data-tooltip="מחיקה"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button>
+              </div>
+            </td>
+          </tr>
+
+          <!-- Tenant 4 -->
+          <tr class="tenant-row" data-name="מחסני ניחוחות" data-status="active">
+            <td>
+              <div class="entity-info">
+                <div class="entity-avatar" style="background:linear-gradient(135deg,#f59e0b,#d97706)">VCV</div>
+                <div>
+                  <div class="entity-name">מחסני ניחוחות</div>
+                  <div class="entity-sub">vcv</div>
+                </div>
+              </div>
+            </td>
+            <td><span style="color:#94a3b8;font-size:13px">לא הוגדר</span></td>
+            <td><span class="badge badge-success">פעיל</span></td>
+            <td><span style="font-weight:600;color:var(--primary)">5%</span></td>
+            <td>
+              <div class="stats-mini">
+                <span><span class="num">14</span> מוצרים</span>
+                <span><span class="num">0</span> הזמנות</span>
+                <span><span class="num">1</span> משתמשים</span>
+              </div>
+            </td>
+            <td>
+              <div class="actions-row">
+                <button class="action-btn catalog" data-tooltip="דשבורד"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7"/></svg></button>
+                <button class="action-btn products" data-tooltip="מוצרים"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg></button>
+                <button class="action-btn orders" data-tooltip="הזמנות"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg></button>
+                <button class="action-btn edit" data-tooltip="עריכה"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg></button>
+                <button class="action-btn delete" data-tooltip="מחיקה"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button>
+              </div>
+            </td>
+          </tr>
+
+          <!-- Tenant 5 -->
+          <tr class="tenant-row" data-name="חנות ספורט" data-status="pending">
+            <td>
+              <div class="entity-info">
+                <div class="entity-avatar" style="background:linear-gradient(135deg,#8b5cf6,#7c3aed)">SP</div>
+                <div>
+                  <div class="entity-name">חנות ספורט</div>
+                  <div class="entity-sub">sport-1770784369999</div>
+                </div>
+              </div>
+            </td>
+            <td><span style="color:#94a3b8;font-size:13px">לא הוגדר</span></td>
+            <td><span class="badge badge-warning">ממתין</span></td>
+            <td><span style="font-weight:600;color:var(--primary)">5%</span></td>
+            <td>
+              <div class="stats-mini">
+                <span><span class="num">0</span> מוצרים</span>
+                <span><span class="num">0</span> הזמנות</span>
+                <span><span class="num">0</span> משתמשים</span>
+              </div>
+            </td>
+            <td>
+              <div class="actions-row">
+                <button class="action-btn activate" data-tooltip="הפעלה"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></button>
+                <button class="action-btn edit" data-tooltip="עריכה"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg></button>
+                <button class="action-btn delete" data-tooltip="מחיקה"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- =================== AGENTS TAB =================== -->
+  <div class="tab-content" id="tab-agents">
+    <div class="table-container">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>סוכן</th>
+            <th>טלפון</th>
+            <th>קוד קופון</th>
+            <th>הנחה</th>
+            <th>עמלה</th>
+            <th>סטטוס</th>
+            <th>עסקים מחוברים</th>
+            <th>תאריך</th>
+            <th>פעולות</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Agent 1 -->
+          <tr class="agent-row" data-name="S26 סוכן גו'ינו" data-status="active">
+            <td>
+              <div class="entity-info">
+                <div class="entity-avatar" style="background:var(--gradient)">S2</div>
+                <div>
+                  <div class="entity-name">S26 סוכן גו'ינו</div>
+                  <div class="entity-sub">sim-s26-agent@test.com</div>
+                </div>
+              </div>
+            </td>
+            <td style="font-size:13px">0508054902</td>
+            <td><span class="coupon-code">S26-SVKM-BDYKH-002</span></td>
+            <td><span style="font-weight:600;color:var(--primary)">12%</span></td>
+            <td><span style="font-weight:600;color:var(--secondary)">12%</span></td>
+            <td><span class="badge badge-success">פעיל</span></td>
+            <td>
+              <div style="display:flex;gap:4px;flex-wrap:wrap;">
+                <span class="badge badge-info" style="font-size:10px">בית גן</span>
+                <span class="badge badge-info" style="font-size:10px">אופנה</span>
+                <span class="badge badge-info" style="font-size:10px">אלקטרוניקה</span>
+              </div>
+            </td>
+            <td style="font-size:12px;color:var(--text-secondary)">11.2.2026</td>
+            <td>
+              <div class="actions-row">
+                <button class="action-btn view" data-tooltip="צפה בפרופיל"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg></button>
+                <button class="action-btn edit" data-tooltip="עריכה"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg></button>
+                <button class="action-btn delete" data-tooltip="מחיקה"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button>
+              </div>
+            </td>
+          </tr>
+
+          <!-- Agent 2 -->
+          <tr class="agent-row" data-name="S26 סוכן נדיקה" data-status="active">
+            <td>
+              <div class="entity-info">
+                <div class="entity-avatar" style="background:linear-gradient(135deg,#8b5cf6,#6d28d9)">S2</div>
+                <div>
+                  <div class="entity-name">S26 סוכן נדיקה</div>
+                  <div class="entity-sub">sim-s26-agent2@test.com</div>
+                </div>
+              </div>
+            </td>
+            <td style="font-size:13px">0509940889</td>
+            <td><span class="coupon-code">S26-SVKM-BDYKH-001</span></td>
+            <td><span style="font-weight:600;color:var(--primary)">12%</span></td>
+            <td><span style="font-weight:600;color:var(--secondary)">10%</span></td>
+            <td><span class="badge badge-success">פעיל</span></td>
+            <td>
+              <div style="display:flex;gap:4px;flex-wrap:wrap;">
+                <span class="badge badge-info" style="font-size:10px">בית גן</span>
+                <span class="badge badge-info" style="font-size:10px">ניחוחות</span>
+              </div>
+            </td>
+            <td style="font-size:12px;color:var(--text-secondary)">11.2.2026</td>
+            <td>
+              <div class="actions-row">
+                <button class="action-btn view" data-tooltip="צפה בפרופיל"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg></button>
+                <button class="action-btn edit" data-tooltip="עריכה"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg></button>
+                <button class="action-btn delete" data-tooltip="מחיקה"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button>
+              </div>
+            </td>
+          </tr>
+
+          <!-- Agent 3 -->
+          <tr class="agent-row" data-name="סוכן ישראלי" data-status="active">
+            <td>
+              <div class="entity-info">
+                <div class="entity-avatar" style="background:linear-gradient(135deg,#f59e0b,#d97706)">IS</div>
+                <div>
+                  <div class="entity-name">סוכן ישראלי</div>
+                  <div class="entity-sub">agent-il@test.com</div>
+                </div>
+              </div>
+            </td>
+            <td style="font-size:13px">0533752633</td>
+            <td><span class="coupon-code">AGENT-IL-2026</span></td>
+            <td><span style="font-weight:600;color:var(--primary)">10%</span></td>
+            <td><span style="font-weight:600;color:var(--secondary)">10%</span></td>
+            <td><span class="badge badge-success">פעיל</span></td>
+            <td>
+              <div style="display:flex;gap:4px;flex-wrap:wrap;">
+                <span class="badge badge-info" style="font-size:10px">אופנה</span>
+                <span class="badge badge-info" style="font-size:10px">אלקטרוניקה</span>
+              </div>
+            </td>
+            <td style="font-size:12px;color:var(--text-secondary)">05.2.2026</td>
+            <td>
+              <div class="actions-row">
+                <button class="action-btn view" data-tooltip="צפה בפרופיל"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg></button>
+                <button class="action-btn edit" data-tooltip="עריכה"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg></button>
+                <button class="action-btn delete" data-tooltip="מחיקה"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- =================== USERS TAB =================== -->
+  <div class="tab-content" id="tab-users">
+    <div class="table-container">
+      <!-- Role filter chips -->
+      <div style="padding:12px 16px;border-bottom:1px solid var(--border);display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+        <span style="font-size:12px;font-weight:600;color:var(--text-secondary)">סינון תפקיד:</span>
+        <button class="role-chip active" onclick="filterByRole('all',this)">הכל (12)</button>
+        <button class="role-chip" onclick="filterByRole('customer',this)">לקוחות (8)</button>
+        <button class="role-chip" onclick="filterByRole('business_admin',this)">מנהלי עסק (3)</button>
+        <button class="role-chip" onclick="filterByRole('admin',this)">מנהלים (1)</button>
+      </div>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>משתמש</th>
+            <th>טלפון</th>
+            <th>תפקיד</th>
+            <th>עסק</th>
+            <th>הופנה ע"י</th>
+            <th>סטטוס</th>
+            <th>הצטרפות</th>
+            <th>פעולות</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- User 1 - Customer -->
+          <tr class="user-row" data-name="ישראל כהן" data-status="active" data-role="customer">
+            <td>
+              <div class="entity-info">
+                <div class="entity-avatar" style="background:linear-gradient(135deg,#3b82f6,#2563eb)">IK</div>
+                <div>
+                  <div class="entity-name">ישראל כהן</div>
+                  <div class="entity-sub">israel.cohen@gmail.com</div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <div style="display:flex;align-items:center;gap:6px;font-size:13px">
+                0533752633
+                <a href="#" style="display:inline-flex;padding:3px 8px;border-radius:6px;font-size:11px;font-weight:600;color:#fff;background:#0891b2;text-decoration:none">WhatsApp</a>
+              </div>
+            </td>
+            <td><span class="badge badge-info">לקוח</span></td>
+            <td><span class="badge badge-gray" style="font-size:11px">בית גן</span></td>
+            <td>
+              <div style="display:flex;align-items:center;gap:4px;font-size:13px;color:var(--secondary)">
+                <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                סוכן גו'ינו
+              </div>
+            </td>
+            <td><span class="badge badge-success">פעיל</span></td>
+            <td style="font-size:12px;color:var(--text-secondary)">10.2.2026</td>
+            <td>
+              <div class="actions-row">
+                <button class="action-btn view" data-tooltip="פרופיל"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg></button>
+                <button class="action-btn edit" data-tooltip="עריכה"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg></button>
+                <button class="action-btn delete" data-tooltip="מחיקה"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button>
+              </div>
+            </td>
+          </tr>
+
+          <!-- User 2 - Customer -->
+          <tr class="user-row" data-name="שרה לוי" data-status="active" data-role="customer">
+            <td>
+              <div class="entity-info">
+                <div class="entity-avatar" style="background:linear-gradient(135deg,#ec4899,#db2777)">SL</div>
+                <div>
+                  <div class="entity-name">שרה לוי</div>
+                  <div class="entity-sub">sara.levi@gmail.com</div>
+                </div>
+              </div>
+            </td>
+            <td style="font-size:13px">0527654321</td>
+            <td><span class="badge badge-info">לקוח</span></td>
+            <td><span class="badge badge-gray" style="font-size:11px">אופנה</span></td>
+            <td>
+              <div style="display:flex;align-items:center;gap:4px;font-size:13px;color:var(--secondary)">
+                <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                סוכן נדיקה
+              </div>
+            </td>
+            <td><span class="badge badge-success">פעיל</span></td>
+            <td style="font-size:12px;color:var(--text-secondary)">08.2.2026</td>
+            <td>
+              <div class="actions-row">
+                <button class="action-btn view" data-tooltip="פרופיל"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg></button>
+                <button class="action-btn edit" data-tooltip="עריכה"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg></button>
+                <button class="action-btn delete" data-tooltip="מחיקה"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button>
+              </div>
+            </td>
+          </tr>
+
+          <!-- User 3 - Customer -->
+          <tr class="user-row" data-name="דוד אברהם" data-status="active" data-role="customer">
+            <td>
+              <div class="entity-info">
+                <div class="entity-avatar" style="background:linear-gradient(135deg,#16a34a,#059669)">DA</div>
+                <div>
+                  <div class="entity-name">דוד אברהם</div>
+                  <div class="entity-sub">david.avr@gmail.com</div>
+                </div>
+              </div>
+            </td>
+            <td style="font-size:13px">0541112233</td>
+            <td><span class="badge badge-info">לקוח</span></td>
+            <td><span class="badge badge-gray" style="font-size:11px">אלקטרוניקה</span></td>
+            <td><span style="color:#94a3b8;font-size:13px">-</span></td>
+            <td><span class="badge badge-success">פעיל</span></td>
+            <td style="font-size:12px;color:var(--text-secondary)">01.2.2026</td>
+            <td>
+              <div class="actions-row">
+                <button class="action-btn view" data-tooltip="פרופיל"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg></button>
+                <button class="action-btn edit" data-tooltip="עריכה"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg></button>
+                <button class="action-btn delete" data-tooltip="מחיקה"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button>
+              </div>
+            </td>
+          </tr>
+
+          <!-- User 4 - Customer -->
+          <tr class="user-row" data-name="מיכל רוזנברג" data-status="inactive" data-role="customer">
+            <td>
+              <div class="entity-info">
+                <div class="entity-avatar" style="background:linear-gradient(135deg,#f59e0b,#d97706)">MR</div>
+                <div>
+                  <div class="entity-name">מיכל רוזנברג</div>
+                  <div class="entity-sub">michal.r@outlook.com</div>
+                </div>
+              </div>
+            </td>
+            <td style="font-size:13px">0583334455</td>
+            <td><span class="badge badge-info">לקוח</span></td>
+            <td><span class="badge badge-gray" style="font-size:11px">בית גן</span></td>
+            <td>
+              <div style="display:flex;align-items:center;gap:4px;font-size:13px;color:var(--secondary)">
+                <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                סוכן ישראלי
+              </div>
+            </td>
+            <td><span class="badge badge-danger">לא פעיל</span></td>
+            <td style="font-size:12px;color:var(--text-secondary)">15.1.2026</td>
+            <td>
+              <div class="actions-row">
+                <button class="action-btn activate" data-tooltip="הפעלה"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></button>
+                <button class="action-btn edit" data-tooltip="עריכה"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg></button>
+                <button class="action-btn delete" data-tooltip="מחיקה"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button>
+              </div>
+            </td>
+          </tr>
+
+          <!-- User 5 - Customer -->
+          <tr class="user-row" data-name="יוסף חדד" data-status="active" data-role="customer">
+            <td>
+              <div class="entity-info">
+                <div class="entity-avatar" style="background:linear-gradient(135deg,#8b5cf6,#7c3aed)">YH</div>
+                <div>
+                  <div class="entity-name">יוסף חדד</div>
+                  <div class="entity-sub">yosef.h@walla.co.il</div>
+                </div>
+              </div>
+            </td>
+            <td style="font-size:13px">0509988776</td>
+            <td><span class="badge badge-info">לקוח</span></td>
+            <td><span class="badge badge-gray" style="font-size:11px">ניחוחות</span></td>
+            <td><span style="color:#94a3b8;font-size:13px">-</span></td>
+            <td><span class="badge badge-success">פעיל</span></td>
+            <td style="font-size:12px;color:var(--text-secondary)">28.1.2026</td>
+            <td>
+              <div class="actions-row">
+                <button class="action-btn view" data-tooltip="פרופיל"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg></button>
+                <button class="action-btn edit" data-tooltip="עריכה"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg></button>
+                <button class="action-btn delete" data-tooltip="מחיקה"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button>
+              </div>
+            </td>
+          </tr>
+
+          <!-- User 6 - Business Admin -->
+          <tr class="user-row" data-name="רונית שמעון" data-status="active" data-role="business_admin">
+            <td>
+              <div class="entity-info">
+                <div class="entity-avatar" style="background:linear-gradient(135deg,#0891b2,#0e7490)">RS</div>
+                <div>
+                  <div class="entity-name">רונית שמעון</div>
+                  <div class="entity-sub">ronit.s@homegarden.co.il</div>
+                </div>
+              </div>
+            </td>
+            <td style="font-size:13px">0533752633</td>
+            <td><span class="badge" style="background:#ecfeff;color:#0e7490">מנהל עסק</span></td>
+            <td><span class="badge badge-gray" style="font-size:11px">בית גן</span></td>
+            <td><span style="color:#94a3b8;font-size:13px">-</span></td>
+            <td><span class="badge badge-success">פעיל</span></td>
+            <td style="font-size:12px;color:var(--text-secondary)">01.1.2026</td>
+            <td>
+              <div class="actions-row">
+                <button class="action-btn view" data-tooltip="פרופיל"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg></button>
+                <button class="action-btn shield" data-tooltip="הרשאות"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg></button>
+                <button class="action-btn edit" data-tooltip="עריכה"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg></button>
+              </div>
+            </td>
+          </tr>
+
+          <!-- User 7 - Business Admin -->
+          <tr class="user-row" data-name="אילן דקל" data-status="active" data-role="business_admin">
+            <td>
+              <div class="entity-info">
+                <div class="entity-avatar" style="background:linear-gradient(135deg,#d97706,#b45309)">ID</div>
+                <div>
+                  <div class="entity-name">אילן דקל</div>
+                  <div class="entity-sub">ilan@fashion-store.co.il</div>
+                </div>
+              </div>
+            </td>
+            <td style="font-size:13px">0547778899</td>
+            <td><span class="badge" style="background:#ecfeff;color:#0e7490">מנהל עסק</span></td>
+            <td><span class="badge badge-gray" style="font-size:11px">אופנה</span></td>
+            <td><span style="color:#94a3b8;font-size:13px">-</span></td>
+            <td><span class="badge badge-success">פעיל</span></td>
+            <td style="font-size:12px;color:var(--text-secondary)">05.1.2026</td>
+            <td>
+              <div class="actions-row">
+                <button class="action-btn view" data-tooltip="פרופיל"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg></button>
+                <button class="action-btn shield" data-tooltip="הרשאות"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg></button>
+                <button class="action-btn edit" data-tooltip="עריכה"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg></button>
+              </div>
+            </td>
+          </tr>
+
+          <!-- User 8 - Business Admin -->
+          <tr class="user-row" data-name="נועה ברק" data-status="active" data-role="business_admin">
+            <td>
+              <div class="entity-info">
+                <div class="entity-avatar" style="background:linear-gradient(135deg,#4f46e5,#4338ca)">NB</div>
+                <div>
+                  <div class="entity-name">נועה ברק</div>
+                  <div class="entity-sub">noa@electronics-il.com</div>
+                </div>
+              </div>
+            </td>
+            <td style="font-size:13px">0501122334</td>
+            <td><span class="badge" style="background:#ecfeff;color:#0e7490">מנהל עסק</span></td>
+            <td><span class="badge badge-gray" style="font-size:11px">אלקטרוניקה</span></td>
+            <td><span style="color:#94a3b8;font-size:13px">-</span></td>
+            <td><span class="badge badge-success">פעיל</span></td>
+            <td style="font-size:12px;color:var(--text-secondary)">10.1.2026</td>
+            <td>
+              <div class="actions-row">
+                <button class="action-btn view" data-tooltip="פרופיל"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg></button>
+                <button class="action-btn shield" data-tooltip="הרשאות"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg></button>
+                <button class="action-btn edit" data-tooltip="עריכה"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg></button>
+              </div>
+            </td>
+          </tr>
+
+          <!-- User 9-12 - More Customers -->
+          <tr class="user-row" data-name="עמית גולן" data-status="active" data-role="customer">
+            <td>
+              <div class="entity-info">
+                <div class="entity-avatar" style="background:linear-gradient(135deg,#059669,#047857)">AG</div>
+                <div>
+                  <div class="entity-name">עמית גולן</div>
+                  <div class="entity-sub">amit.g@gmail.com</div>
+                </div>
+              </div>
+            </td>
+            <td style="font-size:13px">0526667788</td>
+            <td><span class="badge badge-info">לקוח</span></td>
+            <td><span class="badge badge-gray" style="font-size:11px">אופנה</span></td>
+            <td><span style="color:#94a3b8;font-size:13px">-</span></td>
+            <td><span class="badge badge-success">פעיל</span></td>
+            <td style="font-size:12px;color:var(--text-secondary)">20.1.2026</td>
+            <td>
+              <div class="actions-row">
+                <button class="action-btn view" data-tooltip="פרופיל"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg></button>
+                <button class="action-btn edit" data-tooltip="עריכה"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg></button>
+                <button class="action-btn delete" data-tooltip="מחיקה"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button>
+              </div>
+            </td>
+          </tr>
+
+          <tr class="user-row" data-name="תמר פרידמן" data-status="active" data-role="customer">
+            <td>
+              <div class="entity-info">
+                <div class="entity-avatar" style="background:linear-gradient(135deg,#e11d48,#be123c)">TF</div>
+                <div>
+                  <div class="entity-name">תמר פרידמן</div>
+                  <div class="entity-sub">tamar.f@yahoo.com</div>
+                </div>
+              </div>
+            </td>
+            <td style="font-size:13px">0507766554</td>
+            <td><span class="badge badge-info">לקוח</span></td>
+            <td><span class="badge badge-gray" style="font-size:11px">ניחוחות</span></td>
+            <td>
+              <div style="display:flex;align-items:center;gap:4px;font-size:13px;color:var(--secondary)">
+                <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                סוכן גו'ינו
+              </div>
+            </td>
+            <td><span class="badge badge-success">פעיל</span></td>
+            <td style="font-size:12px;color:var(--text-secondary)">12.1.2026</td>
+            <td>
+              <div class="actions-row">
+                <button class="action-btn view" data-tooltip="פרופיל"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg></button>
+                <button class="action-btn edit" data-tooltip="עריכה"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg></button>
+                <button class="action-btn delete" data-tooltip="מחיקה"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button>
+              </div>
+            </td>
+          </tr>
+
+          <!-- User - Admin -->
+          <tr class="user-row" data-name="מרים - מנהלת ראשית" data-status="active" data-role="admin">
+            <td>
+              <div class="entity-info">
+                <div class="entity-avatar" style="background:linear-gradient(135deg,#dc2626,#b91c1c)">MA</div>
+                <div>
+                  <div class="entity-name">מרים - מנהלת ראשית</div>
+                  <div class="entity-sub">m0587009938@gmail.com</div>
+                </div>
+              </div>
+            </td>
+            <td style="font-size:13px">0533752633</td>
+            <td><span class="badge" style="background:#fef2f2;color:#b91c1c">מנהל ראשי</span></td>
+            <td><span style="color:#94a3b8;font-size:13px">פלטפורמה</span></td>
+            <td><span style="color:#94a3b8;font-size:13px">-</span></td>
+            <td><span class="badge badge-success">פעיל</span></td>
+            <td style="font-size:12px;color:var(--text-secondary)">01.12.2025</td>
+            <td>
+              <div class="actions-row">
+                <button class="action-btn view" data-tooltip="פרופיל"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg></button>
+              </div>
+            </td>
+          </tr>
+
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- =================== CATALOG TAB =================== -->
+  <div class="tab-content" id="tab-catalog">
+    <div class="table-container" style="padding:60px 20px;text-align:center">
+      <div class="empty-state">
+        <div class="empty-icon" style="margin:0 auto 16px">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>
+        </div>
+        <p style="font-size:16px;font-weight:600;color:var(--text);margin-bottom:8px">Catalog Manager</p>
+        <p style="font-size:14px;color:var(--text-secondary);margin-bottom:20px">לחץ לפתיחת מנהל הקטלוג בחלון ייעודי</p>
+        <button class="btn btn-primary" onclick="window.open('/_standalone/catalog-manager/index.html','_blank')">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+          פתח Catalog Manager
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div><!-- page-container -->
+
+<script>
+function switchTab(tabName) {
+  // Update tab buttons
+  document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+  event?.target?.closest?.('.tab-btn')?.classList?.add?.('active');
+  // Fallback for programmatic calls
+  if (!event?.target?.closest?.('.tab-btn')) {
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      if (btn.textContent.includes(
+        tabName === 'tenants' ? 'עסקים' : 
+        tabName === 'agents' ? 'סוכנים' :
+        tabName === 'users' ? 'משתמשים' : 'Catalog'
+      )) btn.classList.add('active');
+    });
+  }
+  
+  // Update tab content
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  document.getElementById('tab-' + tabName)?.classList?.add('active');
+  
+  // Update search placeholder
+  const input = document.getElementById('searchInput');
+  if (tabName === 'tenants') input.placeholder = 'חיפוש לפי שם, דומיין, slug...';
+  else if (tabName === 'agents') input.placeholder = 'חיפוש לפי שם סוכן, אימייל, טלפון...';
+  else if (tabName === 'users') input.placeholder = 'חיפוש לפי שם משתמש, אימייל, טלפון...';
+  else input.placeholder = 'חיפוש...';
+}
+
+function filterTable() {
+  const search = document.getElementById('searchInput').value.toLowerCase();
+  const status = document.getElementById('statusFilter').value;
+  
+  // Filter tenants
+  document.querySelectorAll('.tenant-row').forEach(row => {
+    const name = row.dataset.name?.toLowerCase() || '';
+    const rowStatus = row.dataset.status || '';
+    const matchSearch = !search || name.includes(search);
+    const matchStatus = !status || rowStatus === status;
+    row.style.display = (matchSearch && matchStatus) ? '' : 'none';
+  });
+  
+  // Filter agents
+  document.querySelectorAll('.agent-row').forEach(row => {
+    const name = row.dataset.name?.toLowerCase() || '';
+    const rowStatus = row.dataset.status || '';
+    const matchSearch = !search || name.includes(search);
+    const matchStatus = !status || rowStatus === status;
+    row.style.display = (matchSearch && matchStatus) ? '' : 'none';
+  });
+  
+  // Filter users
+  document.querySelectorAll('.user-row').forEach(row => {
+    const name = row.dataset.name?.toLowerCase() || '';
+    const rowStatus = row.dataset.status || '';
+    const matchSearch = !search || name.includes(search);
+    const matchStatus = !status || rowStatus === status;
+    row.style.display = (matchSearch && matchStatus) ? '' : 'none';
+  });
+}
+
+function filterByRole(role, btn) {
+  // Update active chip
+  document.querySelectorAll('.role-chip').forEach(c => c.classList.remove('active'));
+  btn.classList.add('active');
+  
+  // Filter user rows
+  document.querySelectorAll('.user-row').forEach(row => {
+    if (role === 'all') {
+      row.style.display = '';
+    } else {
+      row.style.display = row.dataset.role === role ? '' : 'none';
+    }
+  });
+}
+</script>
+</body>
+</html>

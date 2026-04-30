@@ -1,0 +1,1246 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VIPO - דשבורד מנהל | קונספט 3 - בהיר + סיידבר</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --primary: #1e3a8a;
+    --secondary: #0891b2;
+    --gradient: linear-gradient(135deg, #1e3a8a 0%, #0891b2 100%);
+    --bg: #f0f2f5;
+    --card: #ffffff;
+    --text: #1e293b;
+    --text-secondary: #64748b;
+    --text-muted: #94a3b8;
+    --border: #e2e8f0;
+    --success: #16a34a;
+    --warning: #f59e0b;
+    --danger: #dc2626;
+    --sidebar-bg: linear-gradient(180deg, #1e3a8a 0%, #0f2557 100%);
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+    --shadow-lg: 0 8px 30px rgba(0,0,0,0.12);
+    --radius: 14px;
+  }
+
+  body {
+    font-family: 'Heebo', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    padding-top: 32px;
+  }
+
+  /* ===== SIDEBAR ===== */
+  .sidebar {
+    width: 250px;
+    background: var(--sidebar-bg);
+    position: fixed;
+    top: 32px;
+    right: 0;
+    bottom: 0;
+    z-index: 50;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    box-shadow: -4px 0 20px rgba(30, 58, 138, 0.15);
+  }
+
+  .sidebar-logo {
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .logo-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    font-size: 16px;
+    color: white;
+    backdrop-filter: blur(10px);
+  }
+
+  .logo-text {
+    font-size: 22px;
+    font-weight: 800;
+    color: white;
+    letter-spacing: -0.5px;
+  }
+
+  .sidebar-section {
+    padding: 14px 10px 6px;
+  }
+
+  .sidebar-label {
+    font-size: 10px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.35);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    padding: 0 10px;
+    margin-bottom: 6px;
+  }
+
+  .sidebar-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 12px;
+    border-radius: 10px;
+    color: rgba(255,255,255,0.65);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    transition: all 0.2s;
+    cursor: pointer;
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: right;
+    position: relative;
+  }
+
+  .sidebar-item:hover {
+    background: rgba(255,255,255,0.08);
+    color: white;
+  }
+
+  .sidebar-item.active {
+    background: rgba(255,255,255,0.15);
+    color: white;
+    font-weight: 600;
+  }
+
+  .sidebar-item.active::before {
+    content: '';
+    position: absolute;
+    right: -10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 20px;
+    background: white;
+    border-radius: 2px;
+  }
+
+  .sidebar-item svg {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    opacity: 0.7;
+  }
+
+  .sidebar-item:hover svg,
+  .sidebar-item.active svg {
+    opacity: 1;
+  }
+
+  .sidebar-badge {
+    margin-right: auto;
+    font-size: 10px;
+    font-weight: 700;
+    background: rgba(255,255,255,0.15);
+    color: rgba(255,255,255,0.9);
+    padding: 2px 8px;
+    border-radius: 10px;
+    min-width: 20px;
+    text-align: center;
+  }
+
+  .sidebar-badge.alert {
+    background: rgba(239, 68, 68, 0.3);
+    color: #fca5a5;
+  }
+
+  .sidebar-footer {
+    margin-top: auto;
+    padding: 14px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .sidebar-user {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.06);
+  }
+
+  .sidebar-avatar {
+    width: 34px;
+    height: 34px;
+    border-radius: 9px;
+    background: rgba(255,255,255,0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 14px;
+    color: white;
+  }
+
+  .sidebar-name { font-size: 13px; font-weight: 600; color: white; }
+  .sidebar-role { font-size: 11px; color: rgba(255,255,255,0.45); }
+
+  /* ===== MAIN ===== */
+  .main {
+    flex: 1;
+    margin-right: 250px;
+    padding: 24px 28px;
+    min-height: 100vh;
+  }
+
+  /* ===== TOP BAR ===== */
+  .top-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+  }
+
+  .top-bar h1 {
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--text);
+  }
+
+  .top-bar p {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+
+  .top-actions {
+    display: flex;
+    gap: 10px;
+  }
+
+  .btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 18px;
+    border-radius: 11px;
+    font-family: 'Heebo', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+  }
+
+  .btn svg { width: 16px; height: 16px; }
+
+  .btn-primary {
+    background: var(--gradient);
+    color: white;
+    box-shadow: 0 4px 15px rgba(8, 145, 178, 0.25);
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(8, 145, 178, 0.35);
+  }
+
+  .btn-outline {
+    background: white;
+    color: var(--text-secondary);
+    border: 1.5px solid var(--border);
+  }
+
+  .btn-outline:hover {
+    border-color: var(--secondary);
+    color: var(--secondary);
+  }
+
+  .notif-btn {
+    position: relative;
+    width: 40px;
+    height: 40px;
+    border-radius: 11px;
+    background: white;
+    border: 1.5px solid var(--border);
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .notif-btn:hover { border-color: var(--secondary); color: var(--secondary); }
+  .notif-btn svg { width: 18px; height: 18px; }
+
+  .notif-dot {
+    position: absolute;
+    top: -3px;
+    left: -3px;
+    width: 16px;
+    height: 16px;
+    background: var(--danger);
+    border-radius: 50%;
+    font-size: 9px;
+    font-weight: 700;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--bg);
+  }
+
+  /* ===== STATUS BAR ===== */
+  .status-bar {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 12px 18px;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow-sm);
+    animation: slideUp 0.4s 0.05s ease forwards;
+    opacity: 0;
+  }
+
+  .status-chip {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--text-secondary);
+    font-weight: 500;
+  }
+
+  .status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+  }
+
+  .status-dot.ok { background: var(--success); animation: pulse 2s infinite; }
+  .status-dot.warn { background: var(--warning); }
+
+  .status-sep {
+    width: 1px;
+    height: 16px;
+    background: var(--border);
+  }
+
+  /* ===== KPI ===== */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+
+  .kpi-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s;
+    box-shadow: var(--shadow-sm);
+    animation: slideUp 0.5s ease forwards;
+    opacity: 0;
+  }
+
+  .kpi-card:nth-child(1) { animation-delay: 0.1s; }
+  .kpi-card:nth-child(2) { animation-delay: 0.15s; }
+  .kpi-card:nth-child(3) { animation-delay: 0.2s; }
+  .kpi-card:nth-child(4) { animation-delay: 0.25s; }
+
+  .kpi-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+    border-color: rgba(8, 145, 178, 0.25);
+  }
+
+  .kpi-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: 3px;
+    background: var(--gradient);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .kpi-card:hover::after { opacity: 1; }
+
+  .kpi-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+  }
+
+  .kpi-label {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+
+  .kpi-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .kpi-icon svg { width: 17px; height: 17px; }
+  .kpi-icon.blue { background: rgba(30, 58, 138, 0.08); color: var(--primary); }
+  .kpi-icon.teal { background: rgba(8, 145, 178, 0.08); color: var(--secondary); }
+  .kpi-icon.green { background: rgba(22, 163, 74, 0.08); color: var(--success); }
+  .kpi-icon.purple { background: rgba(124, 58, 237, 0.08); color: #7c3aed; }
+
+  .kpi-value {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--text);
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+
+  .kpi-change {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  .kpi-change.up { color: var(--success); }
+  .kpi-change svg { width: 14px; height: 14px; }
+
+  .kpi-spark {
+    margin-top: 12px;
+    height: 36px;
+  }
+
+  .kpi-spark svg { width: 100%; height: 36px; }
+
+  /* ===== CONTENT GRID ===== */
+  .content-grid {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+
+  .card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+    animation: slideUp 0.5s ease forwards;
+    opacity: 0;
+  }
+
+  .card:nth-child(1) { animation-delay: 0.3s; }
+  .card:nth-child(2) { animation-delay: 0.35s; }
+
+  .card-header {
+    padding: 16px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .card-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .card-title svg { width: 18px; height: 18px; color: var(--secondary); }
+
+  .card-tag {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 20px;
+    background: rgba(8, 145, 178, 0.08);
+    color: var(--secondary);
+  }
+
+  .card-tag.live {
+    background: rgba(22, 163, 74, 0.08);
+    color: var(--success);
+  }
+
+  .card-body { padding: 18px; }
+
+  /* ===== TENANT TABLE ===== */
+  .t-table { width: 100%; border-collapse: collapse; }
+
+  .t-table th {
+    text-align: right;
+    font-size: 11px;
+    color: var(--text-muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--border);
+    letter-spacing: 0.5px;
+  }
+
+  .t-table td {
+    padding: 11px 10px;
+    font-size: 13px;
+    border-bottom: 1px solid #f1f5f9;
+    vertical-align: middle;
+  }
+
+  .t-table tr:hover td { background: #f8fafc; }
+
+  .t-name {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+  }
+
+  .t-logo {
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 12px;
+    color: white;
+  }
+
+  .t-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--success);
+  }
+
+  .t-status .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--success);
+  }
+
+  .t-btn {
+    background: none;
+    border: 1.5px solid var(--border);
+    color: var(--text-secondary);
+    padding: 4px 12px;
+    border-radius: 7px;
+    font-family: 'Heebo', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .t-btn:hover { border-color: var(--secondary); color: var(--secondary); }
+
+  /* ===== ACTIVITY ===== */
+  .act-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid #f1f5f9;
+  }
+
+  .act-item:last-child { border-bottom: none; }
+
+  .act-icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .act-icon svg { width: 14px; height: 14px; }
+  .act-icon.order { background: rgba(30, 58, 138, 0.08); color: var(--primary); }
+  .act-icon.pay { background: rgba(22, 163, 74, 0.08); color: var(--success); }
+  .act-icon.agent { background: rgba(124, 58, 237, 0.08); color: #7c3aed; }
+  .act-icon.warn { background: rgba(245, 158, 11, 0.08); color: var(--warning); }
+
+  .act-text { font-size: 13px; font-weight: 500; color: var(--text); }
+  .act-time { font-size: 11px; color: var(--text-muted); margin-top: 1px; }
+  .act-amount { margin-right: auto; font-size: 14px; font-weight: 700; color: var(--success); white-space: nowrap; }
+
+  /* ===== BOTTOM GRID ===== */
+  .bottom-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .section-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 16px 18px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-title svg { width: 18px; height: 18px; color: var(--secondary); }
+
+  .user-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 18px;
+    border-bottom: 1px solid #f1f5f9;
+    transition: background 0.15s;
+  }
+
+  .user-row:hover { background: #f8fafc; }
+
+  .user-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: var(--gradient);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 700;
+    font-size: 13px;
+    flex-shrink: 0;
+  }
+
+  .user-name { font-size: 13px; font-weight: 600; color: var(--text); }
+  .user-meta { font-size: 11px; color: var(--text-muted); }
+
+  .user-badge {
+    margin-right: auto;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 10px;
+    border-radius: 10px;
+  }
+
+  .user-badge.customer { background: rgba(30, 58, 138, 0.08); color: var(--primary); }
+  .user-badge.agent { background: rgba(124, 58, 237, 0.08); color: #7c3aed; }
+
+  .order-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 18px;
+    border-bottom: 1px solid #f1f5f9;
+    transition: background 0.15s;
+  }
+
+  .order-row:hover { background: #f8fafc; }
+
+  .order-id {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--primary);
+    min-width: 60px;
+  }
+
+  .order-product { font-size: 13px; color: var(--text); flex: 1; }
+  .order-amount { font-size: 13px; font-weight: 700; color: var(--text); }
+
+  .order-status {
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 10px;
+    border-radius: 10px;
+  }
+
+  .order-status.paid { background: rgba(22, 163, 74, 0.08); color: var(--success); }
+  .order-status.pending { background: rgba(245, 158, 11, 0.08); color: var(--warning); }
+
+  /* ===== CHART ===== */
+  .chart-area {
+    height: 200px;
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+    padding: 10px;
+  }
+
+  .chart-col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .chart-bars {
+    width: 100%;
+    display: flex;
+    gap: 3px;
+    align-items: flex-end;
+    height: 160px;
+  }
+
+  .chart-bar {
+    flex: 1;
+    border-radius: 4px 4px 1px 1px;
+    transition: all 0.3s;
+    cursor: pointer;
+    min-width: 14px;
+  }
+
+  .chart-bar:hover { filter: brightness(1.1); transform: scaleY(1.03); transform-origin: bottom; }
+
+  .chart-bar.p { background: var(--gradient); }
+  .chart-bar.s { background: rgba(8, 145, 178, 0.15); }
+
+  .chart-label { font-size: 11px; color: var(--text-muted); font-weight: 500; }
+
+  /* ===== CONTAINER PROGRESS ===== */
+  .container-widget {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+
+  .container-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    animation: slideUp 0.5s 0.38s ease forwards;
+    opacity: 0;
+  }
+
+  .progress-ring { position: relative; width: 90px; height: 90px; flex-shrink: 0; }
+  .progress-ring svg { transform: rotate(-90deg); }
+  .ring-bg { fill: none; stroke: #e2e8f0; stroke-width: 8; }
+  .ring-fill { fill: none; stroke: url(#grad1); stroke-width: 8; stroke-linecap: round; stroke-dasharray: 251; stroke-dashoffset: 100; transition: stroke-dashoffset 1s ease; }
+
+  .ring-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+  }
+
+  .ring-value { font-size: 22px; font-weight: 800; color: var(--text); line-height: 1; }
+  .ring-unit { font-size: 10px; color: var(--text-muted); }
+
+  .container-stats { flex: 1; }
+  .cs-row { display: flex; justify-content: space-between; padding: 6px 0; font-size: 13px; border-bottom: 1px solid #f1f5f9; }
+  .cs-row:last-child { border: none; }
+  .cs-label { color: var(--text-secondary); }
+  .cs-value { font-weight: 700; color: var(--text); }
+
+  .quick-stats-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    box-shadow: var(--shadow-sm);
+    animation: slideUp 0.5s 0.42s ease forwards;
+    opacity: 0;
+  }
+
+  .qs-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .qs-title svg { width: 16px; height: 16px; color: var(--secondary); }
+
+  .qs-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .qs-item {
+    padding: 12px;
+    border-radius: 10px;
+    background: #f8fafc;
+    text-align: center;
+  }
+
+  .qs-num {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--text);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .qs-desc { font-size: 11px; color: var(--text-muted); }
+
+  /* ===== ANIMATIONS ===== */
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 1200px) {
+    .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+    .content-grid { grid-template-columns: 1fr; }
+    .container-widget { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 768px) {
+    .sidebar { display: none; }
+    .main { margin-right: 0; padding: 16px; }
+    .kpi-grid { grid-template-columns: 1fr 1fr; }
+    .bottom-grid { grid-template-columns: 1fr; }
+    .top-bar { flex-direction: column; align-items: flex-start; gap: 12px; }
+    .top-actions { width: 100%; }
+  }
+
+  /* Demo banner */
+  .demo-banner {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 999;
+    background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+    color: #78350f;
+    text-align: center;
+    padding: 8px;
+    font-size: 12px;
+    font-weight: 700;
+  }
+</style>
+</head>
+<body>
+
+<div class="demo-banner">
+  קונספט 3 - שילוב: רקע בהיר + סיידבר כחול | דמו ויזואלי בלבד
+</div>
+
+<!-- ===== SIDEBAR ===== -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-icon">V</div>
+    <span class="logo-text">VIPO</span>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-label">ראשי</div>
+    <a class="sidebar-item active" href="#">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1" stroke-width="1.5"/><rect x="14" y="3" width="7" height="4" rx="1" stroke-width="1.5"/><rect x="3" y="14" width="7" height="7" rx="1" stroke-width="1.5"/><rect x="14" y="10" width="7" height="11" rx="1" stroke-width="1.5"/></svg>
+      דשבורד
+    </a>
+    <a class="sidebar-item" href="#">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+      מוניטור
+      <span class="sidebar-badge alert">3</span>
+    </a>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-label">ניהול</div>
+    <a class="sidebar-item" href="#">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+      משתמשים
+      <span class="sidebar-badge">24</span>
+    </a>
+    <a class="sidebar-item" href="#">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+      קטלוג ומכירות
+      <span class="sidebar-badge">25</span>
+    </a>
+    <a class="sidebar-item" href="#">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      כספים ודוחות
+      <span class="sidebar-badge">3</span>
+    </a>
+    <a class="sidebar-item" href="#">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+      CRM
+      <span class="sidebar-badge">156</span>
+    </a>
+    <a class="sidebar-item" href="#">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+      ניהול חנויות
+      <span class="sidebar-badge">6</span>
+    </a>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-label">מערכת</div>
+    <a class="sidebar-item" href="#">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3" stroke-width="1.5"/></svg>
+      הגדרות
+    </a>
+    <a class="sidebar-item" href="#">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+      חיבורים
+    </a>
+    <a class="sidebar-item" href="#">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+      אבטחה
+    </a>
+    <a class="sidebar-item" href="#">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4"/></svg>
+      גיבויים
+    </a>
+    <a class="sidebar-item" href="#">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+      דוחות
+    </a>
+  </div>
+
+  <div class="sidebar-footer">
+    <div class="sidebar-user">
+      <div class="sidebar-avatar">M</div>
+      <div>
+        <div class="sidebar-name">מנהל ראשי</div>
+        <div class="sidebar-role">Super Admin</div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- ===== MAIN ===== -->
+<main class="main">
+
+  <!-- Top Bar -->
+  <div class="top-bar">
+    <div>
+      <h1>דשבורד מנהל</h1>
+      <p>סקירה כללית | עדכון אחרון: היום, 09:45</p>
+    </div>
+    <div class="top-actions">
+      <button class="btn btn-primary">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+        הוסף מוצר
+      </button>
+      <button class="btn btn-outline">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+        יצוא
+      </button>
+      <button class="notif-btn">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+        <span class="notif-dot">9</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Status Bar -->
+  <div class="status-bar">
+    <div class="status-chip"><span class="status-dot ok"></span>MongoDB</div>
+    <div class="status-sep"></div>
+    <div class="status-chip"><span class="status-dot ok"></span>PayPlus</div>
+    <div class="status-sep"></div>
+    <div class="status-chip"><span class="status-dot ok"></span>Priority ERP</div>
+    <div class="status-sep"></div>
+    <div class="status-chip"><span class="status-dot ok"></span>WhatsApp</div>
+    <div class="status-sep"></div>
+    <div class="status-chip"><span class="status-dot ok"></span>Cloudinary</div>
+    <div class="status-chip" style="margin-right: auto; color: var(--success); font-weight: 700;">Uptime 99.9%</div>
+  </div>
+
+  <!-- KPI Cards -->
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-top">
+        <span class="kpi-label">הכנסות החודש</span>
+        <div class="kpi-icon blue"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
+      </div>
+      <div class="kpi-value">&#8362;47,850</div>
+      <div class="kpi-change up">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+        +12.5% מהחודש שעבר
+      </div>
+      <div class="kpi-spark">
+        <svg viewBox="0 0 200 36" preserveAspectRatio="none">
+          <defs><linearGradient id="sg1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1e3a8a" stop-opacity="0.25"/><stop offset="100%" stop-color="#1e3a8a" stop-opacity="0"/></linearGradient></defs>
+          <path d="M0 30 L30 24 L60 26 L90 18 L120 20 L150 14 L180 10 L200 6 L200 36 L0 36Z" fill="url(#sg1)"/>
+          <path d="M0 30 L30 24 L60 26 L90 18 L120 20 L150 14 L180 10 L200 6" fill="none" stroke="#1e3a8a" stroke-width="2"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="kpi-card">
+      <div class="kpi-top">
+        <span class="kpi-label">הזמנות פעילות</span>
+        <div class="kpi-icon teal"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg></div>
+      </div>
+      <div class="kpi-value">31</div>
+      <div class="kpi-change up">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+        +8 חדשות היום
+      </div>
+      <div class="kpi-spark">
+        <svg viewBox="0 0 200 36" preserveAspectRatio="none">
+          <defs><linearGradient id="sg2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0891b2" stop-opacity="0.25"/><stop offset="100%" stop-color="#0891b2" stop-opacity="0"/></linearGradient></defs>
+          <path d="M0 28 L30 22 L60 25 L90 16 L120 18 L150 12 L180 14 L200 8 L200 36 L0 36Z" fill="url(#sg2)"/>
+          <path d="M0 28 L30 22 L60 25 L90 16 L120 18 L150 12 L180 14 L200 8" fill="none" stroke="#0891b2" stroke-width="2"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="kpi-card">
+      <div class="kpi-top">
+        <span class="kpi-label">סוכנים פעילים</span>
+        <div class="kpi-icon green"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg></div>
+      </div>
+      <div class="kpi-value">18</div>
+      <div class="kpi-change up">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+        3 אונליין עכשיו
+      </div>
+    </div>
+
+    <div class="kpi-card">
+      <div class="kpi-top">
+        <span class="kpi-label">עמלת פלטפורמה</span>
+        <div class="kpi-icon purple"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 8h6m-5 0a3 3 0 110 6H9l3 3m-3-6h6m6 1a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
+      </div>
+      <div class="kpi-value">&#8362;2,392</div>
+      <div class="kpi-change" style="color: var(--text-muted);">5% מהמכירות</div>
+    </div>
+  </div>
+
+  <!-- Container + Quick Stats -->
+  <div class="container-widget">
+    <div class="container-card">
+      <div class="progress-ring">
+        <svg width="90" height="90" viewBox="0 0 90 90">
+          <defs><linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#1e3a8a"/><stop offset="100%" stop-color="#0891b2"/></linearGradient></defs>
+          <circle class="ring-bg" cx="45" cy="45" r="40"/>
+          <circle class="ring-fill" cx="45" cy="45" r="40"/>
+        </svg>
+        <div class="ring-center">
+          <div class="ring-value">60%</div>
+          <div class="ring-unit">CBM</div>
+        </div>
+      </div>
+      <div class="container-stats">
+        <div class="cs-row"><span class="cs-label">קיבולת מכולה</span><span class="cs-value">68 CBM</span></div>
+        <div class="cs-row"><span class="cs-label">מילוי נוכחי</span><span class="cs-value">40.8 CBM</span></div>
+        <div class="cs-row"><span class="cs-label">הזמנות ששולמו</span><span class="cs-value">24</span></div>
+        <div class="cs-row"><span class="cs-label">ממתינות לתשלום</span><span class="cs-value" style="color:var(--warning)">7</span></div>
+      </div>
+    </div>
+    <div class="quick-stats-card">
+      <div class="qs-title">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+        סיכום מהיר
+      </div>
+      <div class="qs-grid">
+        <div class="qs-item"><div class="qs-num">6</div><div class="qs-desc">חנויות פעילות</div></div>
+        <div class="qs-item"><div class="qs-num">25</div><div class="qs-desc">מוצרים</div></div>
+        <div class="qs-item"><div class="qs-num" style="color:var(--success)">3</div><div class="qs-desc">בקשות משיכה</div></div>
+        <div class="qs-item"><div class="qs-num">156</div><div class="qs-desc">לקוחות</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Content Grid: Tenants + Activity -->
+  <div class="content-grid">
+    <div class="card" style="animation-delay: 0.45s;">
+      <div class="card-header">
+        <span class="card-title">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+          סקירת חנויות
+        </span>
+        <span class="card-tag">6 חנויות</span>
+      </div>
+      <div class="card-body" style="padding: 0;">
+        <table class="t-table">
+          <thead><tr><th>חנות</th><th>מכירות</th><th>סוכנים</th><th>סטטוס</th><th></th></tr></thead>
+          <tbody>
+            <tr>
+              <td><div class="t-name"><div class="t-logo" style="background:var(--gradient)">V</div>VIPO</div></td>
+              <td style="font-weight:600">&#8362;18,200</td>
+              <td>7</td>
+              <td><span class="t-status"><span class="dot"></span>פעיל</span></td>
+              <td><button class="t-btn">כניסה</button></td>
+            </tr>
+            <tr>
+              <td><div class="t-name"><div class="t-logo" style="background:linear-gradient(135deg,#7c3aed,#a78bfa)">D</div>דקור פלוס</div></td>
+              <td style="font-weight:600">&#8362;12,400</td>
+              <td>4</td>
+              <td><span class="t-status"><span class="dot"></span>פעיל</span></td>
+              <td><button class="t-btn">כניסה</button></td>
+            </tr>
+            <tr>
+              <td><div class="t-name"><div class="t-logo" style="background:linear-gradient(135deg,#059669,#34d399)">S</div>סטיל הום</div></td>
+              <td style="font-weight:600">&#8362;9,850</td>
+              <td>3</td>
+              <td><span class="t-status"><span class="dot"></span>פעיל</span></td>
+              <td><button class="t-btn">כניסה</button></td>
+            </tr>
+            <tr>
+              <td><div class="t-name"><div class="t-logo" style="background:linear-gradient(135deg,#dc2626,#f87171)">M</div>מגה סטור</div></td>
+              <td style="font-weight:600">&#8362;7,400</td>
+              <td>4</td>
+              <td><span class="t-status"><span class="dot"></span>פעיל</span></td>
+              <td><button class="t-btn">כניסה</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card" style="animation-delay: 0.5s;">
+      <div class="card-header">
+        <span class="card-title">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+          פעילות אחרונה
+        </span>
+        <span class="card-tag live">LIVE</span>
+      </div>
+      <div class="card-body">
+        <div class="act-item">
+          <div class="act-icon order"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg></div>
+          <div><div class="act-text">הזמנה #1247 - VIPO</div><div class="act-time">לפני 3 דקות</div></div>
+          <span class="act-amount">&#8362;1,250</span>
+        </div>
+        <div class="act-item">
+          <div class="act-icon pay"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
+          <div><div class="act-text">תשלום התקבל</div><div class="act-time">לפני 15 דקות</div></div>
+          <span class="act-amount">&#8362;3,400</span>
+        </div>
+        <div class="act-item">
+          <div class="act-icon agent"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/></svg></div>
+          <div><div class="act-text">סוכן חדש - יוסי כהן</div><div class="act-time">לפני 32 דקות</div></div>
+        </div>
+        <div class="act-item">
+          <div class="act-icon warn"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg></div>
+          <div><div class="act-text">בקשת משיכה - דני לוי</div><div class="act-time">לפני שעה</div></div>
+          <span class="act-amount" style="color:var(--warning)">&#8362;850</span>
+        </div>
+        <div class="act-item">
+          <div class="act-icon order"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg></div>
+          <div><div class="act-text">הזמנה #1246 - דקור</div><div class="act-time">לפני שעתיים</div></div>
+          <span class="act-amount">&#8362;890</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom: Users + Orders -->
+  <div class="bottom-grid">
+    <div class="card" style="animation-delay: 0.55s;">
+      <div class="section-title">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/></svg>
+        משתמשים חדשים
+      </div>
+      <div class="user-row">
+        <div class="user-avatar">ד</div>
+        <div><div class="user-name">דנה כהן</div><div class="user-meta">היום, 09:32</div></div>
+        <span class="user-badge customer">לקוח</span>
+      </div>
+      <div class="user-row">
+        <div class="user-avatar" style="background: linear-gradient(135deg, #7c3aed, #a78bfa);">י</div>
+        <div><div class="user-name">יוסי לוי</div><div class="user-meta">היום, 08:15</div></div>
+        <span class="user-badge agent">סוכן</span>
+      </div>
+      <div class="user-row">
+        <div class="user-avatar">מ</div>
+        <div><div class="user-name">מיכל אברהם</div><div class="user-meta">אתמול, 22:44</div></div>
+        <span class="user-badge customer">לקוח</span>
+      </div>
+      <div class="user-row">
+        <div class="user-avatar" style="background: linear-gradient(135deg, #059669, #34d399);">ר</div>
+        <div><div class="user-name">רונית שמש</div><div class="user-meta">אתמול, 18:30</div></div>
+        <span class="user-badge customer">לקוח</span>
+      </div>
+    </div>
+
+    <div class="card" style="animation-delay: 0.6s;">
+      <div class="section-title">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+        הזמנות אחרונות
+      </div>
+      <div class="order-row">
+        <span class="order-id">#1247</span>
+        <span class="order-product">שולחן אוכל מעץ אלון</span>
+        <span class="order-amount">&#8362;1,250</span>
+        <span class="order-status paid">שולם</span>
+      </div>
+      <div class="order-row">
+        <span class="order-id">#1246</span>
+        <span class="order-product">ספה פינתית דגם מילאנו</span>
+        <span class="order-amount">&#8362;3,400</span>
+        <span class="order-status paid">שולם</span>
+      </div>
+      <div class="order-row">
+        <span class="order-id">#1245</span>
+        <span class="order-product">כורסא מעוצבת</span>
+        <span class="order-amount">&#8362;890</span>
+        <span class="order-status pending">ממתין</span>
+      </div>
+      <div class="order-row">
+        <span class="order-id">#1244</span>
+        <span class="order-product">מנורת רצפה LED</span>
+        <span class="order-amount">&#8362;450</span>
+        <span class="order-status paid">שולם</span>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+</body>
+</html>

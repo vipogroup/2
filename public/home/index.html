@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="קונים חכם - פלטפורמת רכישה קבוצתית חכמה וחסכונית">
+    <title>קונים חכם | רכישה קבוצתית חכמה</title>
+    <link rel="stylesheet" href="/home/css/style.css">
+    <link rel="stylesheet" href="/home/css/responsive.css">
+    <link rel="stylesheet" href="/home/css/accessibility.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Preconnect to external resources -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=Poppins:wght@300;400;500;600;700;900&family=Heebo:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <!-- Favicon -->
+    <link rel="icon" href="/home/images/favicon.ico" type="image/x-icon">
+    <!-- PWA Support -->
+    <link rel="manifest" href="/home/manifest.json">
+    <meta name="theme-color" content="#3b82f6">
+</head>
+<body>
+    <!-- קישור דילוג לתוכן הראשי - נגישות -->
+    <a href="#main-content" class="skip-to-content">דלג לתוכן הראשי</a>
+    
+    <!-- Navbar - תמיד דבוק עליון -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="menu-toggle" id="mobile-menu" aria-label="תפריט ניווט" aria-expanded="false" role="button" tabindex="0">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+            <ul class="nav-menu">
+                <button class="close-menu" id="close-menu" aria-label="סגור תפריט">
+                    <i class="fas fa-times"></i>
+                </button>
+                <li><a href="https://vipocatalog.github.io/LTD/?lang=he" class="nav-link" target="_blank" data-tooltip="דף הבית"><i class="fas fa-home"></i><span class="nav-text">דף הבית</span></a></li>
+                <li><a href="#how-it-works" class="nav-link" data-tooltip="איך זה עובד?"><i class="fas fa-question-circle"></i><span class="nav-text">איך זה עובד?</span></a></li>
+                <li><a href="#about-vipo" class="nav-link" data-tooltip="מי אנחנו"><i class="fas fa-users"></i><span class="nav-text">מי אנחנו</span></a></li>
+                <li><a href="tel:+972533752633" class="nav-link phone-link" data-tooltip="צור קשר"><i class="fas fa-phone"></i><span class="nav-text">צור קשר</span></a></li>
+                
+                <!-- תחתית התפריט - רק במובייל -->
+                <div class="menu-footer">
+                    <div class="menu-footer-header">
+                        <h3>צור קשר</h3>
+                        <div class="decorative-line"></div>
+                    </div>
+                    
+                    <div class="menu-contact-info">
+                        <a href="tel:+972533752633" class="menu-contact-item contact-phone-link">
+                            <i class="fas fa-phone"></i>
+                            <span>053-375-2633</span>
+                        </a>
+                        <a href="mailto:vipogroup1@gmail.com" class="menu-contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <span>vipogroup1@gmail.com</span>
+                        </a>
+                        <a href="https://wa.me/972533752633" class="menu-contact-item" target="_blank">
+                            <i class="fab fa-whatsapp"></i>
+                            <span>שלח הודעה ב-WhatsApp</span>
+                        </a>
+                    </div>
+                    
+                    <a href="https://maps.google.com/?q=Beer+Sheva+Israel" target="_blank" class="menu-map-icon">
+                        <i class="fas fa-map-marked-alt"></i>
+                    </a>
+                    
+                    <div class="menu-social">
+                        <a href="https://maps.google.com/?q=Beer+Sheva+Israel" target="_blank" class="social-icon" aria-label="Location"><i class="fas fa-map-marker-alt"></i></a>
+                        <a href="#" class="social-icon" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-icon" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-icon" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                    
+                    <div class="menu-logo">
+                        <span class="vipo-text">VIPO</span>
+                        <span class="powered-text">Powered by Excellence</span>
+                    </div>
+                    
+                    <div class="menu-copyright">
+                        <p>© 2025 VIPO Group</p>
+                    </div>
+                </div>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="main-content" class="hero reveal-on-scroll">
+        <div class="container">
+            <div class="hero-content">
+                <h1><span class="word">קונים</span> <span class="word">חכם,</span><br><span class="word">חוסכים</span> <span class="word">יותר</span></h1>
+                <p class="hero-subtitle">רכישה קבוצתית חכמה במחירים שלא תאמינו</p>
+                <div class="cta-buttons">
+                    <a href="/products" class="btn btn-primary magnetic" id="magneticBtn" target="_blank">למוצרים שזמינים עכשיו</a>
+                    <a href="#how-it-works" class="btn btn-secondary">איך זה עובד?</a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Hot Products Slider -->
+        <div class="hot-products-slider" role="region" aria-label="מוצרים חמים">
+            <h2>המוצרים החמים שלנו</h2>
+            <div class="products-container">
+                <a href="/products" target="_blank" class="product-card-link">
+                    <div class="product-card reveal-on-scroll">
+                        <div class="product-image skeleton-loading">
+                            <img data-src="/home/images/תמונות חדשות/גלשן חשמלי.jpg" alt="גלשן חשמלי" class="lazy-load">
+                        </div>
+                        <div class="product-info">
+                            <h3>גלשן חשמלי</h3>
+                            <p class="price">₪3,200</p>
+                        </div>
+                        <span class="discount-badge">חיסכון של עד ₪1,500</span>
+                    </div>
+                </a>
+                <a href="/products" target="_blank" class="product-card-link">
+                    <div class="product-card reveal-on-scroll">
+                        <div class="product-image skeleton-loading">
+                            <img data-src="/home/images/תמונות חדשות/massage.jpg" alt="כורסת עיסוי" class="lazy-load">
+                        </div>
+                        <div class="product-info">
+                            <h3>כורסת עיסוי</h3>
+                            <p class="price">₪1,150</p>
+                        </div>
+                        <span class="discount-badge">חיסכון של עד ₪700</span>
+                    </div>
+                </a>
+                <a href="/products" target="_blank" class="product-card-link">
+                    <div class="product-card reveal-on-scroll">
+                        <div class="product-image skeleton-loading">
+                            <img data-src="/home/images/תמונות חדשות/מיקסר.jpg" alt="מיקסר ביתי" class="lazy-load">
+                        </div>
+                        <div class="product-info">
+                            <h3>מיקסר ביתי</h3>
+                            <p class="price">₪1,800</p>
+                        </div>
+                        <span class="discount-badge">חיסכון של עד ₪900</span>
+                    </div>
+                </a>
+                <a href="/products" target="_blank" class="product-card-link">
+                    <div class="product-card reveal-on-scroll">
+                        <div class="product-image skeleton-loading">
+                            <img data-src="/home/images/תמונות חדשות/שואב אבק.jpg" alt="שואב אבק רובוטי" class="lazy-load">
+                        </div>
+                        <div class="product-info">
+                            <h3>שואב אבק רובוטי</h3>
+                            <p class="price">₪999</p>
+                        </div>
+                        <span class="discount-badge">חיסכון של עד ₪400</span>
+                    </div>
+                </a>
+                <a href="/products" target="_blank" class="product-card-link">
+                    <div class="product-card reveal-on-scroll">
+                        <div class="product-image skeleton-loading">
+                            <img data-src="/home/images/1.jpg" alt="מוצר נוסף" class="lazy-load">
+                        </div>
+                        <div class="product-info">
+                            <h3>מוצר נוסף</h3>
+                            <p class="price">₪1,299</p>
+                        </div>
+                        <span class="discount-badge">חיסכון של עד ₪500</span>
+                    </div>
+                </a>
+            </div>
+            <!-- Scroll Arrow -->
+            <div class="scroll-arrow">
+                <i class="fas fa-chevron-down"></i>
+            </div>
+        </div>
+    </section>
+
+    <!-- Video Section -->
+    <section id="video-section" class="video-section reveal-on-scroll">
+        <div class="container">
+            <div class="video-container" id="videoContainer" aria-label="סרטון הסבר על רכישה קבוצתית">
+                <div class="video-embed">
+                    <video width="100%" height="auto" controls preload="metadata" poster="/home/images/1.jpg">
+                        
+                        <source src="/home/mp4/explainer.mp4" type="video/mp4">
+                        הדפדפן שלך לא תומך בתגית וידאו.
+                    </video>
+                </div>
+                <p class="video-caption">צפו: מהי רכישה קבוצתית וכיצד היא חוסכת לכם כסף</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section id="how-it-works" class="how-it-works reveal-on-scroll">
+        <div class="container">
+            <h2 class="section-title">איך זה עובד?</h2>
+            <div class="steps-container">
+                <div class="step reveal-on-scroll">
+                    <div class="step-icon floating-icon">
+                        <i class="fas fa-shopping-cart"></i>
+                    </div>
+                    <div class="step-content">
+                        <h3>בחירת מוצר</h3>
+                        <p>בוחרים את המוצר שמעניין אתכם מהמגוון שלנו</p>
+                    </div>
+                </div>
+                <div class="step reveal-on-scroll">
+                    <div class="step-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="step-content">
+                        <h3>הצטרפות לקבוצה</h3>
+                        <p>מצטרפים לקבוצת הרכישה ללא כל התחייבות</p>
+                    </div>
+                </div>
+                <div class="step reveal-on-scroll">
+                    <div class="step-icon">
+                        <i class="fas fa-share-alt"></i>
+                    </div>
+                    <div class="step-content">
+                        <h3>שיתוף</h3>
+                        <p>משתפים חברים ומשפחה כדי להגדיל את הקבוצה</p>
+                    </div>
+                </div>
+                <div class="step reveal-on-scroll">
+                    <div class="step-icon">
+                        <i class="fas fa-arrow-down"></i>
+                    </div>
+                    <div class="step-content">
+                        <h3>המחיר יורד</h3>
+                        <p>ככל שיותר אנשים מצטרפים, המחיר יורד לכולם</p>
+                    </div>
+                </div>
+                <div class="step reveal-on-scroll">
+                    <div class="step-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="step-content">
+                        <h3>סגירת קבוצה</h3>
+                        <p>בסיום ההרשמה מקבלים הודעה עם המחיר הסופי</p>
+                    </div>
+                </div>
+                <div class="step reveal-on-scroll">
+                    <div class="step-icon">
+                        <i class="fas fa-truck"></i>
+                    </div>
+                    <div class="step-content">
+                        <h3>תשלום ומשלוח</h3>
+                        <p>משלמים רק אם מרוצים מהמחיר ומקבלים את המוצר הביתה</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Price Table Section -->
+    <section id="price-table" class="price-table reveal-on-scroll">
+        <div class="container">
+            <h2 class="section-title">המחיר יורד לפי כמות</h2>
+            <div class="price-table-container">
+                <div class="price-row">
+                    <div class="participants">1-9 משתתפים</div>
+                    <div class="price">₪1,850</div>
+                </div>
+                <div class="price-row">
+                    <div class="participants">10-19 משתתפים</div>
+                    <div class="price">₪1,600</div>
+                </div>
+                <div class="price-row">
+                    <div class="participants">20-39 משתתפים</div>
+                    <div class="price">₪1,350</div>
+                </div>
+                <div class="price-row highlight">
+                    <div class="participants">40+ משתתפים</div>
+                    <div class="price">₪1,150</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- No Commitment Section -->
+    <section id="no-commitment" class="no-commitment reveal-on-scroll">
+        <div class="container">
+            <div class="info-box reveal-on-scroll delay-1">
+                <div class="info-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h2>אין התחייבות</h2>
+                <p>מצטרפים בלי לשלם; רק בסגירת הקבוצה משלמים; אם לא – אין חיוב.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Referral Section -->
+    <section id="referral" class="referral reveal-on-scroll">
+        <div class="container">
+            <h2 class="section-title">חבר מביא חבר</h2>
+            <div class="referral-content">
+                <div class="referral-info">
+                    <h3>שיתפת – הרווחת</h3>
+                    <p>קבלו תגמול כספי על כל רכישה שמתבצעת באמצעות קוד הקופון האישי שלכם – ללא צורך לקנות בעצמכם.</p>
+                </div>
+                <button type="button"
+                        id="referralInfoToggle"
+                        class="btn referral-info-toggle"
+                        aria-expanded="false"
+                        aria-controls="referral-info-panel">
+                    משתפים חברים – ומרוויחים בלי לקנות
+                </button>
+                <div id="referral-info-panel"
+                     class="referral-info-panel"
+                     role="region"
+                     aria-hidden="true"
+                     aria-labelledby="referralInfoToggle">
+                    <h4>איך מרוויחים כסף בלי לרכוש בעצמכם?</h4>
+                    <ol class="referral-steps">
+                        <li>נרשמים בחינם ומקבלים אזור אישי + קוד קופון ייחודי לכל מוצר.</li>
+                        <li>משתפים את קוד הקופון לחברים, משפחה או לקבוצות.</li>
+                        <li>בכל פעם שמישהו מזמין ומשתמש בקוד שלכם — אתם מקבלים כסף אוטומטית.</li>
+                    </ol>
+                    <hr class="referral-divider">
+                    <p class="referral-summary">אין התחייבות. אין צורך לקנות. פשוט נותנים קוד – ומרוויחים.</p>
+                    <a href="#referral-link" class="btn btn-primary referral-panel-cta">פתחו קוד קופון אישי</a>
+                </div>
+                <div class="referral-link-box">
+                    <label for="referral-link">קבל קוד קופון אישי:</label>
+                    <div class="copy-link-container">
+                        <input type="text" id="referral-link" value="VIPO-123456" readonly>
+                        <button id="copy-link-btn" class="btn btn-copy" aria-label="העתק קוד קופון אישי">
+                            <i class="fas fa-ticket-alt"></i>
+                        </button>
+                    </div>
+                    <div class="copy-tooltip">לחצו כדי להעתיק את הקוד</div>
+                </div>
+                <div class="referral-meter">
+                    <div class="meter-info">
+                        <span id="friends-count">0</span> חברים
+                        <span class="separator">|</span>
+                        <span id="earnings">0</span> ₪
+                    </div>
+                    <div class="meter-bar">
+                        <div class="meter-progress" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Target Audience Section -->
+    <section id="target-audience" class="target-audience reveal-on-scroll">
+        <div class="container">
+            <h2 class="section-title">למי זה מתאים</h2>
+            <div class="audience-grid">
+                <div class="audience-card reveal-on-scroll" onclick="this.classList.toggle('active')">
+                    <div class="audience-icon">
+                        <i class="fas fa-home"></i>
+                    </div>
+                    <h3>משפחות</h3>
+                    <p class="audience-description">חיסכון משמעותי במוצרים לבית ולמשפחה</p>
+                </div>
+                <div class="audience-card" onclick="this.classList.toggle('active')">
+                    <div class="audience-icon">
+                        <i class="fas fa-store"></i>
+                    </div>
+                    <h3>עסקים קטנים</h3>
+                    <p class="audience-description">ציוד משרדי ומוצרים לעסק במחירים מוזלים</p>
+                </div>
+                <div class="audience-card" onclick="this.classList.toggle('active')">
+                    <div class="audience-icon">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <h3>יזמים</h3>
+                    <p class="audience-description">הזדמנות לרכישת מוצרים איכותיים בעלות נמוכה</p>
+                </div>
+                <div class="audience-card" onclick="this.classList.toggle('active')">
+                    <div class="audience-icon">
+                        <i class="fas fa-building"></i>
+                    </div>
+                    <h3>מוסדות</h3>
+                    <p class="audience-description">פתרונות רכש מרוכז למוסדות וארגונים</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="faq reveal-on-scroll">
+        <div class="container">
+            <h2 class="section-title">שאלות נפוצות</h2>
+            <div class="faq-timeline">
+                <div class="faq-item reveal-on-scroll">
+                    <div class="faq-number">01</div>
+                    <div class="faq-card">
+                        <button class="faq-question">
+                            האם יש התחייבות כספית?
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>לא, אין שום התחייבות כספית. התשלום רק לאחר סגירת הקבוצה ורק אם אתם מעוניינים.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-number">02</div>
+                    <div class="faq-card">
+                        <button class="faq-question">
+                            איך עובד "חבר מביא חבר"?
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>כל משתמש מקבל קישור אישי. כאשר חבר מזמין דרך הקישור שלכם, אתם מקבלים תגמול כספי בהתאם לעסקה – ללא צורך לרכוש בעצמכם.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-number">03</div>
+                    <div class="faq-card">
+                        <button class="faq-question">
+                            מה אם לא מצטרפים מספיק אנשים?
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>נמשיך לחכות או נציע לכם לרכוש במחיר הנוכחי. אתם לא מחויבים לרכוש.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-number">04</div>
+                    <div class="faq-card">
+                        <button class="faq-question">
+                            כיצד מתבצע המשלוח?
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>משלוח ישירות לכתובת שלכם. זמן אספקה: 7-14 ימי עסקים. עלות כלולה במחיר.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-number">05</div>
+                    <div class="faq-card">
+                        <button class="faq-question">
+                            האם יש אחריות על המוצרים?
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>כן, כל המוצרים עם אחריות מלאה של היבואן הרשמי בישראל.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="testimonials">
+        <div class="container">
+            <h2 class="section-title">לקוחות מספרים</h2>
+            <div class="testimonials-slider-wrapper">
+                <div class="testimonials-slider">
+                    <div class="testimonial-slide active">
+                        <div class="testimonial-compact">
+                            <div class="testimonial-avatar">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="testimonial-content">
+                                <div class="rating">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <p class="testimonial-text">"חסכתי 700 ₪ על מכונת כביסה!"</p>
+                                <div class="testimonial-author">
+                                    <strong>מיכל כהן</strong> • <span>תל אביב</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="testimonial-slide">
+                        <div class="testimonial-compact">
+                            <div class="testimonial-avatar">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="testimonial-content">
+                                <div class="rating">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <p class="testimonial-text">"קיבלתי 300 ₪ מהפניות. מדהים!"</p>
+                                <div class="testimonial-author">
+                                    <strong>יוסי לוי</strong> • <span>חיפה</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="testimonial-slide">
+                        <div class="testimonial-compact">
+                            <div class="testimonial-avatar">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="testimonial-content">
+                                <div class="rating">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <p class="testimonial-text">"חסכתי אלפי שקלים. שירות מעולה!"</p>
+                                <div class="testimonial-author">
+                                    <strong>דני אברהם</strong> • <span>ירושלים</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-dots">
+                    <span class="testimonial-dot active" data-slide="0"></span>
+                    <span class="testimonial-dot" data-slide="1"></span>
+                    <span class="testimonial-dot" data-slide="2"></span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About VIPO Section -->
+    <section id="about-vipo" class="about-vipo">
+        <div class="container">
+            <h2 class="section-title">מי אנחנו</h2>
+            <div class="about-content">
+                <p class="about-intro">
+                    VIPO Group מובילה את תחום הרכישה הקבוצתית בישראל מאז 2018. אנו מחברים בין אלפי
+                    לקוחות פרטיים ועסקיים לספקים איכותיים בארץ ובעולם, מקצרים תהליכים ומוזילים עלויות בצורה חכמה,
+                    שקופה ומהירה – עד שהמוצר מגיע אליכם הביתה.
+                </p>
+
+                <div class="about-stats">
+                    <div class="stat-item">
+                        <i class="fas fa-user-check"></i>
+                        <div>
+                            <span class="stat-number">+9,500</span>
+                            <span class="stat-label">לקוחות מרוצים</span>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <i class="fas fa-calendar"></i>
+                        <div>
+                            <span class="stat-number">2018</span>
+                            <span class="stat-label">שנת הקמה</span>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <i class="fas fa-globe"></i>
+                        <div>
+                            <span class="stat-number">ישראל + סין</span>
+                            <span class="stat-label">נוכחות בינלאומית</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Wave Divider -->
+        <div class="wave-divider">
+            <svg viewBox="0 0 1200 120" preserveAspectRatio="none">
+                <defs>
+                    <linearGradient id="waveGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" style="stop-color:#1e3a8a;stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#0891b2;stop-opacity:1" />
+                    </linearGradient>
+                </defs>
+                <path d="M0,0 C150,80 350,0 600,40 C850,80 1050,0 1200,40 L1200,120 L0,120 Z" fill="url(#waveGradient)"></path>
+            </svg>
+        </div>
+    </section>
+
+    <!-- Footer & Contact Section -->
+    <footer id="contact" class="footer">
+        <div class="container">
+            <div class="footer-main">
+                <div class="footer-brand-section">
+                    <h2 class="footer-brand">קונים חכם</h2>
+                    <p class="footer-tagline">רכישה קבוצתית חכמה וחסכונית</p>
+                </div>
+                
+                <div class="footer-contact-grid">
+                    <a href="tel:+972533752633" class="footer-contact-item">
+                        <i class="fas fa-phone"></i>
+                        <span>053-375-2633</span>
+                    </a>
+                    <a href="mailto:vipogroup1@gmail.com" class="footer-contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <span>vipogroup1@gmail.com</span>
+                    </a>
+                    <div class="footer-contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>ז'בוטינסקי 5, באר יעקב</span>
+                    </div>
+                </div>
+                
+                <div class="footer-social">
+                    <a href="#" aria-label="פייסבוק"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://www.instagram.com/vipoconnect?igsh=MWdpdTZlbTMxMnNxcw%3D%3D&utm_source=qr" target="_blank" aria-label="אינסטגרם"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="טוויטר"><i class="fab fa-twitter"></i></a>
+                    <a href="#" aria-label="לינקדאין"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 קונים חכם</p>
+                <div class="footer-links">
+                    <a href="#">תנאי שימוש</a>
+                    <a href="#">מדיניות פרטיות</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- WhatsApp Button -->
+    <a href="https://chat.whatsapp.com/KP5UIdBHiKdGmOdyWeJySa?mode=ac_t" class="whatsapp-button" aria-label="צור קשר בוואטסאפ" target="_blank">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <!-- Support Bot (placeholder for external script) -->
+    <div id="support-bot-container"></div>
+
+    <!-- Scripts -->
+    <script src="/home/js/main.js"></script>
+    <script src="/home/js/slider.js"></script>
+    <script src="/home/js/lazy-load.js"></script>
+    <script src="/home/js/register-sw.js"></script>
+    
+    <!-- Analytics (commented out for now) -->
+    <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-XXXXXXXXXX');
+    </script> -->
+</body>
+</html>

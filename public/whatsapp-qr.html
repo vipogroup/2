@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>סריקת QR - וואטסאפ</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #1e3a8a 0%, #0891b2 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .container {
+      background: white;
+      border-radius: 20px;
+      padding: 40px;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      max-width: 400px;
+    }
+    h1 {
+      color: #1e3a8a;
+      margin-bottom: 10px;
+    }
+    p {
+      color: #666;
+      margin-bottom: 20px;
+    }
+    #qr-container {
+      margin: 20px 0;
+    }
+    #qr-image {
+      max-width: 300px;
+      border-radius: 10px;
+    }
+    .status {
+      padding: 10px 20px;
+      border-radius: 10px;
+      margin-top: 20px;
+    }
+    .status.connected {
+      background: #d1fae5;
+      color: #047857;
+    }
+    .status.waiting {
+      background: #fef3c7;
+      color: #92400e;
+    }
+    .status.error {
+      background: #fee2e2;
+      color: #dc2626;
+    }
+    .instructions {
+      background: #f3f4f6;
+      border-radius: 10px;
+      padding: 15px;
+      margin-top: 20px;
+      text-align: right;
+    }
+    .instructions ol {
+      margin-right: 20px;
+    }
+    .instructions li {
+      margin: 8px 0;
+      color: #374151;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🔗 חיבור וואטסאפ</h1>
+    <p>סרקי את הקוד עם וואטסאפ להתחברות</p>
+    
+    <div id="qr-container">
+      <div id="loading">טוען...</div>
+      <img id="qr-image" style="display: none;" alt="QR Code">
+    </div>
+    
+    <div id="status" class="status waiting">ממתין ל-QR...</div>
+    
+    <a id="go-to-crm" href="/admin/crm/whatsapp" style="display: none; margin-top: 20px; padding: 15px 30px; background: linear-gradient(135deg, #25D366, #128C7E); color: white; text-decoration: none; border-radius: 10px; font-weight: bold;">
+      📱 לשליחת הודעות
+    </a>
+    
+    <div class="instructions">
+      <strong>הוראות:</strong>
+      <ol>
+        <li>פתחי וואטסאפ בטלפון</li>
+        <li>לכי להגדרות ← מכשירים מקושרים</li>
+        <li>לחצי על "קשר מכשיר"</li>
+        <li>סרקי את הקוד למעלה</li>
+      </ol>
+    </div>
+  </div>
+
+  <script>
+    const qrImage = document.getElementById('qr-image');
+    const loading = document.getElementById('loading');
+    const status = document.getElementById('status');
+
+    async function checkStatus() {
+      try {
+        // Use the Next.js API proxy instead of direct connection
+        const res = await fetch('/api/crm/whatsapp/status');
+        const data = await res.json();
+        
+        if (data.ready) {
+          loading.style.display = 'none';
+          qrImage.style.display = 'none';
+          status.className = 'status connected';
+          status.innerHTML = '✅ מחובר! (' + (data.info?.phone || '') + ')';
+          document.getElementById('go-to-crm').style.display = 'inline-block';
+          return;
+        }
+        
+        if (data.hasQR) {
+          const qrRes = await fetch('/api/crm/whatsapp/qr');
+          const qrData = await qrRes.json();
+          
+          if (qrData.qr) {
+            loading.style.display = 'none';
+            qrImage.src = qrData.qr;
+            qrImage.style.display = 'block';
+            status.className = 'status waiting';
+            status.innerHTML = '📱 סרקי את הקוד עכשיו!';
+          }
+        } else {
+          status.innerHTML = '⏳ מחכה ל-QR...';
+        }
+      } catch (e) {
+        status.className = 'status error';
+        status.innerHTML = '❌ שרת וואטסאפ לא פעיל';
+      }
+    }
+
+    // Check every 2 seconds
+    checkStatus();
+    setInterval(checkStatus, 2000);
+  </script>
+</body>
+</html>

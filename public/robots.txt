@@ -1,0 +1,75 @@
+# VIPO - Robots.txt
+# https://www.robotstxt.org/robotstxt.html
+#
+# SEO hygiene only — not a substitute for server auth. Private routes must stay protected in code.
+
+User-agent: *
+Allow: /
+Allow: /products/
+Allow: /t/
+Allow: /stainless/
+
+# --- Private, account, checkout, and app surfaces (disallow for crawlers) ---
+Disallow: /admin/
+Disallow: /business/
+Disallow: /agent/
+Disallow: /api/
+Disallow: /dashboard/
+
+Disallow: /checkout-demo
+Disallow: /checkout-demo/
+Disallow: /checkout
+Disallow: /checkout/
+
+Disallow: /reports
+Disallow: /reports/
+Disallow: /sales
+Disallow: /sales/
+Disallow: /catalog-preview
+Disallow: /catalog-preview/
+Disallow: /catalog-manager
+Disallow: /catalog-manager/
+
+Disallow: /orders
+Disallow: /orders/
+Disallow: /my-orders
+Disallow: /my-orders/
+Disallow: /messages
+Disallow: /messages/
+Disallow: /profile
+Disallow: /profile/
+
+Disallow: /cart
+Disallow: /login
+Disallow: /login/
+Disallow: /register
+Disallow: /register/
+Disallow: /reset
+Disallow: /reset/
+Disallow: /reset-password
+Disallow: /reset-password/
+
+Disallow: /products/new
+Disallow: /products/*/edit
+Disallow: /products/shared-container/
+
+# Legacy duplicate homepage path (canonical is "/")
+Disallow: /homepage
+Disallow: /homepage/
+
+# Short / legacy URL patterns (redirects exist in next.config.js; keep out of index where useful)
+Disallow: /p/
+Disallow: /shop
+
+# Block search and filter pages (duplicate content)
+Disallow: /*?*sort=
+Disallow: /*?*filter=
+Disallow: /*?*page=
+Disallow: /*?*utm_
+Disallow: /*?*ref=
+Disallow: /*?*fbclid=
+Disallow: /*?*gclid=
+
+# Sitemap location
+Sitemap: https://www.vipo-group.com/sitemap.xml
+Host: https://www.vipo-group.com

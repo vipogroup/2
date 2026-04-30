@@ -1,0 +1,704 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>מחירים – לקוח (נירוסטה)</title>
+  <style>
+    :root {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #f5f7fb;
+      color: #111827;
+    }
+    body {
+      margin: 0;
+      padding: 2rem 1rem 3rem;
+      display: flex;
+      justify-content: center;
+      direction: rtl;
+    }
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 18px 45px rgba(15, 23, 42, 0.18);
+      padding: 1.75rem 1.75rem 2rem;
+      box-sizing: border-box;
+    }
+    h1 {
+      margin: 0 0 0.25rem;
+      font-size: 1.8rem;
+      text-align: center;
+    }
+    .subtitle {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      color: #6b7280;
+      font-size: 0.95rem;
+    }
+    .top-links {
+      display: flex;
+      justify-content: flex-end;
+      gap: 1.5rem;
+      margin-bottom: 0.75rem;
+      flex-wrap: wrap;
+    }
+    .top-links a {
+      color: #2563eb;
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+    .top-links a:hover {
+      text-decoration: underline;
+    }
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      align-items: flex-end;
+      margin-bottom: 1.5rem;
+      border-radius: 0.75rem;
+      background: #f3f4ff;
+      padding: 0.75rem 1rem;
+    }
+    .control-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      font-size: 0.9rem;
+    }
+    label {
+      font-weight: 600;
+    }
+    input[type="text"], select {
+      padding: 0.35rem 0.45rem;
+      border-radius: 0.5rem;
+      border: 1px solid #d1d5db;
+      min-width: 180px;
+      font-size: 0.85rem;
+      box-sizing: border-box;
+      background: #ffffff;
+    }
+    .checkbox-line {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-weight: 600;
+      white-space: nowrap;
+      padding-top: 0.35rem;
+    }
+    .checkbox-line input {
+      transform: translateY(1px);
+    }
+    button {
+      padding: 0.45rem 0.9rem;
+      border-radius: 999px;
+      border: none;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      background: linear-gradient(135deg, #2563eb, #0891b2);
+      color: #ffffff;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      box-shadow: 0 10px 25px rgba(37, 99, 235, 0.35);
+      white-space: nowrap;
+    }
+    button.small {
+      padding: 0.25rem 0.6rem;
+      font-size: 0.75rem;
+      box-shadow: none;
+      background: #6b7280;
+    }
+    button span.icon {
+      font-size: 1rem;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.8rem;
+      margin-top: 0.5rem;
+    }
+    thead {
+      background: linear-gradient(90deg, #111827, #1f2937);
+      color: #f9fafb;
+    }
+    th, td {
+      padding: 0.45rem 0.35rem;
+      text-align: center;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    th {
+      font-weight: 700;
+      font-size: 0.78rem;
+      white-space: nowrap;
+    }
+    tbody tr:nth-child(even) {
+      background: #f9fafb;
+    }
+    tbody tr:hover {
+      background: #eff6ff;
+    }
+    td.num {
+      font-variant-numeric: tabular-nums;
+      direction: ltr;
+    }
+    .category-row {
+      background: #e5e7eb;
+      font-weight: 700;
+      text-align: right;
+    }
+    .category-row td {
+      padding-top: 0.7rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 1px solid #d1d5db;
+      font-size: 0.9rem;
+    }
+    .category-name-en {
+      font-size: 0.8rem;
+      color: #374151;
+      margin-right: 0.5rem;
+    }
+    .empty-state {
+      padding: 1.5rem;
+      border: 1px dashed #d1d5db;
+      border-radius: 0.75rem;
+      color: #374151;
+      background: #f9fafb;
+      text-align: center;
+    }
+    @media (max-width: 900px) {
+      .container {
+        padding: 1.25rem 0.7rem 1.5rem;
+        border-radius: 0;
+      }
+      .controls {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      table {
+        font-size: 0.75rem;
+      }
+      th, td {
+        padding: 0.35rem 0.25rem;
+      }
+    }
+    .hidden-export {
+      position: fixed;
+      top: 0;
+      left: -10000px;
+      width: 900px;
+      background: #ffffff;
+      color: #111827;
+      padding: 16px;
+      box-sizing: border-box;
+    }
+    .hidden-export h2 {
+      margin: 0 0 10px;
+      font-size: 18px;
+      text-align: right;
+    }
+    .hidden-export .meta {
+      font-size: 12px;
+      color: #374151;
+      margin-bottom: 10px;
+      text-align: right;
+      direction: rtl;
+    }
+    .hidden-export table {
+      font-size: 12px;
+      margin-top: 0;
+    }
+    .hidden-export th,
+    .hidden-export td {
+      padding: 6px 8px;
+    }
+    @media (max-width: 900px) {
+      body { padding: 10px; }
+      .container { padding: 14px; border-radius: 0; }
+      input[type="text"], select { min-width: 180px; }
+      table { font-size: 12px; }
+      thead th, tbody td { padding: 7px 6px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="top-links">
+      <a href="catalog-manager_pricing_with_markup.html" target="_blank" rel="noopener">פתח ניהול (Admin)</a>
+      <a href="catalog-manager_pricing_factory_order.html" target="_blank" rel="noopener">פתח הזמנת מפעל</a>
+    </div>
+
+    <h1>טבלת מחירים – לקוח עסקי (נירוסטה)</h1>
+    <div class="subtitle">סה״כ <span id="modelCount">-</span> דגמים מוצגים</div>
+
+    <div id="emptyState" class="empty-state" style="display:none"></div>
+
+    <div class="controls" id="controls" style="display:none">
+      <div class="control-group">
+        <label for="search">חיפוש</label>
+        <input id="search" type="text" placeholder="קטגוריה / מידה / מזהה">
+      </div>
+      <div class="control-group">
+        <label for="viewMode">הצג</label>
+        <select id="viewMode">
+          <option value="all">הכל</option>
+          <option value="group">רכישה קבוצתית</option>
+        </select>
+      </div>
+      <div class="control-group">
+        <label class="checkbox-line">
+          <input id="onlySelected" type="checkbox">
+          רק מסומנים
+        </label>
+      </div>
+      <div class="control-group">
+        <button type="button" class="small" id="selectAllVisibleBtn">בחר הכל (מוצג)</button>
+      </div>
+      <div class="control-group">
+        <button type="button" class="small" id="clearSelectionBtn">נקה בחירה</button>
+      </div>
+      <div class="control-group">
+        <button type="button" id="shareBtn">שיתוף ב-WhatsApp</button>
+      </div>
+      <div class="control-group">
+        <button type="button" id="csvBtn">יצוא CSV</button>
+      </div>
+      <div class="control-group">
+        <button type="button" id="imgBtn">הורד תמונה</button>
+      </div>
+    </div>
+
+    <table id="tbl" style="display:none">
+      <thead>
+        <tr>
+          <th style="width:40px"><input id="selectAllVisible" type="checkbox" aria-label="בחר הכל"></th>
+          <th>קטגוריה</th>
+          <th>מידה</th>
+          <th class="num">מחיר ללקוח (₪)</th>
+          <th class="num">מחיר רכישה קבוצתית (₪)</th>
+          <th>אספקה</th>
+        </tr>
+      </thead>
+      <tbody id="products-body"></tbody>
+    </table>
+  </div>
+
+  <div id="exportSandbox" class="hidden-export" aria-hidden="true"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script>
+    function escapeHtml(value) {
+      const div = document.createElement("div");
+      div.textContent = String(value ?? "");
+      return div.innerHTML;
+    }
+
+    function normalizeUsdValue(value) {
+      const n = parseFloat(String(value ?? "").trim());
+      if (isNaN(n) || n < 0) return 0;
+      return n;
+    }
+
+    function loadBackupStateFromStorage() {
+      const raw = window.localStorage.getItem("backup_state_v1");
+      if (!raw) return null;
+      try {
+        return JSON.parse(raw);
+      } catch (err) {
+        return null;
+      }
+    }
+
+    function getSettings(backup) {
+      const fallback = (backup && backup.settings && typeof backup.settings === "object") ? backup.settings : {};
+      const rate = parseFloat(window.localStorage.getItem("setting_rate") ?? fallback.rate ?? "3.7") || 0;
+      const markup = parseFloat(window.localStorage.getItem("setting_markup") ?? fallback.markup ?? "0") || 0;
+      const factor = parseFloat(window.localStorage.getItem("setting_factor") ?? fallback.factor ?? "3") || 0;
+      const groupFactor = parseFloat(window.localStorage.getItem("setting_groupFactor") ?? fallback.groupFactor ?? "2") || 0;
+      return { rate, markup, factor, groupFactor };
+    }
+
+    function computePricesFromUsd(usd, settings) {
+      const rate = settings.rate;
+      const factor = settings.factor;
+      const groupFactor = settings.groupFactor;
+      const markupPercent = settings.markup;
+      const markupMultiplier = 1 + (markupPercent / 100);
+
+      if (!(rate > 0)) {
+        return { priceClient: null, priceGroup: null };
+      }
+
+      const baseIls = usd * rate;
+      const costIls = baseIls * markupMultiplier;
+
+      const priceClient = (factor > 0) ? costIls * factor : null;
+      const priceGroup = (groupFactor > 0) ? costIls * groupFactor : null;
+
+      return { priceClient, priceGroup };
+    }
+
+    function groupProductsByCategory(products) {
+      const groups = new Map();
+      products.forEach(p => {
+        const he = String(p?.categoryHe || "").trim();
+        const en = String(p?.categoryEn || "").trim();
+        const key = he + "||" + en;
+        if (!groups.has(key)) groups.set(key, { he, en, items: [] });
+        groups.get(key).items.push(p);
+      });
+      return Array.from(groups.values());
+    }
+
+    function rebuildProductsTable(products, settings) {
+      const tbody = document.getElementById("products-body");
+      tbody.innerHTML = "";
+
+      const groups = groupProductsByCategory(products);
+      const colCount = document.querySelectorAll("#tbl thead th").length;
+
+      groups.forEach(g => {
+        const catRow = document.createElement("tr");
+        catRow.className = "category-row";
+        const td = document.createElement("td");
+        td.colSpan = colCount;
+        const title = String(g.he || g.en || "קטגוריה").trim();
+        td.innerHTML = escapeHtml(title) + (g.en ? ' <span class="category-name-en">(' + escapeHtml(g.en) + ")</span>" : "");
+        catRow.appendChild(td);
+        tbody.appendChild(catRow);
+
+        g.items.forEach(p => {
+          const row = document.createElement("tr");
+          row.className = "data-row";
+          const id = String(p?.id || "").trim();
+          row.dataset.id = id;
+
+          const usd = normalizeUsdValue(p?.priceUsd);
+          const groupFlag = !!p?.groupFlag;
+          row.dataset.groupFlag = groupFlag ? "1" : "0";
+
+          const prices = computePricesFromUsd(usd, settings);
+
+          const tdSel = document.createElement("td");
+          const sel = document.createElement("input");
+          sel.type = "checkbox";
+          sel.className = "row-select";
+          tdSel.appendChild(sel);
+
+          const tdCategory = document.createElement("td");
+          tdCategory.textContent = String(p?.rowCategory || p?.categoryEn || "").trim();
+
+          const tdSize = document.createElement("td");
+          tdSize.textContent = String(p?.size || "").trim();
+
+          const tdClient = document.createElement("td");
+          tdClient.className = "num";
+          tdClient.textContent = prices.priceClient === null ? "-" : Math.round(prices.priceClient).toString();
+
+          const tdGroup = document.createElement("td");
+          tdGroup.className = "num";
+          tdGroup.textContent = (groupFlag && prices.priceGroup !== null) ? Math.round(prices.priceGroup).toString() : "-";
+
+          const tdLead = document.createElement("td");
+          tdLead.textContent = groupFlag ? "60–90 ימי עסקים" : "-";
+
+          row.appendChild(tdSel);
+          row.appendChild(tdCategory);
+          row.appendChild(tdSize);
+          row.appendChild(tdClient);
+          row.appendChild(tdGroup);
+          row.appendChild(tdLead);
+
+          tbody.appendChild(row);
+
+          sel.addEventListener("change", function () {
+            applyFilters();
+          });
+        });
+      });
+    }
+
+    function updateModelCount() {
+      const rows = Array.from(document.querySelectorAll("#products-body tr.data-row"));
+      const visible = rows.filter(r => r.style.display !== "none").length;
+      const el = document.getElementById("modelCount");
+      if (el) el.textContent = String(visible);
+    }
+
+    function applyFilters() {
+      const q = String(document.getElementById("search").value || "").trim().toLowerCase();
+      const viewMode = String(document.getElementById("viewMode").value || "all");
+      const onlySelected = !!document.getElementById("onlySelected").checked;
+
+      const tbody = document.getElementById("products-body");
+      const rows = Array.from(tbody.querySelectorAll("tr"));
+
+      let currentCategoryRow = null;
+      let currentCategoryHasVisible = false;
+
+      const flushCategory = () => {
+        if (!currentCategoryRow) return;
+        currentCategoryRow.style.display = currentCategoryHasVisible ? "" : "none";
+      };
+
+      rows.forEach(row => {
+        if (row.classList.contains("category-row")) {
+          flushCategory();
+          currentCategoryRow = row;
+          currentCategoryHasVisible = false;
+          return;
+        }
+
+        if (!row.classList.contains("data-row")) return;
+
+        const id = String(row.dataset.id || "").toLowerCase();
+        const txt = row.textContent.toLowerCase();
+        const groupFlag = row.dataset.groupFlag === "1";
+        const sel = row.querySelector(".row-select");
+        const isSelected = !!(sel && sel.checked);
+
+        let ok = true;
+
+        if (q) {
+          ok = (txt.includes(q) || id.includes(q));
+        }
+
+        if (ok && viewMode === "group") {
+          ok = groupFlag;
+        }
+
+        if (ok && onlySelected) {
+          ok = isSelected;
+        }
+
+        row.style.display = ok ? "" : "none";
+        if (ok) currentCategoryHasVisible = true;
+      });
+
+      flushCategory();
+
+      const headerSel = document.getElementById("selectAllVisible");
+      if (headerSel) headerSel.checked = false;
+
+      updateModelCount();
+    }
+
+    function getSelectedDataRows() {
+      const rows = Array.from(document.querySelectorAll("#products-body tr.data-row"));
+      return rows.filter(r => {
+        const sel = r.querySelector(".row-select");
+        return !!(sel && sel.checked);
+      });
+    }
+
+    function selectAllVisibleRows(checked) {
+      const rows = Array.from(document.querySelectorAll("#products-body tr.data-row"));
+      rows.forEach(r => {
+        if (r.style.display === "none") return;
+        const sel = r.querySelector(".row-select");
+        if (sel) sel.checked = checked;
+      });
+      const headerSel = document.getElementById("selectAllVisible");
+      if (headerSel) headerSel.checked = checked;
+      applyFilters();
+    }
+
+    function shareSelectedToWhatsApp(settings) {
+      const rows = getSelectedDataRows();
+      if (rows.length === 0) {
+        alert("לא נבחרו דגמים לשיתוף.");
+        return;
+      }
+
+      const now = new Date();
+      const dateStr = now.toLocaleString("he-IL");
+      const leadTime = "60–90 ימי עסקים";
+
+      let text = "מחירים – נירוסטה\n";
+      text += "תאריך: " + dateStr + "\n\n";
+
+      rows.forEach(row => {
+        const tds = row.querySelectorAll("td");
+        const category = (tds[1] ? tds[1].textContent : "").trim();
+        const size = (tds[2] ? tds[2].textContent : "").trim();
+        const priceClient = (tds[3] ? tds[3].textContent : "-").trim();
+        const priceGroup = (tds[4] ? tds[4].textContent : "-").trim();
+        const supply = (tds[5] ? tds[5].textContent : "-").trim();
+
+        let line = category + " | " + size + " | מחיר ללקוח: ₪" + priceClient;
+        line += " | רכישה קבוצתית: " + (priceGroup !== "-" ? "₪" + priceGroup : "-") + " | אספקה: " + (supply !== "-" ? leadTime : "-");
+        text += line + "\n";
+      });
+
+      const url = "https://wa.me/?text=" + encodeURIComponent(text);
+      window.open(url, "_blank");
+    }
+
+    function exportSelectedToCSV() {
+      const rows = getSelectedDataRows();
+      if (rows.length === 0) {
+        alert("לא נבחרו דגמים ליצוא.");
+        return;
+      }
+
+      const header = ["קטגוריה", "מידה", "מחיר ללקוח (₪)", "מחיר רכישה קבוצתית (₪)", "אספקה"]; 
+      const lines = [header.join(",")];
+
+      rows.forEach(row => {
+        const tds = row.querySelectorAll("td");
+        const category = (tds[1] ? tds[1].textContent : "").trim();
+        const size = (tds[2] ? tds[2].textContent : "").trim();
+        const priceClient = (tds[3] ? tds[3].textContent : "").trim();
+        const priceGroup = (tds[4] ? tds[4].textContent : "").trim();
+        const supply = (tds[5] ? tds[5].textContent : "").trim();
+
+        const rowVals = [category, size, priceClient, priceGroup, supply].map(v => {
+          const s = String(v ?? "");
+          const escaped = s.replace(/"/g, '""');
+          return '"' + escaped + '"';
+        });
+
+        lines.push(rowVals.join(","));
+      });
+
+      const csv = "\uFEFF" + lines.join("\n");
+      const blob = new Blob([csv], { type: "text/csv;charset=UTF-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "catalog-manager_customer_prices.csv";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    }
+
+    async function downloadSelectedAsImage() {
+      const rows = getSelectedDataRows();
+      if (rows.length === 0) {
+        alert("לא נבחרו דגמים להורדת תמונה.");
+        return;
+      }
+      if (typeof window.html2canvas !== "function") {
+        alert("לא ניתן ליצור תמונה כרגע (html2canvas לא נטען).");
+        return;
+      }
+
+      const sandbox = document.getElementById("exportSandbox");
+      const now = new Date();
+      const dateStr = now.toLocaleString("he-IL");
+
+      const tableRows = rows.map(row => {
+        const tds = row.querySelectorAll("td");
+        const category = (tds[1] ? tds[1].textContent : "").trim();
+        const size = (tds[2] ? tds[2].textContent : "").trim();
+        const priceClient = (tds[3] ? tds[3].textContent : "-").trim();
+        const priceGroup = (tds[4] ? tds[4].textContent : "-").trim();
+        const supply = (tds[5] ? tds[5].textContent : "-").trim();
+
+        return `
+          <tr>
+            <td>${escapeHtml(category)}</td>
+            <td class="num">${escapeHtml(size)}</td>
+            <td class="num">₪ ${escapeHtml(priceClient)}</td>
+            <td class="num">${priceGroup !== "-" ? "₪ " + escapeHtml(priceGroup) : "-"}</td>
+            <td>${escapeHtml(supply)}</td>
+          </tr>
+        `;
+      }).join("");
+
+      sandbox.innerHTML = `
+        <h2>מחירים – נירוסטה</h2>
+        <div class="meta">תאריך: ${escapeHtml(dateStr)}</div>
+        <table>
+          <thead>
+            <tr>
+              <th>קטגוריה</th>
+              <th>מידה</th>
+              <th>מחיר ללקוח</th>
+              <th>רכישה קבוצתית</th>
+              <th>אספקה</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${tableRows}
+          </tbody>
+        </table>
+      `;
+
+      const canvas = await window.html2canvas(sandbox, {
+        backgroundColor: "#ffffff",
+        scale: 2,
+        useCORS: true
+      });
+
+      const dataUrl = canvas.toDataURL("image/png");
+      const a = document.createElement("a");
+      a.href = dataUrl;
+      a.download = "catalog-manager_customer_prices.png";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    }
+
+    function init() {
+      const backup = loadBackupStateFromStorage();
+      const emptyState = document.getElementById("emptyState");
+      const tbl = document.getElementById("tbl");
+      const controls = document.getElementById("controls");
+
+      if (!backup || !Array.isArray(backup.products) || backup.products.length === 0) {
+        emptyState.style.display = "";
+        emptyState.innerHTML = "אין נתונים להצגה. פתח קודם את קובץ הניהול (Admin), וודא שיש נתונים (הדף שומר אותם בדפדפן).";
+        tbl.style.display = "none";
+        controls.style.display = "none";
+        updateModelCount();
+        return;
+      }
+
+      emptyState.style.display = "none";
+      tbl.style.display = "";
+      controls.style.display = "flex";
+
+      const settings = getSettings(backup);
+      rebuildProductsTable(backup.products, settings);
+      applyFilters();
+
+      document.getElementById("search").addEventListener("input", applyFilters);
+      document.getElementById("viewMode").addEventListener("change", applyFilters);
+      document.getElementById("onlySelected").addEventListener("change", applyFilters);
+
+      document.getElementById("selectAllVisible").addEventListener("change", function () {
+        selectAllVisibleRows(!!this.checked);
+      });
+
+      document.getElementById("selectAllVisibleBtn").addEventListener("click", function () {
+        selectAllVisibleRows(true);
+      });
+
+      document.getElementById("clearSelectionBtn").addEventListener("click", function () {
+        selectAllVisibleRows(false);
+      });
+
+      document.getElementById("shareBtn").addEventListener("click", function () {
+        shareSelectedToWhatsApp(settings);
+      });
+
+      document.getElementById("csvBtn").addEventListener("click", exportSelectedToCSV);
+      document.getElementById("imgBtn").addEventListener("click", downloadSelectedAsImage);
+
+      window.addEventListener("storage", function (e) {
+        if (e && (e.key === "backup_state_v1" || String(e.key || "").startsWith("setting_"))) {
+          init();
+        }
+      });
+    }
+
+    window.addEventListener("DOMContentLoaded", init);
+  </script>
+</body>
+</html>

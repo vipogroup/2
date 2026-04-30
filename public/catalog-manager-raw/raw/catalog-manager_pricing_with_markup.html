@@ -1,0 +1,2590 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <title>טבלת מחירים ומלאי – נירוסטה לפי קטגוריה ומידה</title>
+  <style>
+    :root {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #f5f7fb;
+      color: #111827;
+    }
+    body {
+      margin: 0;
+      padding: 2rem 1rem 3rem;
+      display: flex;
+      justify-content: center;
+    }
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 18px 45px rgba(15, 23, 42, 0.18);
+      padding: 1.75rem 1.75rem 2rem;
+      box-sizing: border-box;
+    }
+    h1 {
+      margin: 0 0 0.25rem;
+      font-size: 1.8rem;
+      text-align: center;
+    }
+    .subtitle {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      color: #6b7280;
+      font-size: 0.95rem;
+    }
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      align-items: flex-end;
+      margin-bottom: 1.5rem;
+      border-radius: 0.75rem;
+      background: #f3f4ff;
+      padding: 0.75rem 1rem;
+    }
+    .control-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      font-size: 0.9rem;
+    }
+    label {
+      font-weight: 600;
+    }
+    input[type="number"] {
+      padding: 0.35rem 0.45rem;
+      border-radius: 0.5rem;
+      border: 1px solid #d1d5db;
+      min-width: 90px;
+      font-size: 0.85rem;
+      direction: ltr;
+      box-sizing: border-box;
+    }
+    input[type="text"] {
+      padding: 0.35rem 0.45rem;
+      border-radius: 0.5rem;
+      border: 1px solid #d1d5db;
+      min-width: 180px;
+      font-size: 0.85rem;
+      box-sizing: border-box;
+    }
+    select {
+      padding: 0.35rem 0.45rem;
+      border-radius: 0.5rem;
+      border: 1px solid #d1d5db;
+      min-width: 150px;
+      font-size: 0.85rem;
+      box-sizing: border-box;
+      background: #ffffff;
+    }
+    .checkbox-line {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-weight: 600;
+      white-space: nowrap;
+      padding-top: 0.35rem;
+    }
+    .checkbox-line input {
+      transform: translateY(1px);
+    }
+    button {
+      padding: 0.45rem 0.9rem;
+      border-radius: 999px;
+      border: none;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      background: linear-gradient(135deg, #2563eb, #0891b2);
+      color: #ffffff;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      box-shadow: 0 10px 25px rgba(37, 99, 235, 0.35);
+      white-space: nowrap;
+    }
+    button.small {
+      padding: 0.25rem 0.6rem;
+      font-size: 0.75rem;
+      box-shadow: none;
+      background: #6b7280;
+    }
+    button span.icon {
+      font-size: 1rem;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.8rem;
+      margin-top: 0.5rem;
+    }
+    #products-table {
+      table-layout: fixed;
+    }
+    #products-table td input,
+    #products-table td select {
+      min-width: 0;
+      max-width: 100%;
+      box-sizing: border-box;
+    }
+    #products-table th.col-select,
+    #products-table td.col-select {
+      width: 26px;
+    }
+    #products-table th.col-order-qty,
+    #products-table td.col-order-qty {
+      width: 6ch;
+    }
+    #products-table th.col-order-thickness,
+    #products-table td.col-order-thickness {
+      width: 6ch;
+    }
+    #products-table th.col-order-stainless,
+    #products-table td.col-order-stainless {
+      width: 9ch;
+    }
+    #products-table th.col-order-size,
+    #products-table td.col-order-size {
+      width: 14ch;
+    }
+    #products-table th.col-order-notes,
+    #products-table td.col-order-notes {
+      width: 16ch;
+    }
+    #products-table th.col-size,
+    #products-table td.col-size {
+      width: 12ch;
+    }
+    #products-table th.col-price-usd,
+    #products-table td.col-price-usd {
+      width: 10ch;
+    }
+    #products-table th.col-price-ils,
+    #products-table td.col-price-ils {
+      width: 11ch;
+    }
+    #products-table th.col-price-client,
+    #products-table td.col-price-client {
+      width: 12ch;
+    }
+    #products-table th.col-price-group,
+    #products-table td.col-price-group {
+      width: 12ch;
+    }
+    #products-table th.col-initial-qty,
+    #products-table td.col-initial-qty {
+      width: 7ch;
+    }
+    #products-table th.col-current-stock,
+    #products-table td.col-current-stock {
+      width: 7ch;
+    }
+    #products-table th.col-sell-qty,
+    #products-table td.col-sell-qty {
+      width: 7ch;
+    }
+    #products-table th.col-actions,
+    #products-table td.col-actions {
+      width: 13ch;
+    }
+    #products-table th.col-group-flag,
+    #products-table td.col-group-flag {
+      width: 7ch;
+    }
+    #products-table th.col-category,
+    #products-table td.col-category {
+      width: 14ch;
+      text-align: right;
+    }
+    #products-table th.col-size,
+    #products-table td.col-size {
+      text-align: right;
+    }
+    #products-table thead th {
+      overflow: hidden;
+      white-space: normal;
+      overflow-wrap: anywhere;
+      line-height: 1.3;
+      font-size: 0.72rem;
+    }
+    #products-table th.col-select,
+    #products-table td.col-select {
+      padding-left: 0.15rem;
+      padding-right: 0.15rem;
+    }
+    #products-table th.col-category,
+    #products-table td.col-category,
+    #products-table th.col-size,
+    #products-table td.col-size {
+      padding-left: 0.15rem;
+      padding-right: 0.15rem;
+    }
+    thead {
+      background: linear-gradient(90deg, #111827, #1f2937);
+      color: #f9fafb;
+    }
+    th, td {
+      padding: 0.45rem 0.35rem;
+      text-align: center;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    th {
+      font-weight: 700;
+      font-size: 0.78rem;
+      white-space: nowrap;
+    }
+    tbody tr:nth-child(even).data-row {
+      background: #f9fafb;
+    }
+    tbody tr.data-row:hover {
+      background: #eff6ff;
+    }
+    .category-row {
+      background: #e5e7eb;
+      font-weight: 700;
+      text-align: right;
+    }
+    .category-row td {
+      padding-top: 0.7rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 1px solid #d1d5db;
+      font-size: 0.9rem;
+    }
+    .category-name-en {
+      font-size: 0.8rem;
+      color: #374151;
+      margin-right: 0.5rem;
+    }
+    .num {
+      font-variant-numeric: tabular-nums;
+      direction: ltr;
+    }
+    .stock-label {
+      font-weight: 600;
+    }
+    .summary {
+      margin-top: 1.75rem;
+      padding: 1rem 1.1rem;
+      border-radius: 0.9rem;
+      background: #f3f4ff;
+      border: 1px solid #e5e7eb;
+      font-size: 0.85rem;
+      direction: rtl;
+    }
+    .summary h2 {
+      margin: 0 0 0.5rem;
+      font-size: 1rem;
+    }
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.6rem 1.5rem;
+      margin-top: 0.5rem;
+    }
+    .summary-item-title {
+      font-weight: 600;
+      color: #374151;
+    }
+    .summary-value {
+      font-variant-numeric: tabular-nums;
+      direction: ltr;
+      font-weight: 600;
+    }
+    .footer-note {
+      margin-top: 1rem;
+      font-size: 0.8rem;
+      color: #6b7280;
+      text-align: left;
+      direction: rtl;
+    }
+    .hidden-export {
+      position: fixed;
+      top: 0;
+      left: -10000px;
+      width: 900px;
+      background: #ffffff;
+      color: #111827;
+      padding: 16px;
+      box-sizing: border-box;
+    }
+    .hidden-export h2 {
+      margin: 0 0 10px;
+      font-size: 18px;
+      text-align: right;
+    }
+    .hidden-export .meta {
+      font-size: 12px;
+      color: #374151;
+      margin-bottom: 10px;
+      text-align: right;
+      direction: rtl;
+    }
+    .hidden-export table {
+      font-size: 12px;
+      margin-top: 0;
+    }
+    .hidden-export th,
+    .hidden-export td {
+      padding: 6px 8px;
+    }
+    @media (max-width: 900px) {
+      .container {
+        padding: 1.25rem 0.7rem 1.5rem;
+        border-radius: 0;
+      }
+      .controls {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      table {
+        font-size: 0.75rem;
+      }
+      th, td {
+        padding: 0.35rem 0.25rem;
+      }
+      input[type="number"] {
+        min-width: 70px;
+      }
+      .summary-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>טבלת מחירים ומלאי – נירוסטה</h1>
+    <div class="subtitle">
+      כל קטגוריה בנפרד, מהמידה הקטנה לגדולה. סה״כ <span id="modelCount">-</span> דגמים.
+    </div>
+
+    <div class="controls">
+      <div class="control-group">
+        <button type="button" onclick="openCustomerPage()">
+          <span class="icon">👤</span>
+          דף לקוח
+        </button>
+      </div>
+      <div class="control-group">
+        <button type="button" onclick="openFactoryPage()">
+          <span class="icon">🏭</span>
+          דף מפעל
+        </button>
+      </div>
+      <div class="control-group">
+        <label for="rate">שער דולר (₪)</label>
+        <input id="rate" type="number" step="0.01" value="3.70">
+      </div>
+      <div class="control-group">
+        <label for="markup">תוספת עלות (הוצאות) %</label>
+        <input id="markup" type="number" step="1" value="0" title="למשל 10% או 20% מעלות הרכש בדולרים">
+      </div>
+      <div class="control-group">
+        <label for="factor">מכפיל מחיר ללקוח בטבלה</label>
+        <input id="factor" type="number" step="0.1" value="3">
+      </div>
+      <div class="control-group">
+        <label for="groupFactor">מכפיל רכישה קבוצתית</label>
+        <input id="groupFactor" type="number" step="0.1" value="2">
+      </div>
+      <div class="control-group">
+        <label for="search">חיפוש דגם</label>
+        <input id="search" type="text" placeholder="קטגוריה / מידה / מזהה">
+        <button id="clearSearchBtn" type="button" class="small">איפוס חיפוש</button>
+      </div>
+      <div class="control-group">
+        <label for="viewMode">הצג</label>
+        <select id="viewMode">
+          <option value="all">הכל</option>
+          <option value="stock">במלאי</option>
+          <option value="group">רכישה קבוצתית</option>
+        </select>
+      </div>
+      <div class="control-group">
+        <label class="checkbox-line">
+          <input id="onlySelected" type="checkbox">
+          רק מסומנים
+        </label>
+      </div>
+      <div class="control-group">
+        <label class="checkbox-line">
+          <input id="onlyOrder" type="checkbox">
+          רק בהזמנה
+        </label>
+      </div>
+      <div class="control-group">
+        <button type="button" onclick="recalculate()">
+          <span class="icon">↻</span>
+          עדכון מחירים וסיכום
+        </button>
+      </div>
+      <div class="control-group">
+        <button type="button" onclick="clearFactoryOrder()">
+          <span class="icon">🧹</span>
+          נקה הזמנה
+        </button>
+      </div>
+      <div class="control-group">
+        <button type="button" onclick="exportFactoryOrderToCSV()">
+          <span class="icon">⬇</span>
+          יצוא הזמנה למפעל (CSV)
+        </button>
+      </div>
+      <div class="control-group">
+        <button type="button" onclick="shareFactoryOrderToWhatsApp()">
+          <span class="icon">✉</span>
+          שלח הזמנה למפעל (WhatsApp)
+        </button>
+      </div>
+      <div class="control-group">
+        <button type="button" onclick="shareSelectedToWhatsApp()">
+          <span class="icon">✉</span>
+          שיתוף ב-WhatsApp
+        </button>
+      </div>
+      <div class="control-group">
+        <button type="button" onclick="exportSelectedToCSV()">
+          <span class="icon">⬇</span>
+          יצוא CSV
+        </button>
+      </div>
+      <div class="control-group">
+        <button type="button" onclick="downloadSelectedAsImage()">
+          <span class="icon">🖼</span>
+          הורד תמונה
+        </button>
+      </div>
+      <div class="control-group">
+        <button type="button" onclick="exportBackupJSON()">
+          <span class="icon">🗄</span>
+          גיבוי JSON
+        </button>
+      </div>
+      <div class="control-group">
+        <button type="button" onclick="triggerImportJSON()">
+          <span class="icon">⬆</span>
+          יבוא JSON
+        </button>
+      </div>
+      <div class="control-group">
+        <button type="button" onclick="triggerImportCSV()">
+          <span class="icon">⬆</span>
+          יבוא CSV
+        </button>
+      </div>
+      <div class="control-group">
+        <button type="button" class="small" onclick="selectAllVisibleRows(true)">בחר הכל (מוצג)</button>
+        <button type="button" class="small" onclick="selectAllVisibleRows(false)">נקה בחירה</button>
+      </div>
+    </div>
+
+    <table id="products-table">
+      <thead>
+        <tr>
+          <th class="col-category">קטגוריה</th>
+          <th class="col-size">מידה (ס&quot;מ)</th>
+          <th class="col-price-usd">מחיר בסיס ליח' (USD)</th>
+          <th class="col-price-ils">עלות אחרי הוצאות (₪)</th>
+          <th class="col-price-client">מחיר ללקוח (₪ × מכפיל)</th>
+          <th class="col-initial-qty">כמות התחלתית</th>
+          <th class="col-current-stock">מלאי נוכחי</th>
+          <th class="col-sell-qty">מכירה עכשיו</th>
+          <th class="col-actions">פעולות</th>
+        </tr>
+      </thead>
+      <tbody id="products-body">
+        <!-- 2-LAYERS WORKTABLE -->
+        <tr class="category-row">
+          <td colspan="9">
+            2 שכבות – שולחן עבודה
+            <span class="category-name-en">(2-LAYERS WORKTABLE)</span>
+          </td>
+        </tr>
+        <tr class="data-row" data-id="2L-100-60-90" data-price-usd="57.14">
+          <td>2-LAYERS WORKTABLE</td>
+          <td>100×60×90</td>
+          <td class="num price-usd">57.14</td>
+          <td class="num price-ils"></td>
+          <td class="num price-client"></td>
+          <td><input type="number" min="0" step="1" class="initial-qty" value="4"></td>
+          <td class="stock-label num current-stock"></td>
+          <td><input type="number" min="0" step="1" class="sell-qty" value="0"></td>
+          <td>
+            <button type="button" onclick="applySale(this)">עדכן</button>
+            <button type="button" class="small" onclick="resetStock(this)">איפוס</button>
+          </td>
+        </tr>
+        <tr class="data-row" data-id="2L-120-60-90" data-price-usd="62.50">
+          <td>2-LAYERS WORKTABLE</td>
+          <td>120×60×90</td>
+          <td class="num price-usd">62.50</td>
+          <td class="num price-ils"></td>
+          <td class="num price-client"></td>
+          <td><input type="number" min="0" step="1" class="initial-qty" value="3"></td>
+          <td class="stock-label num current-stock"></td>
+          <td><input type="number" min="0" step="1" class="sell-qty" value="0"></td>
+          <td>
+            <button type="button" onclick="applySale(this)">עדכן</button>
+            <button type="button" class="small" onclick="resetStock(this)">איפוס</button>
+          </td>
+        </tr>
+        <tr class="data-row" data-id="2L-140-60-90" data-price-usd="67.86">
+          <td>2-LAYERS WORKTABLE</td>
+          <td>140×60×90</td>
+          <td class="num price-usd">67.86</td>
+          <td class="num price-ils"></td>
+          <td class="num price-client"></td>
+          <td><input type="number" min="0" step="1" class="initial-qty" value="3"></td>
+          <td class="stock-label num current-stock"></td>
+          <td><input type="number" min="0" step="1" class="sell-qty" value="0"></td>
+          <td>
+            <button type="button" onclick="applySale(this)">עדכן</button>
+            <button type="button" class="small" onclick="resetStock(this)">איפוס</button>
+          </td>
+        </tr>
+        <tr class="data-row" data-id="2L-160-60-90" data-price-usd="73.71">
+          <td>2-LAYERS WORKTABLE</td>
+          <td>160×60×90</td>
+          <td class="num price-usd">73.71</td>
+          <td class="num price-ils"></td>
+          <td class="num price-client"></td>
+          <td><input type="number" min="0" step="1" class="initial-qty" value="3"></td>
+          <td class="stock-label num current-stock"></td>
+          <td><input type="number" min="0" step="1" class="sell-qty" value="0"></td>
+          <td>
+            <button type="button" onclick="applySale(this)">עדכן</button>
+            <button type="button" class="small" onclick="resetStock(this)">איפוס</button>
+          </td>
+        </tr>
+        <tr class="data-row" data-id="2L-180-60-90" data-price-usd="78.57">
+          <td>2-LAYERS WORKTABLE</td>
+          <td>180×60×90</td>
+          <td class="num price-usd">78.57</td>
+          <td class="num price-ils"></td>
+          <td class="num price-client"></td>
+          <td><input type="number" min="0" step="1" class="initial-qty" value="130"></td>
+          <td class="stock-label num current-stock"></td>
+          <td><input type="number" min="0" step="1" class="sell-qty" value="0"></td>
+          <td>
+            <button type="button" onclick="applySale(this)">עדכן</button>
+            <button type="button" class="small" onclick="resetStock(this)">איפוס</button>
+          </td>
+        </tr>
+        <tr class="data-row" data-id="2L-200-60-90" data-price-usd="86.79">
+          <td>2-LAYERS WORKTABLE</td>
+          <td>200×60×90</td>
+          <td class="num price-usd">86.79</td>
+          <td class="num price-ils"></td>
+          <td class="num price-client"></td>
+          <td><input type="number" min="0" step="1" class="initial-qty" value="5"></td>
+          <td class="stock-label num current-stock"></td>
+          <td><input type="number" min="0" step="1" class="sell-qty" value="0"></td>
+          <td>
+            <button type="button" onclick="applySale(this)">עדכן</button>
+            <button type="button" class="small" onclick="resetStock(this)">איפוס</button>
+          </td>
+        </tr>
+
+        <!-- 3-LAYERS WORKTABLE -->
+        <tr class="category-row">
+          <td colspan="9">
+            3 שכבות – שולחן עבודה
+            <span class="category-name-en">(3-LAYERS WORKTABLE)</span>
+          </td>
+        </tr>
+        <tr class="data-row" data-id="3L-60-60-90" data-price-usd="58.93">
+          <td>3-LAYERS WORKTABLE</td>
+          <td>60×60×90</td>
+          <td class="num price-usd">58.93</td>
+          <td class="num price-ils"></td>
+          <td class="num price-client"></td>
+          <td><input type="number" min="0" step="1" class="initial-qty" value="5"></td>
+          <td class="stock-label num current-stock"></td>
+          <td><input type="number" min="0" step="1" class="sell-qty" value="0"></td>
+          <td>
+            <button type="button" onclick="applySale(this)">עדכן</button>
+            <button type="button" class="small" onclick="resetStock(this)">איפוס</button>
+          </td>
+        </tr>
+        <tr class="data-row" data-id="3L-80-60-90" data-price-usd="62.50">
+          <td>3-LAYERS WORKTABLE</td>
+          <td>80×60×90</td>
+          <td class="num price-usd">62.50</td>
+          <td class="num price-ils"></td>
+          <td class="num price-client"></td>
+          <td><input type="number" min="0" step="1" class="initial-qty" value="6"></td>
+          <td class="stock-label num current-stock"></td>
+          <td><input type="number" min="0" step="1" class="sell-qty" value="0"></td>
+          <td>
+            <button type="button" onclick="applySale(this)">עדכן</button>
+            <button type="button" class="small" onclick="resetStock(this)">איפוס</button>
+          </td>
+        </tr>
+        <tr class="data-row" data-id="3L-100-60-90" data-price-usd="66.07">
+          <td>3-LAYERS WORKTABLE</td>
+          <td>100×60×90</td>
+          <td class="num price-usd">66.07</td>
+          <td class="num price-ils"></td>
+          <td class="num price-client"></td>
+          <td><input type="number" min="0" step="1" class="initial-qty" value="4"></td>
+          <td class="stock-label num current-stock"></td>
+          <td><input type="number" min="0" step="1" class="sell-qty" value="0"></td>
+          <td>
+            <button type="button" onclick="applySale(this)">עדכן</button>
+            <button type="button" class="small" onclick="resetStock(this)">איפוס</button>
+          </td>
+        </tr>
+        <tr class="data-row" data-id="3L-120-60-90" data-price-usd="73.21">
+          <td>3-LAYERS WORKTABLE</td>
+          <td>120×60×90</td>
+          <td class="num price-usd">73.21</td>
+          <td class="num price-ils"></td>
+          <td class="num price-client"></td>
+          <td><input type="number" min="0" step="1" class="initial-qty" value="2"></td>
+          <td class="stock-label num current-stock"></td>
+          <td><input type="number" min="0" step="1" class="sell-qty" value="0"></td>
+          <td>
+            <button type="button" onclick="applySale(this)">עדכן</button>
+            <button type="button" class="small" onclick="resetStock(this)">איפוס</button>
+          </td>
+        </tr>
+        <tr class="data-row" data-id="3L-140-60-90" data-price-usd="77.57">
+          <td>3-LAYERS WORKTABLE</td>
+          <td>140×60×90</td>
+          <td class="num price-usd">77.57</td>
+          <td class="num price-ils"></td>
+          <td class="num price-client"></td>
+          <td><input type="number" min="0" step="1" class="initial-qty" value="2"></td>
+          <td class="stock-label num current-stock"></td>
+          <td><input type="number" min="0" step="1" class="sell-qty" value="0"></td>
+          <td>
+            <button type="button" onclick="applySale(this)">עדכן</button>
+            <button type="button" class="small" onclick="resetStock(this)">איפוס</button>
+          </td>
+        </tr>
+        <tr class="data-row" data-id="3L-160-60-90" data-price-usd="83.21">
+          <td>3-LAYERS WORKTABLE</td>
+          <td>160×60×90</td>
+          <td class="num price-usd">83.21</td>
+          <td class="num price-ils"></td>
+          <td class="num price-client"></td>
+          <td><input type="number" min="0" step="1" class="initial-qty" value="2"></td>
+          <td class="stock-label num current-stock"></td>
+          <td><input type="number" min="0" step="1" class="sell-qty" value="0"></td>
+          <td>
+            <button type="button" onclick="applySale(this)">עדכן</button>
+            <button type="button" class="small" onclick="resetStock(this)">איפוס</button>
+          </td>
+        </tr>
+        <tr class="data-row" data-id="3L-180-60-90" data-price-usd="92.86">
+          <td>3-LAYERS WORKTABLE</td>
+          <td>180×60×90</td>
+          <td class="num price-usd">92.86</td>
+          <td class="num price-ils"></td>
+          <td class="num price-client"></td>
+          <td><input type="number" min="0" step="1" class="initial-qty" value="2"></td>
+          <td class="stock-label num current-stock"></td>
+          <td><input type="number" min="0" step="1" class="sell-qty" value="0"></td>
+          <td>
+            <button type="button" onclick="applySale(this)">עדכן</button>
+            <button type="button" class="small" onclick="resetStock(this)">איפוס</button>
+          </td>
+        </tr>
+        <tr class="data-row" data-id="3L-200-60-90" data-price-usd="101.79">
+          <td>3-LAYERS WORKTABLE</td>
+          <td>200×60×90</td>
+          <td class="num price-usd">101.79</td>
+          <td class="num price-ils"></td>
+          <td class="num price-client"></td>
+          <td><input type="number" min="0" step="1" class="initial-qty" value="2"></td>
+          <td class="stock-label num current-stock"></td>
+          <td><input type="number" min="0" step="1" class="sell-qty" value="0"></td>
+          <td>
+            <button type="button" onclick="applySale(this)">עדכן</button>
+            <button type="button" class="small" onclick="resetStock(this)">איפוס</button>
+          </td>
+        </tr>
+
+        <!-- SINGLE SINK -->
+        <tr class="category-row">
+          <td colspan="9">
+            כיור יחיד
+            <span class="category-name-en">(SINGLE SINK)</span>
+          </td>
+        </tr>
+        <tr class="data-row" data-id="SS-60-60-90" data-price-usd="33.00">
+          <td>SINGLE SINK</td>
+          <td>60×60×90</td>
+          <td class="num price-usd">33.00</td>
+          <td class="num price-ils"></td>
+          <td class="num price-client"></td>
+          <td><input type="number" min="0" step="1" class="initial-qty" value="10"></td>
+          <td class="stock-label num current-stock"></td>
+          <td><input type="number" min="0" step="1" class="sell-qty" value="0"></td>
+          <td>
+            <button type="button" onclick="applySale(this)">עדכן</button>
+            <button type="button" class="small" onclick="resetStock(this)">איפוס</button>
+          </td>
+        </tr>
+
+        <!-- WORK CABINET -->
+        <tr class="category-row">
+          <td colspan="9">
+            ארון עבודה
+            <span class="category-name-en">(WORK CABINET)</span>
+          </td>
+        </tr>
+        <tr class="data-row" data-id="WC-100-60-90" data-price-usd="86.00">
+          <td>WORK CABINET</td>
+          <td>100×60×90</td>
+          <td class="num price-usd">86.00</td>
+          <td class="num price-ils"></td>
+          <td class="num price-client"></td>
+          <td><input type="number" min="0" step="1" class="initial-qty" value="2"></td>
+          <td class="stock-label num current-stock"></td>
+          <td><input type="number" min="0" step="1" class="sell-qty" value="0"></td>
+          <td>
+            <button type="button" onclick="applySale(this)">עדכן</button>
+            <button type="button" class="small" onclick="resetStock(this)">איפוס</button>
+          </td>
+        </tr>
+        <tr class="data-row" data-id="WC-120-60-90" data-price-usd="81.00">
+          <td>WORK CABINET</td>
+          <td>120×60×90</td>
+          <td class="num price-usd">81.00</td>
+          <td class="num price-ils"></td>
+          <td class="num price-client"></td>
+          <td><input type="number" min="0" step="1" class="initial-qty" value="2"></td>
+          <td class="stock-label num current-stock"></td>
+          <td><input type="number" min="0" step="1" class="sell-qty" value="0"></td>
+          <td>
+            <button type="button" onclick="applySale(this)">עדכן</button>
+            <button type="button" class="small" onclick="resetStock(this)">איפוס</button>
+          </td>
+        </tr>
+        <tr class="data-row" data-id="WC-150-60-90" data-price-usd="113.00">
+          <td>WORK CABINET</td>
+          <td>150×60×90</td>
+          <td class="num price-usd">113.00</td>
+          <td class="num price-ils"></td>
+          <td class="num price-client"></td>
+          <td><input type="number" min="0" step="1" class="initial-qty" value="2"></td>
+          <td class="stock-label num current-stock"></td>
+          <td><input type="number" min="0" step="1" class="sell-qty" value="0"></td>
+          <td>
+            <button type="button" onclick="applySale(this)">עדכן</button>
+            <button type="button" class="small" onclick="resetStock(this)">איפוס</button>
+          </td>
+        </tr>
+        <tr class="data-row" data-id="WC-180-60-90" data-price-usd="93.00">
+          <td>WORK CABINET</td>
+          <td>180×60×90</td>
+          <td class="num price-usd">93.00</td>
+          <td class="num price-ils"></td>
+          <td class="num price-client"></td>
+          <td><input type="number" min="0" step="1" class="initial-qty" value="2"></td>
+          <td class="stock-label num current-stock"></td>
+          <td><input type="number" min="0" step="1" class="sell-qty" value="0"></td>
+          <td>
+            <button type="button" onclick="applySale(this)">עדכן</button>
+            <button type="button" class="small" onclick="resetStock(this)">איפוס</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="summary">
+      <h2>סיכום עלות ורווח על כל המלאי</h2>
+      <div class="summary-grid">
+        <div>
+          <div class="summary-item-title">עלות בסיסית (191 יח') בדולרים:</div>
+          <div class="summary-value" id="total-cost-usd-base">-</div>
+        </div>
+        <div>
+          <div class="summary-item-title">עלות אחרי הוצאות בשקלים:</div>
+          <div class="summary-value" id="total-cost-ils">-</div>
+        </div>
+        <div>
+          <div class="summary-item-title">מכירה במכפיל ×2 (על העלות אחרי הוצאות):</div>
+          <div class="summary-value" id="total-revenue-x2">-</div>
+        </div>
+        <div>
+          <div class="summary-item-title">רווח נטו במכפיל ×2:</div>
+          <div class="summary-value" id="total-profit-x2">-</div>
+        </div>
+        <div>
+          <div class="summary-item-title">מכירה במכפיל ×3:</div>
+          <div class="summary-value" id="total-revenue-x3">-</div>
+        </div>
+        <div>
+          <div class="summary-item-title">רווח נטו במכפיל ×3:</div>
+          <div class="summary-value" id="total-profit-x3">-</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-note">
+      * הכמויות ההתחלתיות כבר מוזנות לפי הטבלה (סה״כ 191 יחידות).<br>
+      * תא "תוספת עלות (הוצאות) %" מעלה את בסיס העלות שלך ב־X% (למשל 10% או 20%) על כל הדגמים – גם בטבלה וגם בסיכום.<br>
+      * לאחר כל מכירה: מזינים בשדה "מכירה עכשיו" את הכמות ולוחצים "עדכן" – המלאי הנוכחי יורד ונשמר בדפדפן.<br>
+      * כפתור "איפוס" מחזיר את המלאי לכמות ההתחלתית (או למה שתרשום בכמות ההתחלתית).<br>
+      * הסיכום למטה מחשב אוטומטית עלות, מחזור ורווח אם תמכור את כל המלאי במכפיל ×2 או ×3 מעל העלות אחרי ההוצאות.
+    </div>
+  </div>
+
+  <div id="exportSandbox" class="hidden-export" aria-hidden="true"></div>
+
+  <input id="importJsonFile" type="file" accept="application/json" style="display:none">
+  <input id="importCsvFile" type="file" accept=".csv,text/csv" style="display:none">
+
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
+  <script>
+    function openCustomerPage() {
+      try {
+        saveBackupStateToStorage();
+      } catch (e) {}
+      window.open("catalog-manager_pricing_customer.html", "_blank");
+    }
+
+    function openFactoryPage() {
+      try {
+        saveBackupStateToStorage();
+      } catch (e) {}
+      window.open("catalog-manager_pricing_factory_order.html", "_blank");
+    }
+
+    function recalculate() {
+      const rate = parseFloat(document.getElementById("rate").value) || 0;
+      const factor = parseFloat(document.getElementById("factor").value) || 0;
+      const groupFactor = parseFloat(document.getElementById("groupFactor").value) || 0;
+      const markupPercent = parseFloat(document.getElementById("markup").value) || 0;
+      const markupMultiplier = 1 + (markupPercent / 100);
+
+      const rows = Array.from(document.querySelectorAll("tr.data-row"));
+
+      let totalCostUsdBase = 0;
+      let totalCostIlsWithMarkup = 0;
+
+      rows.forEach(row => {
+        const usd = parseFloat(row.dataset.priceUsd);
+        const qtyInput = row.querySelector(".initial-qty");
+        let qty = parseInt(qtyInput.value, 10);
+        if (isNaN(qty) || qty < 0) qty = 0;
+
+        const priceIlsCell = row.querySelector(".price-ils");
+        const priceClientCell = row.querySelector(".price-client");
+        const priceGroupCell = row.querySelector(".price-group");
+
+        const baseIls = usd * rate;
+        const costIls = baseIls * markupMultiplier; // עלות אחרי הוצאות
+        const priceClient = costIls * factor;
+        const priceGroup = costIls * groupFactor;
+
+        priceIlsCell.textContent = (rate > 0) ? costIls.toFixed(0) : "-";
+        priceClientCell.textContent = (rate > 0 && factor > 0) ? priceClient.toFixed(0) : "-";
+        if (priceGroupCell) {
+          priceGroupCell.textContent = (rate > 0 && groupFactor > 0) ? priceGroup.toFixed(0) : "-";
+        }
+
+        totalCostUsdBase += usd * qty;
+        totalCostIlsWithMarkup += costIls * qty;
+      });
+
+      const costUsdBaseEl = document.getElementById("total-cost-usd-base");
+      const costIlsEl = document.getElementById("total-cost-ils");
+      const rev2El = document.getElementById("total-revenue-x2");
+      const profit2El = document.getElementById("total-profit-x2");
+      const rev3El = document.getElementById("total-revenue-x3");
+      const profit3El = document.getElementById("total-profit-x3");
+
+      if (totalCostUsdBase > 0 && rate > 0) {
+        costUsdBaseEl.textContent = totalCostUsdBase.toFixed(2) + " $";
+        costIlsEl.textContent = totalCostIlsWithMarkup.toFixed(0) + " ₪";
+
+        const revenue2 = totalCostIlsWithMarkup * 2;
+        const revenue3 = totalCostIlsWithMarkup * 3;
+        const profit2 = revenue2 - totalCostIlsWithMarkup;
+        const profit3 = revenue3 - totalCostIlsWithMarkup;
+
+        rev2El.textContent = revenue2.toFixed(0) + " ₪";
+        profit2El.textContent = profit2.toFixed(0) + " ₪";
+        rev3El.textContent = revenue3.toFixed(0) + " ₪";
+        profit3El.textContent = profit3.toFixed(0) + " ₪";
+      } else {
+        costUsdBaseEl.textContent = "-";
+        costIlsEl.textContent = "-";
+        rev2El.textContent = "-";
+        profit2El.textContent = "-";
+        rev3El.textContent = "-";
+        profit3El.textContent = "-";
+      }
+    }
+
+    function saveSettingsToStorage() {
+      const rateEl = document.getElementById("rate");
+      const markupEl = document.getElementById("markup");
+      const factorEl = document.getElementById("factor");
+      const groupFactorEl = document.getElementById("groupFactor");
+
+      window.localStorage.setItem("setting_rate", rateEl.value);
+      window.localStorage.setItem("setting_markup", markupEl.value);
+      window.localStorage.setItem("setting_factor", factorEl.value);
+      window.localStorage.setItem("setting_groupFactor", groupFactorEl.value);
+    }
+
+    function loadSettingsFromStorage() {
+      const rateEl = document.getElementById("rate");
+      const markupEl = document.getElementById("markup");
+      const factorEl = document.getElementById("factor");
+      const groupFactorEl = document.getElementById("groupFactor");
+
+      const rate = window.localStorage.getItem("setting_rate");
+      const markup = window.localStorage.getItem("setting_markup");
+      const factor = window.localStorage.getItem("setting_factor");
+      const groupFactor = window.localStorage.getItem("setting_groupFactor");
+
+      if (rate !== null) rateEl.value = rate;
+      if (markup !== null) markupEl.value = markup;
+      if (factor !== null) factorEl.value = factor;
+      if (groupFactor !== null) groupFactorEl.value = groupFactor;
+    }
+
+    function normalizeUsdValue(value) {
+      const n = parseFloat(String(value ?? "").trim());
+      if (isNaN(n) || n < 0) return 0;
+      return n;
+    }
+
+    function normalizeSizeWithDefaultHeight(size) {
+      const raw = String(size ?? "").trim();
+      if (!raw) return "";
+
+      const normalized = raw.replace(/\s+/g, "");
+      const parts = normalized.split("×");
+      if (parts.length === 2 && parts[0] && parts[1]) {
+        return parts[0] + "×" + parts[1] + "×900";
+      }
+      return raw;
+    }
+
+    function getRowOrderQty(row) {
+      const id = String(row?.dataset?.id || "").trim();
+      const el = row ? row.querySelector(".order-qty") : null;
+      const raw = el ? el.value : (id ? window.localStorage.getItem("order_qty_" + id) : "0");
+      const n = parseInt(String(raw ?? "0"), 10);
+      return isNaN(n) || n < 0 ? 0 : n;
+    }
+
+    function getRowOrderSize(row) {
+      const el = row ? row.querySelector(".order-size") : null;
+      const raw = el ? el.value : getRowSize(row);
+      return normalizeSizeWithDefaultHeight(raw);
+    }
+
+    function getRowOrderStainless(row) {
+      const id = String(row?.dataset?.id || "").trim();
+      const el = row ? row.querySelector(".order-stainless") : null;
+      const raw = el ? el.value : (id ? window.localStorage.getItem("order_stainless_" + id) : null);
+      return String(raw || "201/304").trim() || "201/304";
+    }
+
+    function getRowOrderThickness(row) {
+      const id = String(row?.dataset?.id || "").trim();
+      const el = row ? row.querySelector(".order-thickness") : null;
+      const raw = el ? el.value : (id ? window.localStorage.getItem("order_thickness_" + id) : null);
+      const v = String(raw || "0.8").trim();
+      return v || "0.8";
+    }
+
+    function getRowOrderNotes(row) {
+      const id = String(row?.dataset?.id || "").trim();
+      const el = row ? row.querySelector(".order-notes") : null;
+      const raw = el ? el.value : (id ? window.localStorage.getItem("order_notes_" + id) : null);
+      return String(raw || "");
+    }
+
+    function ensureOrderFieldsForRow(row) {
+      if (!row || !row.classList || !row.classList.contains("data-row")) return;
+
+      const id = String(row.dataset.id || "").trim();
+      if (!id) return;
+
+      if (row.querySelector(".order-qty")) return;
+
+      const hasSelect = !!row.querySelector(".row-select");
+      const tds = row.querySelectorAll("td");
+      const sizeCell = row.querySelector(".size-cell") || (tds[hasSelect ? 2 : 1] || null);
+      if (!sizeCell) return;
+
+      const defaultSize = getRowSize(row);
+      const storedQty = window.localStorage.getItem("order_qty_" + id);
+      const storedSize = window.localStorage.getItem("order_size_" + id);
+      const storedStainless = window.localStorage.getItem("order_stainless_" + id);
+      const storedThickness = window.localStorage.getItem("order_thickness_" + id);
+      const storedNotes = window.localStorage.getItem("order_notes_" + id);
+
+      const initialQty = storedQty !== null ? storedQty : "0";
+      const initialSize = storedSize !== null ? storedSize : defaultSize;
+      const initialStainless = storedStainless !== null ? storedStainless : "201/304";
+      const initialThickness = storedThickness !== null ? storedThickness : "0.8";
+      const initialNotes = storedNotes !== null ? storedNotes : "";
+
+      window.localStorage.setItem("order_qty_" + id, String(parseInt(initialQty, 10) || 0));
+      window.localStorage.setItem("order_size_" + id, String(initialSize || ""));
+      window.localStorage.setItem("order_stainless_" + id, String(initialStainless || "201/304"));
+      window.localStorage.setItem("order_thickness_" + id, String(initialThickness || "0.8"));
+      window.localStorage.setItem("order_notes_" + id, String(initialNotes || ""));
+
+      const tdQty = document.createElement("td");
+      tdQty.className = "col-order-qty";
+      const qtyInput = document.createElement("input");
+      qtyInput.type = "number";
+      qtyInput.min = "0";
+      qtyInput.step = "1";
+      qtyInput.className = "order-qty";
+      qtyInput.value = String(parseInt(initialQty, 10) || 0);
+      qtyInput.addEventListener("input", function () {
+        const next = parseInt(qtyInput.value, 10);
+        window.localStorage.setItem("order_qty_" + id, String(isNaN(next) || next < 0 ? 0 : next));
+        applyFilters();
+        saveBackupStateToStorage();
+      });
+      tdQty.appendChild(qtyInput);
+
+      const tdOrderSize = document.createElement("td");
+      tdOrderSize.className = "col-order-size";
+      const sizeInput = document.createElement("input");
+      sizeInput.type = "text";
+      sizeInput.className = "order-size";
+      sizeInput.value = String(initialSize || "");
+      sizeInput.addEventListener("input", function () {
+        window.localStorage.setItem("order_size_" + id, normalizeSizeWithDefaultHeight(sizeInput.value));
+        saveBackupStateToStorage();
+      });
+      tdOrderSize.appendChild(sizeInput);
+
+      const tdStainless = document.createElement("td");
+      tdStainless.className = "col-order-stainless";
+      const stainlessSelect = document.createElement("select");
+      stainlessSelect.className = "order-stainless";
+      const opt201 = document.createElement("option");
+      opt201.value = "201/304";
+      opt201.textContent = "201/304";
+      stainlessSelect.appendChild(opt201);
+      stainlessSelect.value = String(initialStainless || "201/304");
+      stainlessSelect.addEventListener("change", function () {
+        window.localStorage.setItem("order_stainless_" + id, String(stainlessSelect.value || "201/304"));
+        saveBackupStateToStorage();
+      });
+      tdStainless.appendChild(stainlessSelect);
+
+      const tdThickness = document.createElement("td");
+      tdThickness.className = "col-order-thickness";
+      const thicknessSelect = document.createElement("select");
+      thicknessSelect.className = "order-thickness";
+      ["0.7", "0.8", "0.9", "1.0", "1.2"].forEach(v => {
+        const o = document.createElement("option");
+        o.value = v;
+        o.textContent = v;
+        thicknessSelect.appendChild(o);
+      });
+      thicknessSelect.value = String(initialThickness || "0.8");
+      if (!thicknessSelect.value) thicknessSelect.value = "0.8";
+      thicknessSelect.addEventListener("change", function () {
+        window.localStorage.setItem("order_thickness_" + id, String(thicknessSelect.value || "0.8"));
+        saveBackupStateToStorage();
+      });
+      tdThickness.appendChild(thicknessSelect);
+
+      const tdNotes = document.createElement("td");
+      tdNotes.className = "col-order-notes";
+      const notesInput = document.createElement("input");
+      notesInput.type = "text";
+      notesInput.className = "order-notes";
+      notesInput.value = String(initialNotes || "");
+      notesInput.addEventListener("input", function () {
+        window.localStorage.setItem("order_notes_" + id, String(notesInput.value || ""));
+        saveBackupStateToStorage();
+      });
+      tdNotes.appendChild(notesInput);
+
+      const after = sizeCell.nextSibling;
+      row.insertBefore(tdQty, after);
+      row.insertBefore(tdOrderSize, after);
+      row.insertBefore(tdStainless, after);
+      row.insertBefore(tdThickness, after);
+      row.insertBefore(tdNotes, after);
+    }
+
+    function getFactoryOrderRows() {
+      return Array.from(document.querySelectorAll("tr.data-row")).filter(row => getRowOrderQty(row) > 0);
+    }
+
+    function clearFactoryOrder() {
+      const rows = Array.from(document.querySelectorAll("tr.data-row"));
+      rows.forEach(row => {
+        const id = String(row.dataset.id || "").trim();
+        if (!id) return;
+        const baseSize = getRowSize(row);
+
+        const qtyEl = row.querySelector(".order-qty");
+        if (qtyEl) qtyEl.value = "0";
+        window.localStorage.setItem("order_qty_" + id, "0");
+
+        const sizeEl = row.querySelector(".order-size");
+        if (sizeEl) sizeEl.value = baseSize;
+        window.localStorage.setItem("order_size_" + id, String(baseSize || ""));
+
+        const stEl = row.querySelector(".order-stainless");
+        if (stEl) stEl.value = "201/304";
+        window.localStorage.setItem("order_stainless_" + id, "201/304");
+
+        const thEl = row.querySelector(".order-thickness");
+        if (thEl) thEl.value = "0.8";
+        window.localStorage.setItem("order_thickness_" + id, "0.8");
+
+        const notesEl = row.querySelector(".order-notes");
+        if (notesEl) notesEl.value = "";
+        window.localStorage.setItem("order_notes_" + id, "");
+      });
+
+      applyFilters();
+      saveBackupStateToStorage();
+    }
+
+    function exportFactoryOrderToCSV() {
+      const rows = getFactoryOrderRows();
+      if (rows.length === 0) {
+        alert("אין פריטים בהזמנה (כמות להזמנה = 0).");
+        return;
+      }
+
+      const header = ["דגם", "מידה להזמנה", "כמות", "נירוסטה", "עובי", "הערות"];
+      const lines = [header.join(",")];
+
+      rows.forEach(row => {
+        const id = String(row.dataset.id || "").trim();
+        const orderSize = getRowOrderSize(row);
+        const qty = getRowOrderQty(row);
+        const stainless = getRowOrderStainless(row);
+        const thickness = getRowOrderThickness(row);
+        const notes = getRowOrderNotes(row);
+
+        const rowVals = [id, orderSize, qty, stainless, thickness, notes].map(v => {
+          const s = String(v ?? "");
+          const escaped = s.replace(/"/g, '""');
+          return '"' + escaped + '"';
+        });
+
+        lines.push(rowVals.join(","));
+      });
+
+      const csv = "\uFEFF" + lines.join("\n");
+      const blob = new Blob([csv], { type: "text/csv;charset=UTF-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "factory_order.csv";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    }
+
+    function shareFactoryOrderToWhatsApp() {
+      const rows = getFactoryOrderRows();
+      if (rows.length === 0) {
+        alert("אין פריטים בהזמנה (כמות להזמנה = 0).");
+        return;
+      }
+
+      const now = new Date();
+      const dateStr = now.toLocaleString("he-IL");
+
+      let text = "הזמנה למפעל\n";
+      text += "תאריך: " + dateStr + "\n\n";
+
+      rows.forEach(row => {
+        const id = String(row.dataset.id || "").trim();
+        const orderSize = getRowOrderSize(row);
+        const qty = getRowOrderQty(row);
+        const stainless = getRowOrderStainless(row);
+        const thickness = getRowOrderThickness(row);
+        const notes = getRowOrderNotes(row);
+
+        let line = id + " | " + orderSize + " | כמות: " + qty + " | " + stainless + " | עובי: " + thickness;
+        if (String(notes || "").trim()) line += " | הערות: " + String(notes).trim();
+        text += line + "\n";
+      });
+
+      const url = "https://wa.me/?text=" + encodeURIComponent(text);
+      window.open(url, "_blank");
+    }
+
+    function ensureSizeNormalizedForRow(row) {
+      if (!row || !row.classList || !row.classList.contains("data-row")) return;
+      const el = row.querySelector(".size-cell") || (row.querySelectorAll("td")[1] || null);
+      if (!el) return;
+      const next = normalizeSizeWithDefaultHeight(el.textContent);
+      if (next && next !== el.textContent.trim()) el.textContent = next;
+    }
+
+    function ensureUsdEditableForRow(row) {
+      if (!row || !row.classList || !row.classList.contains("data-row")) return;
+
+      const id = String(row.dataset.id || "").trim();
+      if (!id) return;
+
+      const priceCell = row.querySelector("td.price-usd");
+      if (!priceCell) return;
+
+      if (priceCell.querySelector(".price-usd-input")) return;
+
+      const storedUsd = window.localStorage.getItem("price_usd_" + id);
+      const baseUsd = storedUsd !== null ? storedUsd : row.dataset.priceUsd;
+      const normalized = normalizeUsdValue(baseUsd);
+      row.dataset.priceUsd = String(normalized);
+      window.localStorage.setItem("price_usd_" + id, String(normalized));
+
+      priceCell.textContent = "";
+      const input = document.createElement("input");
+      input.type = "number";
+      input.min = "0";
+      input.step = "0.01";
+      input.className = "price-usd-input";
+      input.value = String(normalized);
+
+      input.addEventListener("input", function () {
+        const next = normalizeUsdValue(input.value);
+        row.dataset.priceUsd = String(next);
+        window.localStorage.setItem("price_usd_" + id, String(next));
+        recalculate();
+        saveBackupStateToStorage();
+      });
+
+      priceCell.appendChild(input);
+    }
+
+    function enhanceTable() {
+      const headerRow = document.querySelector("#products-table thead tr");
+      if (!headerRow) return;
+
+      const wasEnhanced = headerRow.dataset.enhanced === "1";
+
+      if (!wasEnhanced) {
+        headerRow.dataset.enhanced = "1";
+
+        const thSelect = document.createElement("th");
+        thSelect.className = "col-select";
+        const selectAll = document.createElement("input");
+        selectAll.type = "checkbox";
+        selectAll.id = "selectAllVisible";
+        selectAll.addEventListener("change", function () {
+          selectAllVisibleRows(selectAll.checked);
+        });
+        thSelect.appendChild(selectAll);
+        headerRow.insertBefore(thSelect, headerRow.firstElementChild);
+
+        const thGroupPrice = document.createElement("th");
+        thGroupPrice.className = "col-price-group";
+        thGroupPrice.textContent = "מחיר רכישה קבוצתית";
+        const clientTh = Array.from(headerRow.querySelectorAll("th")).find(th => th.textContent.includes("מחיר ללקוח"));
+        if (clientTh) {
+          headerRow.insertBefore(thGroupPrice, clientTh.nextElementSibling);
+        } else {
+          headerRow.appendChild(thGroupPrice);
+        }
+
+        const sizeTh = Array.from(headerRow.querySelectorAll("th")).find(th => th.textContent.includes("מידה"));
+        if (sizeTh) {
+          const thOrderQty = document.createElement("th");
+          thOrderQty.className = "col-order-qty";
+          thOrderQty.textContent = "כמות להזמנה";
+
+          const thOrderSize = document.createElement("th");
+          thOrderSize.className = "col-order-size";
+          thOrderSize.textContent = "מידה להזמנה";
+
+          const thStainless = document.createElement("th");
+          thStainless.className = "col-order-stainless";
+          thStainless.textContent = "נירוסטה";
+
+          const thThickness = document.createElement("th");
+          thThickness.className = "col-order-thickness";
+          thThickness.textContent = "עובי";
+
+          const thNotes = document.createElement("th");
+          thNotes.className = "col-order-notes";
+          thNotes.textContent = "הערות";
+
+          const after = sizeTh.nextElementSibling;
+          headerRow.insertBefore(thOrderQty, after);
+          headerRow.insertBefore(thOrderSize, after);
+          headerRow.insertBefore(thStainless, after);
+          headerRow.insertBefore(thThickness, after);
+          headerRow.insertBefore(thNotes, after);
+        }
+
+        const thGroupFlag = document.createElement("th");
+        thGroupFlag.className = "col-group-flag";
+        thGroupFlag.textContent = "רכישה קבוצתית";
+        headerRow.appendChild(thGroupFlag);
+      }
+
+      const tbody = document.getElementById("products-body");
+      const rows = Array.from(tbody.querySelectorAll("tr"));
+      rows.forEach(row => {
+        if (row.classList.contains("category-row")) {
+          const td = row.querySelector("td");
+          if (td) td.colSpan = headerRow.children.length;
+          return;
+        }
+        if (!row.classList.contains("data-row")) return;
+
+        ensureUsdEditableForRow(row);
+        ensureSizeNormalizedForRow(row);
+        ensureOrderFieldsForRow(row);
+
+        if (row.querySelector(".row-select")) return;
+
+        const cells = Array.from(row.querySelectorAll("td"));
+        if (cells[0]) cells[0].classList.add("category-cell", "col-category");
+        if (cells[1]) cells[1].classList.add("size-cell", "col-size");
+
+        const usdCell = row.querySelector("td.price-usd");
+        if (usdCell) usdCell.classList.add("col-price-usd");
+        const ilsCell = row.querySelector("td.price-ils");
+        if (ilsCell) ilsCell.classList.add("col-price-ils");
+        const clientCell = row.querySelector("td.price-client");
+        if (clientCell) clientCell.classList.add("col-price-client");
+        const stockCell = row.querySelector("td.current-stock");
+        if (stockCell) stockCell.classList.add("col-current-stock");
+
+        const initialQtyInput = row.querySelector("input.initial-qty");
+        if (initialQtyInput && initialQtyInput.parentElement) initialQtyInput.parentElement.classList.add("col-initial-qty");
+        const sellQtyInput = row.querySelector("input.sell-qty");
+        if (sellQtyInput && sellQtyInput.parentElement) sellQtyInput.parentElement.classList.add("col-sell-qty");
+
+        const applyBtn = row.querySelector('button[onclick="applySale(this)"]');
+        const actionsTd = applyBtn ? applyBtn.closest("td") : null;
+        if (actionsTd) actionsTd.classList.add("col-actions");
+
+        const tdSelect = document.createElement("td");
+        tdSelect.className = "col-select";
+        const rowSelect = document.createElement("input");
+        rowSelect.type = "checkbox";
+        rowSelect.className = "row-select";
+        tdSelect.appendChild(rowSelect);
+        row.insertBefore(tdSelect, row.firstElementChild);
+
+        const tdGroupPrice = document.createElement("td");
+        tdGroupPrice.className = "num price-group col-price-group";
+        const priceClientCell = row.querySelector(".price-client");
+        if (priceClientCell) {
+          row.insertBefore(tdGroupPrice, priceClientCell.nextElementSibling);
+        } else {
+          row.appendChild(tdGroupPrice);
+        }
+
+        const tdGroupFlag = document.createElement("td");
+        tdGroupFlag.className = "col-group-flag";
+        const groupFlag = document.createElement("input");
+        groupFlag.type = "checkbox";
+        groupFlag.className = "group-flag";
+        const id = row.dataset.id;
+        const storedGroup = window.localStorage.getItem("group_flag_" + id);
+        if (storedGroup !== null) groupFlag.checked = storedGroup === "1";
+        groupFlag.addEventListener("change", function () {
+          window.localStorage.setItem("group_flag_" + id, groupFlag.checked ? "1" : "0");
+          applyFilters();
+          saveBackupStateToStorage();
+        });
+        tdGroupFlag.appendChild(groupFlag);
+        row.appendChild(tdGroupFlag);
+      });
+    }
+
+    function getRowCurrentStock(row) {
+      const id = row.dataset.id;
+      const storedCurrent = window.localStorage.getItem("stock_current_" + id);
+      const initialInput = row.querySelector(".initial-qty");
+      const initial = parseInt((initialInput && initialInput.value) || "0", 10) || 0;
+      if (storedCurrent === null) return initial;
+      const current = parseInt(storedCurrent, 10);
+      return isNaN(current) ? initial : current;
+    }
+
+    function isRowGroupPurchase(row) {
+      const id = row.dataset.id;
+      const storedGroup = window.localStorage.getItem("group_flag_" + id);
+      if (storedGroup !== null) return storedGroup === "1";
+      const flag = row.querySelector(".group-flag");
+      return !!(flag && flag.checked);
+    }
+
+    function getCategoryLabelForRow(row) {
+      let prev = row.previousElementSibling;
+      while (prev && !prev.classList.contains("category-row")) {
+        prev = prev.previousElementSibling;
+      }
+      if (!prev) return "";
+      const cell = prev.querySelector("td");
+      if (!cell) return "";
+      const en = cell.querySelector(".category-name-en");
+      const enText = en ? en.textContent : "";
+      return cell.textContent.replace(enText, "").replace(/\s+/g, " ").trim();
+    }
+
+    function getRowSize(row) {
+      const el = row.querySelector(".size-cell") || (row.querySelectorAll("td")[1] || null);
+      return el ? normalizeSizeWithDefaultHeight(el.textContent) : "";
+    }
+
+    function computeRowPrices(row) {
+      const rate = parseFloat(document.getElementById("rate").value) || 0;
+      const factor = parseFloat(document.getElementById("factor").value) || 0;
+      const groupFactor = parseFloat(document.getElementById("groupFactor").value) || 0;
+      const markupPercent = parseFloat(document.getElementById("markup").value) || 0;
+      const markupMultiplier = 1 + (markupPercent / 100);
+
+      const usd = parseFloat(row.dataset.priceUsd) || 0;
+      const baseIls = usd * rate;
+      const costIls = baseIls * markupMultiplier;
+
+      const priceInStock = (rate > 0 && factor > 0) ? (costIls * factor) : null;
+      const priceGroup = (rate > 0 && groupFactor > 0) ? (costIls * groupFactor) : null;
+
+      return {
+        priceInStock,
+        priceGroup
+      };
+    }
+
+    function updateModelCount() {
+      const el = document.getElementById("modelCount");
+      if (!el) return;
+      const rows = Array.from(document.querySelectorAll("tr.data-row"));
+      el.textContent = String(rows.length);
+    }
+
+    function applyFilters() {
+      const query = (document.getElementById("search").value || "").trim().toLowerCase();
+      const mode = document.getElementById("viewMode").value;
+      const onlySelected = document.getElementById("onlySelected").checked;
+      const onlyOrder = !!(document.getElementById("onlyOrder") && document.getElementById("onlyOrder").checked);
+
+      const tbody = document.getElementById("products-body");
+      const allRows = Array.from(tbody.querySelectorAll("tr"));
+
+      let currentCategoryRow = null;
+      let currentCategoryHasVisible = false;
+
+      const flushCategoryVisibility = () => {
+        if (currentCategoryRow) {
+          currentCategoryRow.style.display = currentCategoryHasVisible ? "" : "none";
+        }
+      };
+
+      allRows.forEach(row => {
+        if (row.classList.contains("category-row")) {
+          flushCategoryVisibility();
+          currentCategoryRow = row;
+          currentCategoryHasVisible = false;
+          return;
+        }
+
+        if (!row.classList.contains("data-row")) return;
+
+        const id = (row.dataset.id || "").toLowerCase();
+        const size = getRowSize(row).toLowerCase();
+        const category = getCategoryLabelForRow(row).toLowerCase();
+        const matchesText = !query || id.includes(query) || size.includes(query) || category.includes(query);
+
+        const currentStock = getRowCurrentStock(row);
+        const inStock = currentStock > 0;
+        const group = isRowGroupPurchase(row);
+
+        let matchesMode = true;
+        if (mode === "stock") matchesMode = inStock;
+        if (mode === "group") matchesMode = group;
+
+        let matchesSelected = true;
+        if (onlySelected) {
+          const sel = row.querySelector(".row-select");
+          matchesSelected = !!(sel && sel.checked);
+        }
+
+        let matchesOrder = true;
+        if (onlyOrder) {
+          matchesOrder = getRowOrderQty(row) > 0;
+        }
+
+        const visible = matchesText && matchesMode && matchesSelected && matchesOrder;
+        row.style.display = visible ? "" : "none";
+        if (visible) currentCategoryHasVisible = true;
+      });
+
+      flushCategoryVisibility();
+
+      updateModelCount();
+    }
+
+    function getSelectedDataRows() {
+      return Array.from(document.querySelectorAll("tr.data-row")).filter(row => {
+        const sel = row.querySelector(".row-select");
+        return !!(sel && sel.checked);
+      });
+    }
+
+    function selectAllVisibleRows(checked) {
+      const rows = Array.from(document.querySelectorAll("tr.data-row"));
+      rows.forEach(row => {
+        if (row.style.display === "none") return;
+        const sel = row.querySelector(".row-select");
+        if (sel) sel.checked = checked;
+      });
+      const headerSel = document.getElementById("selectAllVisible");
+      if (headerSel) headerSel.checked = checked;
+      applyFilters();
+      saveBackupStateToStorage();
+    }
+
+    function shareSelectedToWhatsApp() {
+      const rows = getSelectedDataRows();
+      if (rows.length === 0) {
+        alert("לא נבחרו דגמים לשיתוף.");
+        return;
+      }
+
+      const now = new Date();
+      const dateStr = now.toLocaleString("he-IL");
+      const leadTime = "60–90 ימי עסקים";
+
+      let text = "עדכון מלאי ומחירים\n";
+      text += "תאריך: " + dateStr + "\n\n";
+
+      rows.forEach(row => {
+        const category = getCategoryLabelForRow(row);
+        const size = getRowSize(row);
+        const stock = getRowCurrentStock(row);
+        const prices = computeRowPrices(row);
+        const priceInStock = prices.priceInStock === null ? "-" : Math.round(prices.priceInStock).toString();
+        const priceGroup = prices.priceGroup === null ? "-" : Math.round(prices.priceGroup).toString();
+        const group = isRowGroupPurchase(row);
+
+        let line = category + " | " + size + " | מלאי: " + stock + " | מחיר במלאי: ₪" + priceInStock;
+        line += " | מחיר רכישה קבוצתית: ₪" + (group ? priceGroup : "-") + " | אספקה: " + (group ? leadTime : "-");
+        text += line + "\n";
+      });
+
+      const url = "https://wa.me/?text=" + encodeURIComponent(text);
+      window.open(url, "_blank");
+    }
+
+    function exportSelectedToCSV() {
+      const rows = getSelectedDataRows();
+      if (rows.length === 0) {
+        alert("לא נבחרו דגמים ליצוא.");
+        return;
+      }
+
+      const leadTime = "60–90 ימי עסקים";
+      const header = [
+        "קטגוריה",
+        "מידה (ס\"מ)",
+        "מלאי נוכחי",
+        "מחיר במלאי (₪)",
+        "מחיר רכישה קבוצתית (₪)",
+        "זמן אספקה רכישה קבוצתית"
+      ];
+
+      const lines = [header.join(",")];
+
+      rows.forEach(row => {
+        const category = getCategoryLabelForRow(row);
+        const size = getRowSize(row);
+        const stock = getRowCurrentStock(row);
+        const prices = computeRowPrices(row);
+        const priceInStock = prices.priceInStock === null ? "" : Math.round(prices.priceInStock);
+        const priceGroup = prices.priceGroup === null ? "" : Math.round(prices.priceGroup);
+        const group = isRowGroupPurchase(row);
+
+        const rowVals = [
+          category,
+          size,
+          stock,
+          priceInStock,
+          group ? priceGroup : "",
+          group ? leadTime : ""
+        ].map(v => {
+          const s = String(v ?? "");
+          const escaped = s.replace(/"/g, '""');
+          return '"' + escaped + '"';
+        });
+
+        lines.push(rowVals.join(","));
+      });
+
+      const csv = "\uFEFF" + lines.join("\n");
+      const blob = new Blob([csv], { type: "text/csv;charset=UTF-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "catalog-manager_update.csv";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    }
+
+    async function downloadSelectedAsImage() {
+      const rows = getSelectedDataRows();
+      if (rows.length === 0) {
+        alert("לא נבחרו דגמים להורדת תמונה.");
+        return;
+      }
+      if (typeof window.html2canvas !== "function") {
+        alert("לא ניתן ליצור תמונה כרגע (html2canvas לא נטען).");
+        return;
+      }
+
+      const sandbox = document.getElementById("exportSandbox");
+      const now = new Date();
+      const dateStr = now.toLocaleString("he-IL");
+      const leadTime = "60–90 ימי עסקים";
+
+      const tableRows = rows.map(row => {
+        const category = getCategoryLabelForRow(row);
+        const size = getRowSize(row);
+        const stock = getRowCurrentStock(row);
+        const prices = computeRowPrices(row);
+        const priceInStock = prices.priceInStock === null ? "-" : Math.round(prices.priceInStock).toString();
+        const priceGroup = prices.priceGroup === null ? "-" : Math.round(prices.priceGroup).toString();
+        const group = isRowGroupPurchase(row);
+
+        return `
+          <tr>
+            <td>${escapeHtml(category)}</td>
+            <td class="num">${escapeHtml(size)}</td>
+            <td class="num">${stock}</td>
+            <td class="num">₪ ${priceInStock}</td>
+            <td class="num">${group ? "₪ " + priceGroup : "-"}</td>
+            <td>${group ? leadTime : "-"}</td>
+          </tr>
+        `;
+      }).join("");
+
+      sandbox.innerHTML = `
+        <h2>עדכון מלאי ומחירים</h2>
+        <div class="meta">תאריך: ${escapeHtml(dateStr)}</div>
+        <table>
+          <thead>
+            <tr>
+              <th>קטגוריה</th>
+              <th>מידה</th>
+              <th>מלאי נוכחי</th>
+              <th>מחיר במלאי</th>
+              <th>מחיר רכישה קבוצתית</th>
+              <th>אספקה</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${tableRows}
+          </tbody>
+        </table>
+      `;
+
+      const canvas = await window.html2canvas(sandbox, {
+        backgroundColor: "#ffffff",
+        scale: 2,
+        useCORS: true
+      });
+
+      const dataUrl = canvas.toDataURL("image/png");
+      const a = document.createElement("a");
+      a.href = dataUrl;
+      a.download = "catalog-manager_update.png";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    }
+
+    function readFileAsText(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(String(reader.result || ""));
+        reader.onerror = () => reject(reader.error || new Error("read error"));
+        reader.readAsText(file);
+      });
+    }
+
+    function exportBackupJSON() {
+      const payload = buildBackupObjectFromDom();
+      const json = JSON.stringify(payload, null, 2);
+      const blob = new Blob([json], { type: "application/json;charset=UTF-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "catalog-manager_backup.json";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+
+      saveBackupStateToStorage();
+    }
+
+    function triggerImportJSON() {
+      const input = document.getElementById("importJsonFile");
+      if (!input) return;
+      input.value = "";
+      input.click();
+    }
+
+    function triggerImportCSV() {
+      const input = document.getElementById("importCsvFile");
+      if (!input) return;
+      input.value = "";
+      input.click();
+    }
+
+    function buildBackupObjectFromDom() {
+      const now = new Date();
+      const settings = {
+        rate: document.getElementById("rate").value,
+        markup: document.getElementById("markup").value,
+        factor: document.getElementById("factor").value,
+        groupFactor: document.getElementById("groupFactor").value
+      };
+
+      let currentCategoryHe = "";
+      let currentCategoryEn = "";
+
+      const tbody = document.getElementById("products-body");
+      const allRows = tbody ? Array.from(tbody.querySelectorAll("tr")) : [];
+
+      const products = [];
+
+      allRows.forEach(row => {
+        if (row.classList.contains("category-row")) {
+          const cell = row.querySelector("td");
+          if (!cell) {
+            currentCategoryHe = "";
+            currentCategoryEn = "";
+            return;
+          }
+          const en = cell.querySelector(".category-name-en");
+          currentCategoryEn = en ? en.textContent.replace(/[()]/g, "").trim() : "";
+          const enText = en ? en.textContent : "";
+          currentCategoryHe = cell.textContent.replace(enText, "").replace(/\s+/g, " ").trim();
+          return;
+        }
+
+        if (!row.classList.contains("data-row")) return;
+
+        const id = String(row.dataset.id || "").trim();
+        const priceEl = row.querySelector(".price-usd-input");
+        const priceUsd = String(priceEl ? priceEl.value : (row.dataset.priceUsd || "")).trim();
+        const size = getRowSize(row);
+        const rowCategory = (() => {
+          const cell = row.querySelector(".category-cell");
+          return cell ? cell.textContent.trim() : "";
+        })();
+
+        const initialInput = row.querySelector(".initial-qty");
+        const initialQty = initialInput ? (parseInt(initialInput.value || "0", 10) || 0) : 0;
+        const currentQty = getRowCurrentStock(row);
+        const groupFlag = isRowGroupPurchase(row);
+        const selectedEl = row.querySelector(".row-select");
+        const selected = !!(selectedEl && selectedEl.checked);
+
+        products.push({
+          categoryHe: currentCategoryHe,
+          categoryEn: currentCategoryEn,
+          rowCategory,
+          id,
+          size,
+          priceUsd,
+          orderQty: getRowOrderQty(row),
+          orderSize: getRowOrderSize(row),
+          orderStainless: getRowOrderStainless(row),
+          orderThickness: getRowOrderThickness(row),
+          orderNotes: getRowOrderNotes(row),
+          initialQty,
+          currentQty,
+          groupFlag,
+          selected
+        });
+      });
+
+      return {
+        version: 1,
+        exportedAt: now.toISOString(),
+        settings,
+        products
+      };
+    }
+
+    function saveBackupStateToStorage() {
+      try {
+        const payload = buildBackupObjectFromDom();
+        window.localStorage.setItem("backup_state_v1", JSON.stringify(payload));
+      } catch (err) {
+      }
+    }
+
+    function loadBackupStateFromStorage() {
+      const raw = window.localStorage.getItem("backup_state_v1");
+      if (!raw) return null;
+      try {
+        return JSON.parse(raw);
+      } catch (err) {
+        return null;
+      }
+    }
+
+    function getDefaultNewModelsV1() {
+      const mk = (categoryHe, categoryEn, rowCategory, id, size, priceUsd = 0) => ({
+        categoryHe,
+        categoryEn,
+        rowCategory,
+        id,
+        size: normalizeSizeWithDefaultHeight(size),
+        priceUsd: normalizeUsdValue(priceUsd),
+        initialQty: 0,
+        currentQty: 0,
+        groupFlag: true,
+        selected: false
+      });
+
+      return [
+        mk("כיור יחיד", "Single Sink", "Single Sink", "SINK-SINGLE-500-500", "500×500×900"),
+        mk("כיור יחיד", "Single Sink", "Single Sink", "SINK-SINGLE-600-600", "600×600×900"),
+        mk("כיור יחיד", "Single Sink", "Single Sink", "SINK-SINGLE-700-700", "700×700×900"),
+        mk("כיור יחיד", "Single Sink", "Single Sink", "SINK-SINGLE-750-750", "750×750×900"),
+
+        mk("כיור כפול/יחיד עם משטח", "Double Sink/Single Sink with Board", "Double Sink/Single Sink with Board", "SINK-BOARD-1000-500", "1000×500×900"),
+        mk("כיור כפול/יחיד עם משטח", "Double Sink/Single Sink with Board", "Double Sink/Single Sink with Board", "SINK-BOARD-1200-600", "1200×600×900"),
+        mk("כיור כפול/יחיד עם משטח", "Double Sink/Single Sink with Board", "Double Sink/Single Sink with Board", "SINK-BOARD-1200-700", "1200×700×900"),
+        mk("כיור כפול/יחיד עם משטח", "Double Sink/Single Sink with Board", "Double Sink/Single Sink with Board", "SINK-BOARD-1400-700", "1400×700×900"),
+        mk("כיור כפול/יחיד עם משטח", "Double Sink/Single Sink with Board", "Double Sink/Single Sink with Board", "SINK-BOARD-1200-750", "1200×750×900"),
+        mk("כיור כפול/יחיד עם משטח", "Double Sink/Single Sink with Board", "Double Sink/Single Sink with Board", "SINK-BOARD-1500-700", "1500×700×900"),
+        mk("כיור כפול/יחיד עם משטח", "Double Sink/Single Sink with Board", "Double Sink/Single Sink with Board", "SINK-BOARD-1500-750", "1500×750×900"),
+
+        mk("כיור משולש/כפול עם משטח", "Triple Sink/Double Sink with Board", "Triple Sink/Double Sink with Board", "SINK-TRIPLE-1400-500", "1400×500×900"),
+        mk("כיור משולש/כפול עם משטח", "Triple Sink/Double Sink with Board", "Triple Sink/Double Sink with Board", "SINK-TRIPLE-1500-500", "1500×500×900"),
+        mk("כיור משולש/כפול עם משטח", "Triple Sink/Double Sink with Board", "Triple Sink/Double Sink with Board", "SINK-TRIPLE-1500-600", "1500×600×900"),
+        mk("כיור משולש/כפול עם משטח", "Triple Sink/Double Sink with Board", "Triple Sink/Double Sink with Board", "SINK-TRIPLE-1800-600", "1800×600×900"),
+        mk("כיור משולש/כפול עם משטח", "Triple Sink/Double Sink with Board", "Triple Sink/Double Sink with Board", "SINK-TRIPLE-1800-700", "1800×700×900"),
+        mk("כיור משולש/כפול עם משטח", "Triple Sink/Double Sink with Board", "Triple Sink/Double Sink with Board", "SINK-TRIPLE-1800-750", "1800×750×900"),
+
+        mk("2 שכבות – שולחן עבודה", "2-LAYERS WORKTABLE", "2-LAYERS WORKTABLE", "2L-60-80-90", "60×80×90", 53.57),
+        mk("2 שכבות – שולחן עבודה", "2-LAYERS WORKTABLE", "2-LAYERS WORKTABLE", "2L-80-80-90", "80×80×90", 57.14),
+        mk("2 שכבות – שולחן עבודה", "2-LAYERS WORKTABLE", "2-LAYERS WORKTABLE", "2L-100-80-90", "100×80×90", 60.71),
+        mk("2 שכבות – שולחן עבודה", "2-LAYERS WORKTABLE", "2-LAYERS WORKTABLE", "2L-120-80-90", "120×80×90", 66.07),
+        mk("2 שכבות – שולחן עבודה", "2-LAYERS WORKTABLE", "2-LAYERS WORKTABLE", "2L-140-80-90", "140×80×90", 71.43),
+        mk("2 שכבות – שולחן עבודה", "2-LAYERS WORKTABLE", "2-LAYERS WORKTABLE", "2L-160-80-90", "160×80×90", 76.79),
+        mk("2 שכבות – שולחן עבודה", "2-LAYERS WORKTABLE", "2-LAYERS WORKTABLE", "2L-180-80-90", "180×80×90", 82.14),
+        mk("2 שכבות – שולחן עבודה", "2-LAYERS WORKTABLE", "2-LAYERS WORKTABLE", "2L-200-80-90", "200×80×90", 89.29),
+
+        mk("3 שכבות – שולחן עבודה", "3-LAYERS WORKTABLE", "3-LAYERS WORKTABLE", "3L-60-80-90", "60×80×90", 62.50),
+        mk("3 שכבות – שולחן עבודה", "3-LAYERS WORKTABLE", "3-LAYERS WORKTABLE", "3L-80-80-90", "80×80×90", 66.07),
+        mk("3 שכבות – שולחן עבודה", "3-LAYERS WORKTABLE", "3-LAYERS WORKTABLE", "3L-100-80-90", "100×80×90", 69.64),
+        mk("3 שכבות – שולחן עבודה", "3-LAYERS WORKTABLE", "3-LAYERS WORKTABLE", "3L-120-80-90", "120×80×90", 76.79),
+        mk("3 שכבות – שולחן עבודה", "3-LAYERS WORKTABLE", "3-LAYERS WORKTABLE", "3L-140-80-90", "140×80×90", 82.14),
+        mk("3 שכבות – שולחן עבודה", "3-LAYERS WORKTABLE", "3-LAYERS WORKTABLE", "3L-160-80-90", "160×80×90", 91.07),
+        mk("3 שכבות – שולחן עבודה", "3-LAYERS WORKTABLE", "3-LAYERS WORKTABLE", "3L-180-80-90", "180×80×90", 96.43),
+        mk("3 שכבות – שולחן עבודה", "3-LAYERS WORKTABLE", "3-LAYERS WORKTABLE", "3L-200-80-90", "200×80×90", 105.36),
+
+        mk("שולחן עבודה – 2/3 שכבות", "Worktable", "2/3 layers catalog-manager worktable", "WT-60-60-85", "60×60×85"),
+        mk("שולחן עבודה – 2/3 שכבות", "Worktable", "2/3 layers catalog-manager worktable", "WT-80-60-85", "80×60×85"),
+        mk("שולחן עבודה – 2/3 שכבות", "Worktable", "2/3 layers catalog-manager worktable", "WT-100-60-85", "100×60×85"),
+        mk("שולחן עבודה – 2/3 שכבות", "Worktable", "2/3 layers catalog-manager worktable", "WT-120-60-85", "120×60×85"),
+        mk("שולחן עבודה – 2/3 שכבות", "Worktable", "2/3 layers catalog-manager worktable", "WT-140-60-85", "140×60×85"),
+        mk("שולחן עבודה – 2/3 שכבות", "Worktable", "2/3 layers catalog-manager worktable", "WT-150-60-85", "150×60×85"),
+        mk("שולחן עבודה – 2/3 שכבות", "Worktable", "2/3 layers catalog-manager worktable", "WT-160-60-85", "160×60×85"),
+        mk("שולחן עבודה – 2/3 שכבות", "Worktable", "2/3 layers catalog-manager worktable", "WT-180-60-85", "180×60×85"),
+        mk("שולחן עבודה – 2/3 שכבות", "Worktable", "2/3 layers catalog-manager worktable", "WT-200-60-85", "200×60×85"),
+
+        mk("שולחן עבודה – 2/3 שכבות", "Worktable", "2/3 layers catalog-manager worktable", "WT-60-70-85", "60×70×85"),
+        mk("שולחן עבודה – 2/3 שכבות", "Worktable", "2/3 layers catalog-manager worktable", "WT-80-70-85", "80×70×85"),
+        mk("שולחן עבודה – 2/3 שכבות", "Worktable", "2/3 layers catalog-manager worktable", "WT-100-70-85", "100×70×85"),
+        mk("שולחן עבודה – 2/3 שכבות", "Worktable", "2/3 layers catalog-manager worktable", "WT-120-70-85", "120×70×85"),
+        mk("שולחן עבודה – 2/3 שכבות", "Worktable", "2/3 layers catalog-manager worktable", "WT-140-70-85", "140×70×85"),
+        mk("שולחן עבודה – 2/3 שכבות", "Worktable", "2/3 layers catalog-manager worktable", "WT-150-70-85", "150×70×85"),
+        mk("שולחן עבודה – 2/3 שכבות", "Worktable", "2/3 layers catalog-manager worktable", "WT-160-70-85", "160×70×85"),
+        mk("שולחן עבודה – 2/3 שכבות", "Worktable", "2/3 layers catalog-manager worktable", "WT-180-70-85", "180×70×85"),
+        mk("שולחן עבודה – 2/3 שכבות", "Worktable", "2/3 layers catalog-manager worktable", "WT-200-70-85", "200×70×85"),
+
+        mk("שולחן עבודה – 2/3 שכבות", "Worktable", "2/3 layers catalog-manager worktable", "WT-80-80-85", "80×80×85"),
+        mk("שולחן עבודה – 2/3 שכבות", "Worktable", "2/3 layers catalog-manager worktable", "WT-100-80-85", "100×80×85"),
+        mk("שולחן עבודה – 2/3 שכבות", "Worktable", "2/3 layers catalog-manager worktable", "WT-120-80-85", "120×80×85"),
+        mk("שולחן עבודה – 2/3 שכבות", "Worktable", "2/3 layers catalog-manager worktable", "WT-140-80-85", "140×80×85"),
+        mk("שולחן עבודה – 2/3 שכבות", "Worktable", "2/3 layers catalog-manager worktable", "WT-150-80-85", "150×80×85"),
+        mk("שולחן עבודה – 2/3 שכבות", "Worktable", "2/3 layers catalog-manager worktable", "WT-160-80-85", "160×80×85"),
+        mk("שולחן עבודה – 2/3 שכבות", "Worktable", "2/3 layers catalog-manager worktable", "WT-180-80-85", "180×80×85"),
+        mk("שולחן עבודה – 2/3 שכבות", "Worktable", "2/3 layers catalog-manager worktable", "WT-200-80-85", "200×80×85"),
+
+        mk("עגלות מטבח", "Kitchen Trolley", "2 Tier - Small", "TROLLEY-2T-S-400-750-800", "400×750×800"),
+        mk("עגלות מטבח", "Kitchen Trolley", "2 Tier - Medium", "TROLLEY-2T-M-450-880-930", "450×880×930"),
+        mk("עגלות מטבח", "Kitchen Trolley", "2 Tier - Large", "TROLLEY-2T-L-500-930-920", "500×930×920"),
+        mk("עגלות מטבח", "Kitchen Trolley", "3 Tier - Small", "TROLLEY-3T-S-400-750-800", "400×750×800"),
+        mk("עגלות מטבח", "Kitchen Trolley", "3 Tier - Medium", "TROLLEY-3T-M-450-880-930", "450×880×930"),
+        mk("עגלות מטבח", "Kitchen Trolley", "3 Tier - Large", "TROLLEY-3T-L-500-930-920", "500×930×920"),
+        mk("עגלות מטבח", "Kitchen Trolley", "2 Tier - XL", "TROLLEY-2T-XL-550-1000-930", "550×1000×930"),
+        mk("עגלות מטבח", "Kitchen Trolley", "3 Tier - XL", "TROLLEY-3T-XL-550-1000-930", "550×1000×930"),
+        mk("עגלות מטבח", "Kitchen Trolley", "4 Tier - XL", "TROLLEY-4T-XL-550-1000-1200", "550×1000×1200"),
+        mk("עגלות מטבח", "Kitchen Trolley", "3 Tier - XXL", "TROLLEY-3T-XXL-700-1100-930", "700×1100×930"),
+        mk("עגלות מטבח", "Kitchen Trolley", "4 Tier - XXL", "TROLLEY-4T-XXL-700-1100-1200", "700×1100×1200"),
+        mk("עגלות מטבח", "Kitchen Trolley", "Small (Plastic tiers)", "TROLLEY-PLASTIC-S-310-760-780", "310×760×780"),
+        mk("עגלות מטבח", "Kitchen Trolley", "Medium (Plastic tiers)", "TROLLEY-PLASTIC-M-410-810-930", "410×810×930"),
+        mk("עגלות מטבח", "Kitchen Trolley", "Large (Plastic tiers)", "TROLLEY-PLASTIC-L-500-900-930", "500×900×930"),
+
+        mk("עגלת משטח מתקפלת", "Folding Flat Cart", "Folding Flat Cart", "FLAT-FOLD-500-750-850", "500×750×850"),
+        mk("עגלת משטח מתקפלת", "Folding Flat Cart", "Folding Flat Cart", "FLAT-FOLD-500-1000-850", "500×1000×850"),
+        mk("עגלת משטח מתקפלת", "Folding Flat Cart", "Folding Flat Cart", "FLAT-FOLD-550-800-850", "550×800×850"),
+        mk("עגלת משטח מתקפלת", "Folding Flat Cart", "Folding Flat Cart", "FLAT-FOLD-550-900-850", "550×900×850"),
+        mk("עגלת משטח מתקפלת", "Folding Flat Cart", "Folding Flat Cart", "FLAT-FOLD-550-1000-850", "550×1000×850"),
+        mk("עגלת משטח מתקפלת", "Folding Flat Cart", "Folding Flat Cart", "FLAT-FOLD-550-1200-850", "550×1200×850"),
+        mk("עגלת משטח מתקפלת", "Folding Flat Cart", "Folding Flat Cart", "FLAT-FOLD-600-800-850", "600×800×850"),
+        mk("עגלת משטח מתקפלת", "Folding Flat Cart", "Folding Flat Cart", "FLAT-FOLD-600-900-850", "600×900×850"),
+        mk("עגלת משטח מתקפלת", "Folding Flat Cart", "Folding Flat Cart", "FLAT-FOLD-600-1000-850", "600×1000×850"),
+        mk("עגלת משטח מתקפלת", "Folding Flat Cart", "Folding Flat Cart", "FLAT-FOLD-600-1200-850", "600×1200×850"),
+
+        mk("עגלת משטח מורכבת", "Assembled Flat Cart", "Assembled Flat Cart", "FLAT-ASSEM-550-800-850", "550×800×850"),
+        mk("עגלת משטח מורכבת", "Assembled Flat Cart", "Assembled Flat Cart", "FLAT-ASSEM-550-900-850", "550×900×850"),
+        mk("עגלת משטח מורכבת", "Assembled Flat Cart", "Assembled Flat Cart", "FLAT-ASSEM-550-1000-850", "550×1000×850"),
+        mk("עגלת משטח מורכבת", "Assembled Flat Cart", "Assembled Flat Cart", "FLAT-ASSEM-600-900-850", "600×900×850"),
+        mk("עגלת משטח מורכבת", "Assembled Flat Cart", "Assembled Flat Cart", "FLAT-ASSEM-600-1000-850", "600×1000×850"),
+        mk("עגלת משטח מורכבת", "Assembled Flat Cart", "Assembled Flat Cart", "FLAT-ASSEM-800-1200-850", "800×1200×850"),
+
+        mk("עגלת תבניות", "Pan Cart", "12 Tiers (Type A)", "PAN-A-12-630-460-1400", "630×460×1400"),
+        mk("עגלת תבניות", "Pan Cart", "15 Tiers (Type A)", "PAN-A-15-630-460-1700", "630×460×1700"),
+        mk("עגלת תבניות", "Pan Cart", "24 Tiers (Type A)", "PAN-A-24-630-865-1400", "630×865×1400"),
+        mk("עגלת תבניות", "Pan Cart", "30 Tiers (Type A)", "PAN-A-30-630-865-1700", "630×865×1700"),
+        mk("עגלת תבניות", "Pan Cart", "12 Tiers (Type B)", "PAN-B-12-630-460-1400", "630×460×1400"),
+        mk("עגלת תבניות", "Pan Cart", "15 Tiers (Type B)", "PAN-B-15-630-460-1700", "630×460×1700"),
+        mk("עגלת תבניות", "Pan Cart", "12 Tiers (Type C)", "PAN-C-12-630-460-1400", "630×460×1400"),
+        mk("עגלת תבניות", "Pan Cart", "15 Tiers (Type C)", "PAN-C-15-630-460-1700", "630×460×1700"),
+        mk("עגלת תבניות", "Pan Cart", "24 Tiers (Type C)", "PAN-C-24-630-865-1400", "630×865×1400"),
+        mk("עגלת תבניות", "Pan Cart", "30 Tiers (Type C)", "PAN-C-30-630-865-1700", "630×865×1700"),
+
+        mk("מדפי מטבח", "Kitchen Shelf", "4 Tiers - 1200", "SHELF-4T-1200-500-1550", "1200×500×1550", 85),
+        mk("מדפי מטבח", "Kitchen Shelf", "4 Tiers - 1500", "SHELF-4T-1500-500-1550", "1500×500×1550", 93),
+        mk("מדפי מטבח", "Kitchen Shelf", "4 Tiers - 1800", "SHELF-4T-1800-500-1550", "1800×500×1550", 105),
+        mk("מדפי מטבח", "Kitchen Shelf", "5 Tiers - 1200", "SHELF-5T-1200-500-1800", "1200×500×1800", 102),
+        mk("מדפי מטבח", "Kitchen Shelf", "5 Tiers - 1500", "SHELF-5T-1500-500-1800", "1500×500×1800", 111),
+        mk("מדפי מטבח", "Kitchen Shelf", "5 Tiers - 1800", "SHELF-5T-1800-500-1800", "1800×500×1800", 122),
+
+        mk("ארון שולחן עבודה", "Worktable Cabinet", "Worktable Cabinet", "CAB-800-600-800", "800×600×800"),
+        mk("ארון שולחן עבודה", "Worktable Cabinet", "Worktable Cabinet", "CAB-1000-600-800", "1000×600×800"),
+        mk("ארון שולחן עבודה", "Worktable Cabinet", "Worktable Cabinet", "CAB-1200-600-800", "1200×600×800"),
+        mk("ארון שולחן עבודה", "Worktable Cabinet", "Worktable Cabinet", "CAB-1500-600-800", "1500×600×800"),
+        mk("ארון שולחן עבודה", "Worktable Cabinet", "Worktable Cabinet", "CAB-1800-600-800", "1800×600×800"),
+        mk("ארון שולחן עבודה", "Worktable Cabinet", "Worktable Cabinet", "CAB-800-800-800", "800×800×800"),
+        mk("ארון שולחן עבודה", "Worktable Cabinet", "Worktable Cabinet", "CAB-1000-800-800", "1000×800×800"),
+        mk("ארון שולחן עבודה", "Worktable Cabinet", "Worktable Cabinet", "CAB-1200-800-800", "1200×800×800"),
+        mk("ארון שולחן עבודה", "Worktable Cabinet", "Worktable Cabinet", "CAB-1500-800-800", "1500×800×800"),
+        mk("ארון שולחן עבודה", "Worktable Cabinet", "Worktable Cabinet", "CAB-1800-800-800", "1800×800×800"),
+
+        mk("מלכודת שומן", "Grease Trap", "JTD-Y50", "GREASE-JTD-Y50-500-290-290", "500×290×290"),
+        mk("מלכודת שומן", "Grease Trap", "JTD-Y60", "GREASE-JTD-Y60-600-390-290", "600×390×290"),
+        mk("מלכודת שומן", "Grease Trap", "JTD-Y80", "GREASE-JTD-Y80-800-400-400", "800×400×400"),
+        mk("מלכודת שומן", "Grease Trap", "JTD-Y100", "GREASE-JTD-Y100-1000-600-400", "1000×600×400"),
+        mk("מלכודת שומן", "Grease Trap", "JTD-Y120-1", "GREASE-JTD-Y120-1-1200-600-450", "1200×600×450"),
+        mk("מלכודת שומן", "Grease Trap", "JTD-Y120-2", "GREASE-JTD-Y120-2-1200-600-600", "1200×600×600")
+      ];
+    }
+
+    function applyDefaultNewModelsOnceIfNeeded() {
+      const base = buildBackupObjectFromDom();
+      const existingIds = new Set(base.products.map(p => p.id));
+      const defaults = getDefaultNewModelsV1();
+
+      const already = window.localStorage.getItem("default_new_models_v1") === "1";
+      const missingCount = defaults.reduce((acc, p) => (existingIds.has(p.id) ? acc : acc + 1), 0);
+      if (already && missingCount === 0) return;
+
+      let changed = false;
+      const merged = base.products.slice();
+      defaults.forEach(p => {
+        if (!existingIds.has(p.id)) {
+          merged.push(p);
+          changed = true;
+        }
+      });
+
+      if (!changed) {
+        window.localStorage.setItem("default_new_models_v1", "1");
+        return;
+      }
+
+      applyBackupObjectToDom({
+        settings: base.settings,
+        products: merged
+      });
+      window.localStorage.setItem("default_new_models_v1", "1");
+    }
+
+    function clearStoredProductState() {
+      const prefixes = ["stock_initial_", "stock_current_", "group_flag_", "price_usd_", "order_qty_", "order_size_", "order_stainless_", "order_thickness_", "order_notes_"];
+      const keys = [];
+      for (let i = 0; i < window.localStorage.length; i++) {
+        const k = window.localStorage.key(i);
+        if (!k) continue;
+        if (prefixes.some(p => k.startsWith(p))) keys.push(k);
+      }
+      keys.forEach(k => window.localStorage.removeItem(k));
+    }
+
+    function truthyFlag(value) {
+      const s = String(value ?? "").trim().toLowerCase();
+      return s === "1" || s === "true" || s === "כן" || s === "yes" || s === "y";
+    }
+
+    function cssEscapeValue(value) {
+      if (window.CSS && typeof window.CSS.escape === "function") return window.CSS.escape(String(value));
+      return String(value).replace(/[^a-zA-Z0-9_\-]/g, "\\$&");
+    }
+
+    function applyBackupObjectToDom(backup) {
+      if (Array.isArray(backup)) {
+        backup = { products: backup };
+      }
+      if (!backup || typeof backup !== "object") {
+        alert("קובץ יבוא לא תקין.");
+        return;
+      }
+
+      const products = Array.isArray(backup.products) ? backup.products : [];
+      const settings = backup.settings || null;
+
+      clearStoredProductState();
+
+      if (settings && typeof settings === "object") {
+        if (settings.rate != null) window.localStorage.setItem("setting_rate", String(settings.rate));
+        if (settings.markup != null) window.localStorage.setItem("setting_markup", String(settings.markup));
+        if (settings.factor != null) window.localStorage.setItem("setting_factor", String(settings.factor));
+        if (settings.groupFactor != null) window.localStorage.setItem("setting_groupFactor", String(settings.groupFactor));
+      }
+
+      loadSettingsFromStorage();
+
+      products.forEach(p => {
+        if (!p || !p.id) return;
+        const initial = parseInt(p.initialQty, 10);
+        const current = parseInt(p.currentQty, 10);
+        const usd = normalizeUsdValue(p.priceUsd);
+        const orderQty = parseInt(p.orderQty, 10);
+        const orderSize = normalizeSizeWithDefaultHeight(p.orderSize || p.size);
+        const orderStainless = String(p.orderStainless || "201/304");
+        const orderThickness = String(p.orderThickness || "0.8");
+        const orderNotes = String(p.orderNotes || "");
+        window.localStorage.setItem("stock_initial_" + p.id, isNaN(initial) || initial < 0 ? 0 : initial);
+        window.localStorage.setItem("stock_current_" + p.id, isNaN(current) || current < 0 ? 0 : current);
+        window.localStorage.setItem("group_flag_" + p.id, truthyFlag(p.groupFlag) ? "1" : "0");
+        window.localStorage.setItem("price_usd_" + p.id, String(usd));
+        window.localStorage.setItem("order_qty_" + p.id, String(isNaN(orderQty) || orderQty < 0 ? 0 : orderQty));
+        window.localStorage.setItem("order_size_" + p.id, String(orderSize || ""));
+        window.localStorage.setItem("order_stainless_" + p.id, String(orderStainless || "201/304"));
+        window.localStorage.setItem("order_thickness_" + p.id, String(orderThickness || "0.8"));
+        window.localStorage.setItem("order_notes_" + p.id, String(orderNotes || ""));
+      });
+
+      rebuildProductsTable(products);
+      enhanceTable();
+      loadStockFromStorage();
+
+      products.forEach(p => {
+        if (!p || !p.id || !truthyFlag(p.selected)) return;
+        const row = document.querySelector('tr.data-row[data-id="' + cssEscapeValue(p.id) + '"]');
+        if (!row) return;
+        const sel = row.querySelector(".row-select");
+        if (sel) sel.checked = true;
+      });
+
+      recalculate();
+      applyFilters();
+
+      saveBackupStateToStorage();
+    }
+
+    function rebuildProductsTable(products) {
+      const tbody = document.getElementById("products-body");
+      if (!tbody) return;
+      tbody.innerHTML = "";
+
+      const groups = new Map();
+      products.forEach(p => {
+        if (!p) return;
+        const he = String(p.categoryHe || "").trim();
+        const en = String(p.categoryEn || "").trim();
+        const key = he + "||" + en;
+        if (!groups.has(key)) groups.set(key, { categoryHe: he, categoryEn: en, items: [] });
+        groups.get(key).items.push(p);
+      });
+
+      const baseHeaderCount = document.querySelectorAll("table thead tr th").length || 9;
+
+      Array.from(groups.values()).forEach(group => {
+        const catRow = document.createElement("tr");
+        catRow.className = "category-row";
+        const td = document.createElement("td");
+        td.colSpan = baseHeaderCount;
+        const he = String(group.categoryHe || "").trim();
+        const en = String(group.categoryEn || "").trim();
+        const title = he || en || "קטגוריה";
+        td.innerHTML = escapeHtml(title) + (en ? ' <span class="category-name-en">(' + escapeHtml(en) + ')</span>' : "");
+        catRow.appendChild(td);
+        tbody.appendChild(catRow);
+
+        group.items.forEach(item => {
+          const row = document.createElement("tr");
+          row.className = "data-row";
+          const id = String(item.id || "").trim();
+          row.dataset.id = id;
+          const usdNumber = parseFloat(String(item.priceUsd ?? "").trim());
+          const normalizedUsd = isNaN(usdNumber) ? 0 : usdNumber;
+          row.dataset.priceUsd = String(normalizedUsd);
+
+          const tdCategory = document.createElement("td");
+          tdCategory.textContent = String(item.rowCategory || item.categoryEn || "").trim();
+
+          const tdSize = document.createElement("td");
+          tdSize.textContent = String(item.size || "").trim();
+
+          const tdUsd = document.createElement("td");
+          tdUsd.className = "num price-usd";
+          tdUsd.textContent = String(normalizedUsd);
+
+          const tdIls = document.createElement("td");
+          tdIls.className = "num price-ils";
+
+          const tdClient = document.createElement("td");
+          tdClient.className = "num price-client";
+
+          const tdInitial = document.createElement("td");
+          const initialInput = document.createElement("input");
+          initialInput.type = "number";
+          initialInput.min = "0";
+          initialInput.step = "1";
+          initialInput.className = "initial-qty";
+          initialInput.value = String(item.initialQty ?? "0");
+          tdInitial.appendChild(initialInput);
+
+          const tdCurrent = document.createElement("td");
+          tdCurrent.className = "stock-label num current-stock";
+
+          const tdSell = document.createElement("td");
+          const sellInput = document.createElement("input");
+          sellInput.type = "number";
+          sellInput.min = "0";
+          sellInput.step = "1";
+          sellInput.className = "sell-qty";
+          sellInput.value = "0";
+          tdSell.appendChild(sellInput);
+
+          const tdActions = document.createElement("td");
+          const btnApply = document.createElement("button");
+          btnApply.type = "button";
+          btnApply.textContent = "עדכן";
+          btnApply.setAttribute("onclick", "applySale(this)");
+          const btnReset = document.createElement("button");
+          btnReset.type = "button";
+          btnReset.className = "small";
+          btnReset.textContent = "איפוס";
+          btnReset.setAttribute("onclick", "resetStock(this)");
+          tdActions.appendChild(btnApply);
+          tdActions.appendChild(btnReset);
+
+          row.appendChild(tdCategory);
+          row.appendChild(tdSize);
+          row.appendChild(tdUsd);
+          row.appendChild(tdIls);
+          row.appendChild(tdClient);
+          row.appendChild(tdInitial);
+          row.appendChild(tdCurrent);
+          row.appendChild(tdSell);
+          row.appendChild(tdActions);
+
+          tbody.appendChild(row);
+        });
+      });
+    }
+
+    function parseCsv(text) {
+      const rows = [];
+      let row = [];
+      let cur = "";
+      let inQuotes = false;
+      for (let i = 0; i < text.length; i++) {
+        const ch = text[i];
+        const next = text[i + 1];
+        if (inQuotes) {
+          if (ch === '"' && next === '"') {
+            cur += '"';
+            i++;
+          } else if (ch === '"') {
+            inQuotes = false;
+          } else {
+            cur += ch;
+          }
+        } else {
+          if (ch === '"') {
+            inQuotes = true;
+          } else if (ch === ",") {
+            row.push(cur);
+            cur = "";
+          } else if (ch === "\n") {
+            row.push(cur);
+            rows.push(row);
+            row = [];
+            cur = "";
+          } else if (ch === "\r") {
+          } else {
+            cur += ch;
+          }
+        }
+      }
+      row.push(cur);
+      rows.push(row);
+      return rows;
+    }
+
+    function parseCsvToProducts(text) {
+      const raw = parseCsv(text).map(r => r.map(c => String(c ?? "").trim()));
+      const rows = raw.filter(r => r.some(c => c !== ""));
+      if (rows.length < 2) {
+        alert("CSV ריק או לא תקין.");
+        return [];
+      }
+
+      const headerCells = rows[0].map(h => h.replace(/\uFEFF/g, "").trim());
+      const headerLower = headerCells.map(h => h.toLowerCase());
+
+      const knownHeaders = new Set([
+        "קטגוריה",
+        "categoryhe",
+        "category_he",
+        "categoryen",
+        "category_en",
+        "category",
+        "דגם",
+        "model",
+        "rowcategory",
+        "מזהה",
+        "id",
+        "מידה",
+        "size",
+        "מחיר usd",
+        "priceusd",
+        "usd",
+        "כמות התחלתית",
+        "initialqty",
+        "מלאי נוכחי",
+        "currentqty",
+        "רכישה קבוצתית",
+        "groupflag",
+        "group",
+        "מסומן",
+        "selected"
+      ]);
+
+      const looksLikeHeader = headerLower.some(h => knownHeaders.has(h));
+
+      if (!looksLikeHeader) {
+        return rows.map(r => {
+          const categoryHe = r[0] ?? "";
+          const categoryEn = r[1] ?? "";
+          const rowCategory = r[2] ?? "";
+          const id = r[3] ?? "";
+          const size = r[4] ?? "";
+          const priceUsd = r[5] ?? "";
+          const initialQty = r[6] ?? "0";
+          const currentQty = r[7] ?? "";
+          const groupFlag = r[8] ?? "";
+          const selected = r[9] ?? "";
+
+          const i = parseInt(initialQty, 10);
+          const c = currentQty === "" ? i : parseInt(currentQty, 10);
+
+          return {
+            categoryHe,
+            categoryEn,
+            rowCategory,
+            id,
+            size,
+            priceUsd,
+            initialQty: isNaN(i) ? 0 : i,
+            currentQty: isNaN(c) ? (isNaN(i) ? 0 : i) : c,
+            groupFlag: truthyFlag(groupFlag),
+            selected: truthyFlag(selected)
+          };
+        }).filter(p => p.id);
+      }
+
+      const headerMap = {};
+      headerLower.forEach((h, idx) => {
+        headerMap[h] = idx;
+      });
+
+      const pick = (row, names, fallbackIndex) => {
+        for (const n of names) {
+          const idx = headerMap[n.toLowerCase()];
+          if (idx != null) return row[idx] ?? "";
+        }
+        if (fallbackIndex != null) return row[fallbackIndex] ?? "";
+        return "";
+      };
+
+      const hasIdHeader = Object.keys(headerMap).some(h => h === "id" || h === "מזהה");
+
+      return rows.slice(1).map(r => {
+        const categoryHe = pick(r, ["categoryhe", "category_he", "קטגוריה"], hasIdHeader ? null : 0);
+        const categoryEn = pick(r, ["categoryen", "category_en", "קטגוריה_en", "category"], hasIdHeader ? null : 1);
+        const rowCategory = pick(r, ["rowcategory", "model", "דגם"], hasIdHeader ? null : 2);
+        const id = pick(r, ["id", "מזהה"], hasIdHeader ? null : 3);
+        const size = pick(r, ["size", "מידה"], hasIdHeader ? null : 4);
+        const priceUsd = pick(r, ["priceusd", "usd", "מחיר usd", "מחיר"], hasIdHeader ? null : 5);
+        const initialQty = pick(r, ["initialqty", "כמות התחלתית"], hasIdHeader ? null : 6);
+        const currentQty = pick(r, ["currentqty", "מלאי נוכחי"], hasIdHeader ? null : 7);
+        const groupFlag = pick(r, ["groupflag", "רכישה קבוצתית", "group"], hasIdHeader ? null : 8);
+        const selected = pick(r, ["selected", "מסומן"], null);
+
+        const i = parseInt(initialQty, 10);
+        const c = currentQty === "" ? i : parseInt(currentQty, 10);
+
+        return {
+          categoryHe,
+          categoryEn,
+          rowCategory,
+          id,
+          size,
+          priceUsd,
+          initialQty: isNaN(i) ? 0 : i,
+          currentQty: isNaN(c) ? (isNaN(i) ? 0 : i) : c,
+          groupFlag: truthyFlag(groupFlag),
+          selected: truthyFlag(selected)
+        };
+      }).filter(p => p.id);
+    }
+
+    function escapeHtml(value) {
+      const div = document.createElement("div");
+      div.textContent = String(value ?? "");
+      return div.innerHTML;
+    }
+
+    function loadStockFromStorage() {
+      const rows = Array.from(document.querySelectorAll("tr.data-row"));
+      rows.forEach(row => {
+        const id = row.dataset.id;
+        const initialInput = row.querySelector(".initial-qty");
+        const currentLabel = row.querySelector(".current-stock");
+
+        const storedInitial = window.localStorage.getItem("stock_initial_" + id);
+        const storedCurrent = window.localStorage.getItem("stock_current_" + id);
+
+        let initial = storedInitial !== null ? parseInt(storedInitial, 10) : parseInt(initialInput.value || "0", 10);
+        if (isNaN(initial) || initial < 0) initial = 0;
+
+        let current;
+        if (storedCurrent !== null) {
+          current = parseInt(storedCurrent, 10);
+          if (isNaN(current) || current < 0) current = initial;
+        } else {
+          current = initial;
+        }
+
+        initialInput.value = initial;
+        currentLabel.textContent = initial > 0 ? current : "";
+        window.localStorage.setItem("stock_initial_" + id, initial);
+        window.localStorage.setItem("stock_current_" + id, current);
+      });
+    }
+
+    function applySale(buttonEl) {
+      const row = buttonEl.closest("tr.data-row");
+      const id = row.dataset.id;
+      const initialInput = row.querySelector(".initial-qty");
+      const currentLabel = row.querySelector(".current-stock");
+      const sellInput = row.querySelector(".sell-qty");
+
+      let initial = parseInt(initialInput.value, 10);
+      if (isNaN(initial) || initial < 0) initial = 0;
+
+      let current = window.localStorage.getItem("stock_current_" + id);
+      if (current === null) {
+        current = initial;
+      } else {
+        current = parseInt(current, 10);
+        if (isNaN(current) || current < 0) current = initial;
+      }
+
+      let sell = parseInt(sellInput.value, 10);
+      if (isNaN(sell) || sell < 0) sell = 0;
+
+      let newCurrent = current - sell;
+      if (newCurrent < 0) newCurrent = 0;
+
+      window.localStorage.setItem("stock_initial_" + id, initial);
+      window.localStorage.setItem("stock_current_" + id, newCurrent);
+
+      initialInput.value = initial;
+      currentLabel.textContent = newCurrent;
+      sellInput.value = 0;
+
+      recalculate();
+      applyFilters();
+      saveBackupStateToStorage();
+    }
+
+    function resetStock(buttonEl) {
+      const row = buttonEl.closest("tr.data-row");
+      const id = row.dataset.id;
+      const initialInput = row.querySelector(".initial-qty");
+      const currentLabel = row.querySelector(".current-stock");
+
+      let initial = parseInt(initialInput.value, 10);
+      if (isNaN(initial) || initial < 0) initial = 0;
+
+      window.localStorage.setItem("stock_initial_" + id, initial);
+      window.localStorage.setItem("stock_current_" + id, initial);
+
+      currentLabel.textContent = initial > 0 ? initial : "";
+
+      recalculate();
+      applyFilters();
+      saveBackupStateToStorage();
+    }
+
+    window.addEventListener("DOMContentLoaded", function () {
+      const storedBackup = loadBackupStateFromStorage();
+      if (storedBackup && Array.isArray(storedBackup.products) && storedBackup.products.length > 0) {
+        applyBackupObjectToDom(storedBackup);
+        applyDefaultNewModelsOnceIfNeeded();
+      } else {
+        loadSettingsFromStorage();
+        enhanceTable();
+        loadStockFromStorage();
+        recalculate();
+        applyFilters();
+        applyDefaultNewModelsOnceIfNeeded();
+      }
+
+      saveBackupStateToStorage();
+
+      window.addEventListener("storage", function (e) {
+        if (!e) return;
+        if (e.key !== "backup_state_v1") return;
+        const next = loadBackupStateFromStorage();
+        if (!next || !Array.isArray(next.products) || next.products.length === 0) return;
+        applyBackupObjectToDom(next);
+      });
+
+      const importJson = document.getElementById("importJsonFile");
+      if (importJson) {
+        importJson.addEventListener("change", async function () {
+          const file = importJson.files && importJson.files[0];
+          if (!file) return;
+          try {
+            const text = await readFileAsText(file);
+            const obj = JSON.parse(text);
+            applyBackupObjectToDom(obj);
+          } catch (err) {
+            alert("לא ניתן לייבא JSON: " + (err && err.message ? err.message : String(err)));
+          }
+        });
+      }
+
+      const importCsv = document.getElementById("importCsvFile");
+      if (importCsv) {
+        importCsv.addEventListener("change", async function () {
+          const file = importCsv.files && importCsv.files[0];
+          if (!file) return;
+          try {
+            const text = await readFileAsText(file);
+            const products = parseCsvToProducts(text);
+            applyBackupObjectToDom({ products });
+          } catch (err) {
+            alert("לא ניתן לייבא CSV: " + (err && err.message ? err.message : String(err)));
+          }
+        });
+      }
+
+      ["rate", "markup", "factor", "groupFactor"].forEach(id => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.addEventListener("input", function () {
+          saveSettingsToStorage();
+          recalculate();
+          saveBackupStateToStorage();
+        });
+      });
+
+      ["search", "viewMode", "onlySelected", "onlyOrder"].forEach(id => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.addEventListener("input", applyFilters);
+        el.addEventListener("change", applyFilters);
+      });
+
+      const clearSearchBtn = document.getElementById("clearSearchBtn");
+      if (clearSearchBtn) {
+        clearSearchBtn.addEventListener("click", function () {
+          const searchEl = document.getElementById("search");
+          const viewModeEl = document.getElementById("viewMode");
+          const onlySelectedEl = document.getElementById("onlySelected");
+
+          if (searchEl) searchEl.value = "";
+          if (viewModeEl) viewModeEl.value = "all";
+          if (onlySelectedEl) onlySelectedEl.checked = false;
+
+          applyFilters();
+        });
+      }
+
+      const tbody = document.getElementById("products-body");
+      if (tbody) {
+        tbody.addEventListener("change", function (e) {
+          const target = e.target;
+          if (!target || !target.classList) return;
+
+          if (target.classList.contains("row-select")) {
+            applyFilters();
+            saveBackupStateToStorage();
+            return;
+          }
+
+          if (target.classList.contains("initial-qty")) {
+            const row = target.closest("tr.data-row");
+            if (!row) return;
+            const id = row.dataset.id;
+            let initial = parseInt(target.value, 10);
+            if (isNaN(initial) || initial < 0) initial = 0;
+
+            const storedCurrent = window.localStorage.getItem("stock_current_" + id);
+            let current = storedCurrent !== null ? parseInt(storedCurrent, 10) : initial;
+            if (isNaN(current) || current < 0) current = initial;
+            if (current > initial) current = initial;
+
+            window.localStorage.setItem("stock_initial_" + id, initial);
+            window.localStorage.setItem("stock_current_" + id, current);
+
+            const currentLabel = row.querySelector(".current-stock");
+            if (currentLabel) currentLabel.textContent = initial > 0 ? current : "";
+
+            recalculate();
+            applyFilters();
+            saveBackupStateToStorage();
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,203 @@
+<!doctype html>
+<html dir="rtl" lang="he">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>עדכון תמונות מוצרים</title>
+    <style>
+      body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        margin: 0;
+      }
+      .container {
+        background: white;
+        padding: 50px;
+        border-radius: 20px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        text-align: center;
+        max-width: 600px;
+        width: 90%;
+      }
+      h1 {
+        color: #333;
+        margin-bottom: 10px;
+        font-size: 32px;
+      }
+      .subtitle {
+        color: #666;
+        margin-bottom: 30px;
+        font-size: 16px;
+      }
+      button {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        padding: 18px 50px;
+        font-size: 20px;
+        font-weight: bold;
+        border-radius: 12px;
+        cursor: pointer;
+        margin: 10px;
+        transition: all 0.3s;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      }
+      button:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+      }
+      button:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+      .status {
+        margin-top: 30px;
+        padding: 20px;
+        border-radius: 10px;
+        font-weight: bold;
+        display: none;
+      }
+      .status.success {
+        background: #d4edda;
+        color: #155724;
+        border: 2px solid #c3e6cb;
+        display: block;
+      }
+      .status.error {
+        background: #f8d7da;
+        color: #721c24;
+        border: 2px solid #f5c6cb;
+        display: block;
+      }
+      .status.loading {
+        background: #fff3cd;
+        color: #856404;
+        border: 2px solid #ffeaa7;
+        display: block;
+      }
+      .info-box {
+        background: #f8f9fa;
+        padding: 25px;
+        border-radius: 12px;
+        margin-top: 30px;
+        text-align: right;
+        border: 2px solid #e9ecef;
+      }
+      .info-box h3 {
+        margin-top: 0;
+        color: #495057;
+        font-size: 18px;
+      }
+      .info-box ul {
+        text-align: right;
+        padding-right: 20px;
+        color: #6c757d;
+        line-height: 1.8;
+      }
+      .spinner {
+        border: 4px solid #f3f3f3;
+        border-top: 4px solid #667eea;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        animation: spin 1s linear infinite;
+        margin: 20px auto;
+        display: none;
+      }
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+      .icon {
+        font-size: 60px;
+        margin-bottom: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="icon">📸</div>
+      <h1>עדכון תמונות מוצרים</h1>
+      <p class="subtitle">המערכת תעדכן את כל המוצרים עם תמונות אמיתיות ומקצועיות</p>
+
+      <button id="updateBtn" onclick="updateImages()">🚀 עדכן תמונות עכשיו</button>
+
+      <div class="spinner" id="spinner"></div>
+
+      <div class="status" id="status"></div>
+
+      <div class="info-box">
+        <h3>מה הכפתור הזה עושה?</h3>
+        <ul>
+          <li>מוחק את כל המוצרים הישנים מבסיס הנתונים</li>
+          <li>מוסיף 6 מוצרי גיימינג עם תמונות אמיתיות מ-Unsplash</li>
+          <li>מעדכן גם את ה-localStorage בדפדפן שלך</li>
+          <li>מעביר אותך אוטומטית לדף המוצרים</li>
+        </ul>
+      </div>
+    </div>
+
+    <script>
+      async function updateImages() {
+        const btn = document.getElementById('updateBtn');
+        const status = document.getElementById('status');
+        const spinner = document.getElementById('spinner');
+
+        try {
+          btn.disabled = true;
+          status.className = 'status loading';
+          status.textContent = '⏳ מעדכן מוצרים...';
+          status.style.display = 'block';
+          spinner.style.display = 'block';
+
+          const response = await fetch('/api/products/update-images', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
+
+          const data = await response.json();
+
+          if (response.ok) {
+            status.className = 'status success';
+            status.innerHTML = `
+                        <div style="font-size: 24px; margin-bottom: 10px;">✅</div>
+                        <strong>הצלחה!</strong><br>
+                        ${data.count} מוצרים עודכנו בהצלחה!<br><br>
+                        <small>מעבר לדף המוצרים תוך 3 שניות...</small>
+                    `;
+
+            // Clear localStorage
+            localStorage.removeItem('vipo_products');
+
+            // Redirect after 3 seconds
+            setTimeout(() => {
+              window.location.href = '/products';
+            }, 3000);
+          } else {
+            throw new Error(data.error || 'שגיאה לא ידועה');
+          }
+        } catch (error) {
+          status.className = 'status error';
+          status.innerHTML = `
+                    <div style="font-size: 24px; margin-bottom: 10px;">❌</div>
+                    <strong>שגיאה!</strong><br>
+                    ${error.message}
+                `;
+          btn.disabled = false;
+        } finally {
+          spinner.style.display = 'none';
+        }
+      }
+    </script>
+  </body>
+</html>

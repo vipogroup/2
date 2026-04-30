@@ -1,0 +1,253 @@
+[dotenv@17.2.3] injecting env (0) from .env.local -- tip: ≡ƒפנ prevent building .env in docker: https://dotenvx.com/prebuild
+  Γצ▓ Next.js 14.2.35
+  - Experiments (use with caution):
+    ┬╖ instrumentationHook
+    ┬╖ missingSuspenseWithCSRBailout
+
+   Creating an optimized production build ...
+ Γתá Next.js can't recognize the exported `runtime` field in "C:\Users\ALFA DPM\Desktop\New Agent System Miriam\vipo-agents-stage-deploy\app/twitter-image.jsx" as it was not assigned to a string literal.
+The default runtime will be used instead.
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+ Γ£ף Compiled successfully
+   Linting and checking validity of types ...
+
+./app/admin/analytics/AnalyticsClient.jsx
+71:6  Warning: React Hook useEffect has a missing dependency: 'fetchData'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./app/admin/crm/reports/page.jsx
+36:6  Warning: React Hook useEffect has a missing dependency: 'fetchStats'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./app/admin/tenants/TenantsClient.jsx
+475:27  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+776:25  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./app/admin/withdrawals/page.jsx
+31:6  Warning: React Hook useEffect has a missing dependency: 'loadWithdrawals'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./app/agent/components/BusinessSelector.jsx
+14:6  Warning: React Hook useEffect has a missing dependency: 'loadBusinesses'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./app/business/bot-manager/page.jsx
+75:6  Warning: React Hook useEffect has a missing dependency: 'fetchConfig'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./app/business/settings/integrations/page.jsx
+44:6  Warning: React Hook useEffect has a missing dependency: 'loadSettings'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./app/business/site-texts/homepage/page.jsx
+38:6  Warning: React Hook useEffect has a missing dependency: 'fetchTexts'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./app/business/[businessId]/bot-manager/page.jsx
+27:6  Warning: React Hook useEffect has missing dependencies: 'fetchConfig' and 'router'. Either include them or remove the dependency array.  react-hooks/exhaustive-deps
+
+./app/cart/page.jsx
+45:6  Warning: React Hook useEffect has missing dependencies: 'items' and 'selectedItems'. Either include them or remove the dependency array.  react-hooks/exhaustive-deps
+
+./app/components/FloatingChatBot.jsx
+94:6  Warning: React Hook useEffect has a missing dependency: 'botConfig?.settings'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+199:6  Warning: React Hook useEffect has missing dependencies: 'currentTenantId' and 'urlTenantSlug'. Either include them or remove the dependency array.  react-hooks/exhaustive-deps
+238:6  Warning: React Hook useEffect has missing dependencies: 'messages.length' and 'showWelcome'. Either include them or remove the dependency array.  react-hooks/exhaustive-deps
+
+./app/components/ShareModal.jsx
+608:21  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./app/messages/MessagesClient.jsx
+199:6  Warning: React Hook useCallback has missing dependencies: 'hasTenant' and 'userTarget'. Either include them or remove the dependency array.  react-hooks/exhaustive-deps
+
+./components/agent/BusinessSelector.jsx
+220:19  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/basic-features/eslint#disabling-rules
+   Collecting page data ...
+ Γתá Next.js can't recognize the exported `runtime` field in "C:\Users\ALFA DPM\Desktop\New Agent System Miriam\vipo-agents-stage-deploy\app\twitter-image.jsx" as it was not assigned to a string literal.
+The default runtime will be used instead.
+(node:11280) [MONGOOSE] Warning: Duplicate schema index on {"key":1} found. This is often due to declaring an index using both "index: true" and "schema.index()". Please remove the duplicate index definition.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:16036) [MONGOOSE] Warning: Duplicate schema index on {"key":1} found. This is often due to declaring an index using both "index: true" and "schema.index()". Please remove the duplicate index definition.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:15468) [MONGOOSE] Warning: Duplicate schema index on {"key":1} found. This is often due to declaring an index using both "index: true" and "schema.index()". Please remove the duplicate index definition.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:20452) [MONGOOSE] Warning: Duplicate schema index on {"key":1} found. This is often due to declaring an index using both "index: true" and "schema.index()". Please remove the duplicate index definition.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:28432) [MONGOOSE] Warning: Duplicate schema index on {"key":1} found. This is often due to declaring an index using both "index: true" and "schema.index()". Please remove the duplicate index definition.
+(Use `node --trace-warnings ...` to show where the warning was created)
+ Γתá Using edge runtime on a page currently disables static generation for that page
+   Generating static pages (0/166) ...
+Sitemap: Error fetching products: TypeError: Cannot read properties of null (reading 'collection')
+    at x (C:\Users\ALFA DPM\Desktop\New Agent System Miriam\vipo-agents-stage-deploy\.next\server\app\sitemap.xml\route.js:1:4652)
+    at async P (C:\Users\ALFA DPM\Desktop\New Agent System Miriam\vipo-agents-stage-deploy\.next\server\app\sitemap.xml\route.js:1:7829)
+    at async C:\Users\ALFA DPM\Desktop\New Agent System Miriam\vipo-agents-stage-deploy\node_modules\next\dist\compiled\next-server\app-route.runtime.prod.js:6:38411
+    at async e_.execute (C:\Users\ALFA DPM\Desktop\New Agent System Miriam\vipo-agents-stage-deploy\node_modules\next\dist\compiled\next-server\app-route.runtime.prod.js:6:27880)
+    at async e_.handle (C:\Users\ALFA DPM\Desktop\New Agent System Miriam\vipo-agents-stage-deploy\node_modules\next\dist\compiled\next-server\app-route.runtime.prod.js:6:39943)
+    at async exportAppRoute (C:\Users\ALFA DPM\Desktop\New Agent System Miriam\vipo-agents-stage-deploy\node_modules\next\dist\export\routes\app-route.js:77:26)
+    at async exportPageImpl (C:\Users\ALFA DPM\Desktop\New Agent System Miriam\vipo-agents-stage-deploy\node_modules\next\dist\export\worker.js:175:20)
+    at async Span.traceAsyncFn (C:\Users\ALFA DPM\Desktop\New Agent System Miriam\vipo-agents-stage-deploy\node_modules\next\dist\trace\trace.js:154:20)
+    at async Object.exportPage (C:\Users\ALFA DPM\Desktop\New Agent System Miriam\vipo-agents-stage-deploy\node_modules\next\dist\export\worker.js:237:20)
+
+Error occurred prerendering page "/twitter-image". Read more: https://nextjs.org/docs/messages/prerender-error
+
+TypeError: Invalid URL
+    at new URL (node:internal/url:828:25)
+    at fileURLToPath (node:internal/url:1609:12)
+    at file:///C:/Users/ALFA%20DPM/Desktop/New%20Agent%20System%20Miriam/vipo-agents-stage-deploy/node_modules/next/dist/compiled/@vercel/og/index.node.js:18988:32
+    at ModuleJob.run (node:internal/modules/esm/module_job:377:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:671:26)
+    at async Object.start (C:\Users\ALFA DPM\Desktop\New Agent System Miriam\vipo-agents-stage-deploy\.next\server\app\twitter-image\route.js:1:4344)
+   Generating static pages (41/166) 
+ Γתá Entire page "/admin/products/new" deopted into client-side rendering due to "useSearchParams()". Read more: https://nextjs.org/docs/messages/deopted-into-client-rendering
+    at a (C:\Users\ALFA DPM\Desktop\New Agent System Miriam\vipo-agents-stage-deploy\.next\server\chunks\11479.js:1:11721)
+    at c (C:\Users\ALFA DPM\Desktop\New Agent System Miriam\vipo-agents-stage-deploy\.next\server\chunks\11479.js:1:22704)
+    at p (C:\Users\ALFA DPM\Desktop\New Agent System Miriam\vipo-agents-stage-deploy\.next\server\chunks\98948.js:1:38192)
+    at nj (C:\Users\ALFA DPM\Desktop\New Agent System Miriam\vipo-agents-stage-deploy\node_modules\next\dist\compiled\next-server\app-page.runtime.prod.js:12:46252)
+    at nM (C:\Users\ALFA DPM\Desktop\New Agent System Miriam\vipo-agents-stage-deploy\node_modules\next\dist\compiled\next-server\app-page.runtime.prod.js:12:47572)
+    at nL (C:\Users\ALFA DPM\Desktop\New Agent System Miriam\vipo-agents-stage-deploy\node_modules\next\dist\compiled\next-server\app-page.runtime.prod.js:12:64547)
+    at nI (C:\Users\ALFA DPM\Desktop\New Agent System Miriam\vipo-agents-stage-deploy\node_modules\next\dist\compiled\next-server\app-page.runtime.prod.js:12:47011)
+    at nM (C:\Users\ALFA DPM\Desktop\New Agent System Miriam\vipo-agents-stage-deploy\node_modules\next\dist\compiled\next-server\app-page.runtime.prod.js:12:47718)
+    at nM (C:\Users\ALFA DPM\Desktop\New Agent System Miriam\vipo-agents-stage-deploy\node_modules\next\dist\compiled\next-server\app-page.runtime.prod.js:12:61547)
+    at nL (C:\Users\ALFA DPM\Desktop\New Agent System Miriam\vipo-agents-stage-deploy\node_modules\next\dist\compiled\next-server\app-page.runtime.prod.js:12:64547)
+   Generating static pages (82/166) 
+   Generating static pages (124/166) 
+Failed to build homepage ItemList schema: TypeError: Cannot read properties of null (reading 'collection')
+    at d (C:\Users\ALFA DPM\Desktop\New Agent System Miriam\vipo-agents-stage-deploy\.next\server\app\page.js:1:24706)
+    at async u (C:\Users\ALFA DPM\Desktop\New Agent System Miriam\vipo-agents-stage-deploy\.next\server\app\page.js:1:25291)
+Failed to build homepage ItemList schema: TypeError: Cannot read properties of null (reading 'collection')
+    at d (C:\Users\ALFA DPM\Desktop\New Agent System Miriam\vipo-agents-stage-deploy\.next\server\app\page.js:1:24706)
+    at runNextTicks (node:internal/process/task_queues:64:5)
+    at listOnTimeout (node:internal/timers:567:9)
+    at process.processTimers (node:internal/timers:541:7)
+    at async u (C:\Users\ALFA DPM\Desktop\New Agent System Miriam\vipo-agents-stage-deploy\.next\server\app\page.js:1:25291)
+MongooseError: Operation `tenants.find()` buffering timed out after 10000ms
+    at Timeout.<anonymous> (C:\Users\ALFA DPM\Desktop\New Agent System Miriam\vipo-agents-stage-deploy\node_modules\mongoose\lib\drivers\node-mongodb-native\collection.js:187:23)
+    at listOnTimeout (node:internal/timers:605:17)
+    at process.processTimers (node:internal/timers:541:7) {
+  digest: '1810471473'
+}
+MongooseError: Operation `tenants.find()` buffering timed out after 10000ms
+    at Timeout.<anonymous> (C:\Users\ALFA DPM\Desktop\New Agent System Miriam\vipo-agents-stage-deploy\node_modules\mongoose\lib\drivers\node-mongodb-native\collection.js:187:23)
+    at listOnTimeout (node:internal/timers:605:17)
+    at process.processTimers (node:internal/timers:541:7) {
+  digest: '1810471473'
+}
+MongooseError: Operation `tenants.find()` buffering timed out after 10000ms
+    at Timeout.<anonymous> (C:\Users\ALFA DPM\Desktop\New Agent System Miriam\vipo-agents-stage-deploy\node_modules\mongoose\lib\drivers\node-mongodb-native\collection.js:187:23)
+    at listOnTimeout (node:internal/timers:605:17)
+    at process.processTimers (node:internal/timers:541:7) {
+  digest: '1810471473'
+}
+MongooseError: Operation `tenants.find()` buffering timed out after 10000ms
+    at Timeout.<anonymous> (C:\Users\ALFA DPM\Desktop\New Agent System Miriam\vipo-agents-stage-deploy\node_modules\mongoose\lib\drivers\node-mongodb-native\collection.js:187:23)
+    at listOnTimeout (node:internal/timers:605:17)
+    at process.processTimers (node:internal/timers:541:7) {
+  digest: '1810471473'
+}
+MongooseError: Operation `tenants.find()` buffering timed out after 10000ms
+    at Timeout.<anonymous> (C:\Users\ALFA DPM\Desktop\New Agent System Miriam\vipo-agents-stage-deploy\node_modules\mongoose\lib\drivers\node-mongodb-native\collection.js:187:23)
+    at listOnTimeout (node:internal/timers:605:17)
+    at process.processTimers (node:internal/timers:541:7) {
+  digest: '1810471473'
+}
+MongooseError: Operation `tenants.find()` buffering timed out after 10000ms
+    at Timeout.<anonymous> (C:\Users\ALFA DPM\Desktop\New Agent System Miriam\vipo-agents-stage-deploy\node_modules\mongoose\lib\drivers\node-mongodb-native\collection.js:187:23)
+    at listOnTimeout (node:internal/timers:605:17)
+    at process.processTimers (node:internal/timers:541:7) {
+  digest: '1810471473'
+}
+MongooseError: Operation `tenants.find()` buffering timed out after 10000ms
+    at Timeout.<anonymous> (C:\Users\ALFA DPM\Desktop\New Agent System Miriam\vipo-agents-stage-deploy\node_modules\mongoose\lib\drivers\node-mongodb-native\collection.js:187:23)
+    at listOnTimeout (node:internal/timers:605:17)
+    at process.processTimers (node:internal/timers:541:7) {
+  digest: '1810471473'
+}
+MongooseError: Operation `tenants.find()` buffering timed out after 10000ms
+    at Timeout.<anonymous> (C:\Users\ALFA DPM\Desktop\New Agent System Miriam\vipo-agents-stage-deploy\node_modules\mongoose\lib\drivers\node-mongodb-native\collection.js:187:23)
+    at listOnTimeout (node:internal/timers:605:17)
+    at process.processTimers (node:internal/timers:541:7) {
+  digest: '1810471473'
+}
+MongooseError: Operation `tenants.find()` buffering timed out after 10000ms
+    at Timeout.<anonymous> (C:\Users\ALFA DPM\Desktop\New Agent System Miriam\vipo-agents-stage-deploy\node_modules\mongoose\lib\drivers\node-mongodb-native\collection.js:187:23)
+    at listOnTimeout (node:internal/timers:605:17)
+    at process.processTimers (node:internal/timers:541:7) {
+  digest: '1810471473'
+}
+MongooseError: Operation `tenants.find()` buffering timed out after 10000ms
+    at Timeout.<anonymous> (C:\Users\ALFA DPM\Desktop\New Agent System Miriam\vipo-agents-stage-deploy\node_modules\mongoose\lib\drivers\node-mongodb-native\collection.js:187:23)
+    at listOnTimeout (node:internal/timers:605:17)
+    at process.processTimers (node:internal/timers:541:7) {
+  digest: '1810471473'
+}
+MongooseError: Operation `tenants.find()` buffering timed out after 10000ms
+    at Timeout.<anonymous> (C:\Users\ALFA DPM\Desktop\New Agent System Miriam\vipo-agents-stage-deploy\node_modules\mongoose\lib\drivers\node-mongodb-native\collection.js:187:23)
+    at listOnTimeout (node:internal/timers:605:17)
+    at process.processTimers (node:internal/timers:541:7) {
+  digest: '1810471473'
+}
+MongooseError: Operation `tenants.find()` buffering timed out after 10000ms
+    at Timeout.<anonymous> (C:\Users\ALFA DPM\Desktop\New Agent System Miriam\vipo-agents-stage-deploy\node_modules\mongoose\lib\drivers\node-mongodb-native\collection.js:187:23)
+    at listOnTimeout (node:internal/timers:605:17)
+    at process.processTimers (node:internal/timers:541:7) {
+  digest: '1810471473'
+}
+MongooseError: Operation `tenants.find()` buffering timed out after 10000ms
+    at Timeout.<anonymous> (C:\Users\ALFA DPM\Desktop\New Agent System Miriam\vipo-agents-stage-deploy\node_modules\mongoose\lib\drivers\node-mongodb-native\collection.js:187:23)
+    at listOnTimeout (node:internal/timers:605:17)
+    at process.processTimers (node:internal/timers:541:7) {
+  digest: '1810471473'
+}
+MongooseError: Operation `tenants.find()` buffering timed out after 10000ms
+    at Timeout.<anonymous> (C:\Users\ALFA DPM\Desktop\New Agent System Miriam\vipo-agents-stage-deploy\node_modules\mongoose\lib\drivers\node-mongodb-native\collection.js:187:23)
+    at listOnTimeout (node:internal/timers:605:17)
+    at process.processTimers (node:internal/timers:541:7) {
+  digest: '1810471473'
+}
+MongooseError: Operation `tenants.find()` buffering timed out after 10000ms
+    at Timeout.<anonymous> (C:\Users\ALFA DPM\Desktop\New Agent System Miriam\vipo-agents-stage-deploy\node_modules\mongoose\lib\drivers\node-mongodb-native\collection.js:187:23)
+    at listOnTimeout (node:internal/timers:605:17)
+    at process.processTimers (node:internal/timers:541:7) {
+  digest: '1810471473'
+}
+MongooseError: Operation `tenants.find()` buffering timed out after 10000ms
+    at Timeout.<anonymous> (C:\Users\ALFA DPM\Desktop\New Agent System Miriam\vipo-agents-stage-deploy\node_modules\mongoose\lib\drivers\node-mongodb-native\collection.js:187:23)
+    at listOnTimeout (node:internal/timers:605:17)
+    at process.processTimers (node:internal/timers:541:7) {
+  digest: '1810471473'
+}
+MongooseError: Operation `tenants.find()` buffering timed out after 10000ms
+    at Timeout.<anonymous> (C:\Users\ALFA DPM\Desktop\New Agent System Miriam\vipo-agents-stage-deploy\node_modules\mongoose\lib\drivers\node-mongodb-native\collection.js:187:23)
+    at listOnTimeout (node:internal/timers:605:17)
+    at process.processTimers (node:internal/timers:541:7) {
+  digest: '1810471473'
+}
+MongooseError: Operation `tenants.find()` buffering timed out after 10000ms
+    at Timeout.<anonymous> (C:\Users\ALFA DPM\Desktop\New Agent System Miriam\vipo-agents-stage-deploy\node_modules\mongoose\lib\drivers\node-mongodb-native\collection.js:187:23)
+    at listOnTimeout (node:internal/timers:605:17)
+    at process.processTimers (node:internal/timers:541:7) {
+  digest: '1810471473'
+}
+
+Error occurred prerendering page "/stainless/tables". Read more: https://nextjs.org/docs/messages/prerender-error
+
+MongooseError: Operation `tenants.find()` buffering timed out after 10000ms
+    at Timeout.<anonymous> (C:\Users\ALFA DPM\Desktop\New Agent System Miriam\vipo-agents-stage-deploy\node_modules\mongoose\lib\drivers\node-mongodb-native\collection.js:187:23)
+    at listOnTimeout (node:internal/timers:605:17)
+    at process.processTimers (node:internal/timers:541:7)
+
+Error occurred prerendering page "/stainless/sinks". Read more: https://nextjs.org/docs/messages/prerender-error
+
+MongooseError: Operation `tenants.find()` buffering timed out after 10000ms
+    at Timeout.<anonymous> (C:\Users\ALFA DPM\Desktop\New Agent System Miriam\vipo-agents-stage-deploy\node_modules\mongoose\lib\drivers\node-mongodb-native\collection.js:187:23)
+    at listOnTimeout (node:internal/timers:605:17)
+    at process.processTimers (node:internal/timers:541:7)
+
+Error occurred prerendering page "/stainless/cabinets". Read more: https://nextjs.org/docs/messages/prerender-error
+
+MongooseError: Operation `tenants.find()` buffering timed out after 10000ms
+    at Timeout.<anonymous> (C:\Users\ALFA DPM\Desktop\New Agent System Miriam\vipo-agents-stage-deploy\node_modules\mongoose\lib\drivers\node-mongodb-native\collection.js:187:23)
+    at listOnTimeout (node:internal/timers:605:17)
+    at process.processTimers (node:internal/timers:541:7)
+ Γ£ף Generating static pages (166/166)
+
+> Export encountered errors on following paths:
+	/stainless/[seoCategory]/page: /stainless/cabinets
+	/stainless/[seoCategory]/page: /stainless/sinks
+	/stainless/[seoCategory]/page: /stainless/tables
+	/twitter-image/route: /twitter-image

@@ -1,0 +1,63 @@
+# Dependencies
+node_modules
+
+# Build cache
+.next
+
+# Backups
+*.zip
+backup-*
+
+# Development files
+*.log
+.env.local
+.env*.local
+
+# Test files
+tests
+/reports
+coverage
+
+# Scripts (keep postinstall.js)
+scripts/*.mjs
+scripts/dev-*.ps1
+scripts/auto-restart.ps1
+scripts/debug-*.mjs
+scripts/ensure-*.mjs
+scripts/register-*.js
+
+# IDE
+.vscode
+.idea
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Separate projects
+vipo-crm
+
+# Backups folder (root only).
+/backups/
+
+# Keep backups routes in deployments even when filtering backup artifacts.
+!/app/admin/backups/**
+!/app/api/admin/backups/**
+
+# WhatsApp server (runs separately)
+whatsapp-server
+
+# Git
+.git
+
+# Audit reports
+audit-reports
+
+# Notes
+notes
+
+# Tools
+tools
+
+# New files
+new1

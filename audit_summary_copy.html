@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>סיכום ביקורת מערכת - העתקה מהירה</title>
+  <style>
+    :root {
+      --bg: #f5f8fb;
+      --card: #ffffff;
+      --text: #102131;
+      --muted: #4a6073;
+      --primary: #0d6e6e;
+      --primary-hover: #095454;
+      --border: #d7e1ea;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, sans-serif;
+      background: linear-gradient(180deg, #eef5fb 0%, #f9fcff 100%);
+      color: var(--text);
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 20px;
+    }
+    .card {
+      width: min(980px, 100%);
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(17, 42, 67, 0.09);
+      overflow: hidden;
+    }
+    .header {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+      background: #fbfeff;
+    }
+    h1 {
+      margin: 0;
+      font-size: 20px;
+    }
+    p {
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+    .actions {
+      display: flex;
+      gap: 10px;
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--border);
+      background: #f9fcff;
+      flex-wrap: wrap;
+    }
+    button {
+      border: 0;
+      border-radius: 10px;
+      padding: 10px 14px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+      transition: background 0.2s ease;
+    }
+    .copy-btn {
+      background: var(--primary);
+      color: #fff;
+    }
+    .copy-btn:hover { background: var(--primary-hover); }
+    .select-btn {
+      background: #e7eff7;
+      color: #11324d;
+    }
+    .status {
+      margin-inline-start: auto;
+      color: #0f5132;
+      font-size: 13px;
+      align-self: center;
+      min-height: 20px;
+    }
+    textarea {
+      width: 100%;
+      min-height: 72vh;
+      border: 0;
+      outline: none;
+      resize: vertical;
+      padding: 20px;
+      font-family: Consolas, "Courier New", monospace;
+      font-size: 13px;
+      line-height: 1.5;
+      direction: rtl;
+      white-space: pre;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="header">
+      <h1>סיכום ביקורת מערכת - מוכן להעתקה</h1>
+      <p>לחץ על "העתק טקסט" כדי להעתיק את כל הסיכום ללוח.</p>
+    </div>
+
+    <div class="actions">
+      <button class="copy-btn" id="copyBtn">העתק טקסט</button>
+      <button class="select-btn" id="selectBtn">סמן הכל</button>
+      <div class="status" id="statusText"></div>
+    </div>
+
+    <textarea id="summaryText" readonly>**A. תקציר מנהלים (READ-ONLY בלבד)**
+- בוצעה סריקה ללא שינוי קבצים וללא כתיבה.
+- שכבת האינטגרציות קיימת ומפותחת (PayPlus, Priority, Twilio/WhatsApp), אך מצב "מחובר" בחלק מהמקומות נשען על בדיקות תצורה או על נתונים פנימיים, ולא תמיד על בדיקת קצה-לקצה מול ספק חיצוני.
+- יש הפרדה ברורה בין מצב platform לבין tenant עצמאי ב-PayPlus, כולל fallback חכם.
+- קיימים מנגנוני שרידות טובים: idempotency, retry, dead-letter, reconciliation.
+- הפער העיקרי לרמת production מלאה: אימות אמיתי של credentials חיים ושל webhook/callback בפועל, לא רק "status ירוק" פנימי.
+
+**B. מצב אינטגרציות בפועל (לפי קוד)**
+- PayPlus: תהליך תשלומים בנוי נכון; סטטוס UI יכול להיראות תקין גם כשזה רק סטטיסטיקות פנימיות.
+- Priority: יש בדיקת connectivity טובה יחסית (configured מול connected).
+- Twilio OTP: אם חסרים credentials יש fallback/mock עם logging.
+- WhatsApp: provider-based (internal/local/twilio/360dialog/mock), לכן mock/internal עלול להציג "עובד" מקומית.
+
+**C. ארכיטקטורה וקבצים רלוונטיים**
+- API רחב: 280 קבצי route.js.
+- שכבת lib: 93 קבצים.
+- קבצי ליבה: lib/payplus/*, app/api/payplus/*, lib/priority/*, app/api/admin/priority/*, lib/auth.js, lib/crm/whatsappService.js, app/api/crm/whatsapp/*.
+- מודלים: PaymentEvent, IntegrationSyncMap, PriorityProduct.
+
+**D. משתני סביבה שהקוד מצפה להם**
+- PayPlus: PAYPLUS_API_KEY, PAYPLUS_SECRET, PAYPLUS_WEBHOOK_SECRET, PAYPLUS_BASE_URL
+- Priority: PRIORITY_BASE_URL, PRIORITY_CLIENT_ID, PRIORITY_CLIENT_SECRET, PRIORITY_COMPANY_CODE
+- Twilio OTP: TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, TWILIO_FROM_NUMBER
+- WhatsApp לפי provider: TWILIO_WHATSAPP_NUMBER / WHATSAPP_LOCAL_URL / 360dialog keys
+- דגלים קריטיים: PAYPLUS_MOCK_ENABLED, WHATSAPP_PROVIDER
+
+**E. Endpoints קריטיים**
+- PayPlus: /api/payplus/create-checkout, /api/payplus/webhook
+- PayPlus Admin: /api/admin/payplus/transactions, /dead-letter, /reconciliation
+- Priority Admin: /api/admin/priority/status, /sync/[orderId], /products, /documents, /reconciliation
+- OTP/WhatsApp: /api/auth/send-otp, /api/crm/whatsapp/send, /webhook, /status
+
+**F. פערים וסיכונים לפי חומרה**
+1. קריטי: סטטוס ירוק ב-PayPlus UI לא תמיד מוכיח קישוריות חיצונית חיה.
+2. גבוה: OTP/WhatsApp יכולים לרוץ במצב fallback/mock בלי ספק אמיתי.
+3. גבוה: תלות חזקה ב-env + dual mode tenant/platform.
+4. בינוני: מורכבות סנכרון בין מערכות מחייבת ניטור ותפעול עקבי.
+5. בינוני: אחידות חלקית בין "configured" ל-"connected" בין אינטגרציות שונות.
+
+**G. מה לבדוק ראשון (סדר עדיפויות)**
+1. לוודא שאין mock פעיל בסביבת בדיקה ייעודית לחיבורים אמיתיים.
+2. לבצע E2E מלא ל-PayPlus (כולל webhook חתום ועדכון PaymentEvent).
+3. לבצע E2E מלא ל-Priority (status + sync + documents + reconciliation).
+4. לבצע E2E מלא ל-OTP/WhatsApp מול מכשיר אמיתי, לא רק לוגים.
+5. לאמת התנהגות tenant מול platform ללא drift בקונפיגורציה.</textarea>
+  </div>
+
+  <script>
+    const summaryText = document.getElementById('summaryText');
+    const copyBtn = document.getElementById('copyBtn');
+    const selectBtn = document.getElementById('selectBtn');
+    const statusText = document.getElementById('statusText');
+
+    function setStatus(msg, ok = true) {
+      statusText.textContent = msg;
+      statusText.style.color = ok ? '#0f5132' : '#842029';
+      setTimeout(() => {
+        statusText.textContent = '';
+      }, 2500);
+    }
+
+    copyBtn.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(summaryText.value);
+        setStatus('הטקסט הועתק ללוח בהצלחה');
+      } catch (err) {
+        summaryText.focus();
+        summaryText.select();
+        setStatus('העתקה אוטומטית נכשלה. הטקסט סומן - אפשר Ctrl+C', false);
+      }
+    });
+
+    selectBtn.addEventListener('click', () => {
+      summaryText.focus();
+      summaryText.select();
+      setStatus('הטקסט סומן');
+    });
+  </script>
+</body>
+</html>

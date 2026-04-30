@@ -1,0 +1,200 @@
+{
+  "products": [
+    {
+      "id": "2L-100-60-90",
+      "categoryHe": "שכבות – שולחן עבודה",
+      "categoryEn": "",
+      "rowCategory": "2-LAYERS WORKTABLE",
+      "size": "100×60×90",
+      "priceUsd": "57.14",
+      "initialQty": 0,
+      "selected": false
+    },
+    {
+      "id": "2L-120-60-90",
+      "categoryHe": "שכבות – שולחן עבודה",
+      "categoryEn": "",
+      "rowCategory": "2-LAYERS WORKTABLE",
+      "size": "120×60×90",
+      "priceUsd": "62.50",
+      "initialQty": 0,
+      "selected": false
+    },
+    {
+      "id": "2L-140-60-90",
+      "categoryHe": "שכבות – שולחן עבודה",
+      "categoryEn": "",
+      "rowCategory": "2-LAYERS WORKTABLE",
+      "size": "140×60×90",
+      "priceUsd": "67.86",
+      "initialQty": 0,
+      "selected": false
+    },
+    {
+      "id": "2L-160-60-90",
+      "categoryHe": "שכבות – שולחן עבודה",
+      "categoryEn": "",
+      "rowCategory": "2-LAYERS WORKTABLE",
+      "size": "160×60×90",
+      "priceUsd": "73.71",
+      "initialQty": 0,
+      "selected": false
+    },
+    {
+      "id": "2L-180-60-90",
+      "categoryHe": "שכבות – שולחן עבודה",
+      "categoryEn": "",
+      "rowCategory": "2-LAYERS WORKTABLE",
+      "size": "180×60×90",
+      "priceUsd": "78.57",
+      "initialQty": 0,
+      "selected": false
+    },
+    {
+      "id": "2L-200-60-90",
+      "categoryHe": "שכבות – שולחן עבודה",
+      "categoryEn": "",
+      "rowCategory": "2-LAYERS WORKTABLE",
+      "size": "200×60×90",
+      "priceUsd": "86.79",
+      "initialQty": 0,
+      "selected": false
+    },
+    {
+      "id": "3L-60-60-90",
+      "categoryHe": "שכבות – שולחן עבודה",
+      "categoryEn": "",
+      "rowCategory": "3-LAYERS WORKTABLE",
+      "size": "60×60×90",
+      "priceUsd": "58.93",
+      "initialQty": 0,
+      "selected": false
+    },
+    {
+      "id": "3L-80-60-90",
+      "categoryHe": "שכבות – שולחן עבודה",
+      "categoryEn": "",
+      "rowCategory": "3-LAYERS WORKTABLE",
+      "size": "80×60×90",
+      "priceUsd": "62.50",
+      "initialQty": 0,
+      "selected": false
+    },
+    {
+      "id": "3L-100-60-90",
+      "categoryHe": "שכבות – שולחן עבודה",
+      "categoryEn": "",
+      "rowCategory": "3-LAYERS WORKTABLE",
+      "size": "100×60×90",
+      "priceUsd": "66.07",
+      "initialQty": 0,
+      "selected": false
+    },
+    {
+      "id": "3L-120-60-90",
+      "categoryHe": "שכבות – שולחן עבודה",
+      "categoryEn": "",
+      "rowCategory": "3-LAYERS WORKTABLE",
+      "size": "120×60×90",
+      "priceUsd": "73.21",
+      "initialQty": 0,
+      "selected": false
+    },
+    {
+      "id": "3L-140-60-90",
+      "categoryHe": "שכבות – שולחן עבודה",
+      "categoryEn": "",
+      "rowCategory": "3-LAYERS WORKTABLE",
+      "size": "140×60×90",
+      "priceUsd": "77.57",
+      "initialQty": 0,
+      "selected": false
+    },
+    {
+      "id": "3L-160-60-90",
+      "categoryHe": "שכבות – שולחן עבודה",
+      "categoryEn": "",
+      "rowCategory": "3-LAYERS WORKTABLE",
+      "size": "160×60×90",
+      "priceUsd": "83.21",
+      "initialQty": 0,
+      "selected": false
+    },
+    {
+      "id": "3L-180-60-90",
+      "categoryHe": "שכבות – שולחן עבודה",
+      "categoryEn": "",
+      "rowCategory": "3-LAYERS WORKTABLE",
+      "size": "180×60×90",
+      "priceUsd": "92.86",
+      "initialQty": 0,
+      "selected": false
+    },
+    {
+      "id": "3L-200-60-90",
+      "categoryHe": "שכבות – שולחן עבודה",
+      "categoryEn": "",
+      "rowCategory": "3-LAYERS WORKTABLE",
+      "size": "200×60×90",
+      "priceUsd": "101.79",
+      "initialQty": 0,
+      "selected": false
+    },
+    {
+      "id": "SS-60-60-90",
+      "categoryHe": "כיור יחיד",
+      "categoryEn": "SINGLE SINK",
+      "rowCategory": "SINGLE SINK",
+      "size": "60×60×90",
+      "priceUsd": "33.00",
+      "initialQty": 0,
+      "selected": false
+    },
+    {
+      "id": "WC-100-60-90",
+      "categoryHe": "ארון עבודה",
+      "categoryEn": "WORK CABINET",
+      "rowCategory": "WORK CABINET",
+      "size": "100×60×90",
+      "priceUsd": "86.00",
+      "initialQty": 0,
+      "selected": false
+    },
+    {
+      "id": "WC-120-60-90",
+      "categoryHe": "ארון עבודה",
+      "categoryEn": "WORK CABINET",
+      "rowCategory": "WORK CABINET",
+      "size": "120×60×90",
+      "priceUsd": "81.00",
+      "initialQty": 0,
+      "selected": false
+    },
+    {
+      "id": "WC-150-60-90",
+      "categoryHe": "ארון עבודה",
+      "categoryEn": "WORK CABINET",
+      "rowCategory": "WORK CABINET",
+      "size": "150×60×90",
+      "priceUsd": "113.00",
+      "initialQty": 0,
+      "selected": false
+    },
+    {
+      "id": "WC-180-60-90",
+      "categoryHe": "ארון עבודה",
+      "categoryEn": "WORK CABINET",
+      "rowCategory": "WORK CABINET",
+      "size": "180×60×90",
+      "priceUsd": "93.00",
+      "initialQty": 0,
+      "selected": false
+    }
+  ],
+  "settings": {
+    "rate": 3.7,
+    "factor": 3,
+    "groupFactor": 2,
+    "markup": 0
+  }
+}

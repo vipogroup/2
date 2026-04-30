@@ -1,0 +1,135 @@
+{
+  "startedAt": "2026-04-27T04:16:12.121Z",
+  "finishedAt": "2026-04-27T04:21:59.165Z",
+  "durationMs": 347044,
+  "stale": false,
+  "ok": true,
+  "steps": [
+    {
+      "name": "npm run lint",
+      "required": true,
+      "status": "pass",
+      "durationMs": 20691,
+      "detail": "\n> vipo-agents@0.1.1 lint\n> eslint .\n\n"
+    },
+    {
+      "name": "clean:.next",
+      "required": false,
+      "status": "pass",
+      "durationMs": 49,
+      "detail": "removed before build"
+    },
+    {
+      "name": "npm run build",
+      "required": true,
+      "status": "pass",
+      "durationMs": 226445,
+      "detail": "\n> vipo-agents@0.1.1 build\n> next build\n\n[dotenv@17.2.3] injecting env (0) from .env.local -- tip: 🛠️  run anywhere with `dotenvx run -- yourcommand`\n  ▲ Next.js 14.2.35\n  - Environments: .env.local\n  - Experiments (use with caution):\n    · instrumentationHook\n    · missingSuspenseWithCSRBailout\n\n   Creating an optimized production build ...\n ✓ Compiled successfully\n   Linting and checking validity of types ...\n   Collecting page data ...\n   Generating static pages (0/162) ...\n   Generating static pages (40/162) \r\n   Generating static pages (80/162) \r\n   Generating static pages (121/162) \r\n ✓ Generating static pages (162/162)\n   Finalizing page optimization ...\n   Collecting build traces ...\n\nRoute (app)                                       Size     First Load JS\n┌ ○ /                                             155 B           117 kB\n├ ○ /_not-found                                   204 B            88 kB\n├ ○ /about                                        7.11 kB         104 kB\n├ ƒ /admin                                        22.4 kB         119 kB\n├ ○ /admin/about                                  5.58 kB         102 kB\n├ ƒ /admin/agents                                 189 B           100 kB\n├ ƒ /admin/agents/[id]                            3.48 kB         100 kB\n├ ƒ /admin/analytics                              232 B           101 kB\n├ ○ /admin/backups                                8.16 kB         105 kB\n├ ○ /admin/bot-manager                            232 B           103 kB\n├ ○ /admin/branding                               322 B          99.8 kB\n├ ƒ /admin/catalog                                2.81 kB         120 kB\n├ ○ /admin/catalog-manager                        3.94 kB         106 kB\n├ ○ /admin/catalog-manager/price-table            886 B          97.4 kB\n├ ƒ /admin/catalog-manager/standalone             204 B            88 kB\n├ ƒ /admin/commissions                            179 B           104 kB\n├ ƒ /admin/control-center                         4.53 kB         101 kB\n├ ○ /admin/crm                                    3.74 kB         111 kB\n├ ○ /admin/crm/automations                        3.07 kB        99.6 kB\n├ ○ /admin/crm/dashboard                          204 B            88 kB\n├ ○ /admin/crm/import                             2.88 kB        99.4 kB\n├ ○ /admin/crm/reports                            2.4 kB         98.9 kB\n├ ○ /admin/crm/templates                          2.7 kB         99.2 kB\n├ ○ /admin/crm/whatsapp                           3.34 kB        99.9 kB\n├ ƒ /admin/dashboard-improved                     204 B            88 kB\n├ ○ /admin/emergency-backup                       7.36 kB         104 kB\n├ ○ /admin/errors                                 7.23 kB         104 kB\n├ ƒ /admin/finance                                2.42 kB         118 kB\n├ ƒ /admin/google-links                           3.15 kB          91 kB\n├ ƒ /admin/integrations                           179 B           102 kB\n├ ƒ /admin/management                             5.32 kB         134 kB\n├ ƒ /admin/marketing-assets                       675 B           107 kB\n├ ƒ /admin/media-usage                            2.23 kB          90 kB\n├ ○ /admin/monitor                                7.7 kB          104 kB\n├ ○ /admin/notification-logs                      3.51 kB         100 kB\n├ ƒ /admin/notifications                          751 B           106 kB\n├ ƒ /admin/orders                                 191 B           103 kB\n├ ○ /admin/payments                               343 B          96.9 kB\n├ ƒ /admin/products                               184 B           110 kB\n├ ƒ /admin/products/[id]/edit                     190 B           118 kB\n├ ○ /admin/products/categories                    4.11 kB         101 kB\n├ ○ /admin/products/new                           190 B           130 kB\n├ ƒ /admin/registration-links                     2.3 kB         90.1 kB\n├ ƒ /admin/reports                                322 B          99.3 kB\n├ ○ /admin/s"
+    },
+    {
+      "name": "npm run typecheck",
+      "required": true,
+      "status": "pass",
+      "durationMs": 68883,
+      "detail": "\n> vipo-agents@0.1.1 typecheck\n> tsc --noEmit\n\n"
+    },
+    {
+      "name": "npm run test:api",
+      "required": false,
+      "status": "pass",
+      "durationMs": 5320,
+      "detail": "\n> vipo-agents@0.1.1 test:api\n> cross-env NODE_ENV=test DISABLE_RATE_LIMIT=true vitest run\n\n\n RUN  v1.6.1 C:/Users/ALFA DPM/Desktop/New Agent System Miriam/vipo-agents-stage-deploy\n\n ✓ tests/api/mongo-uri-candidates.test.js  (4 tests) 9ms\n ✓ tests/lib/attribution.test.js  (8 tests) 8ms\n ✓ tests/api/health-route.test.js  (3 tests) 104ms\n ✓ tests/lib/seoAuditContentCoverage.test.js  (3 tests) 11ms\n ✓ tests/api/primary-admin-config.test.js  (3 tests) 134ms\n ✓ tests/api/catalog-manager-upload-videoUrl.test.js  (1 test) 237ms\nstdout | tests/api/admin-system-status-mongo.test.js > GET /api/admin/system-status Mongo mapping > maps mongo circuit-open errors to warning status\n[MONGO] Connecting with URI candidate 1/1: mongodb://127.0.0.1:27017/vitest\n\nstdout | tests/api/admin-system-status-mongo.test.js > GET /api/admin/system-status Mongo mapping > maps mongo circuit-open errors to warning status\n[MONGO] Connected successfully.\n\n ✓ tests/api/admin-fallback-resilience.test.js  (3 tests) 681ms\n ✓ tests/api/admin-system-status-mongo.test.js  (4 tests) 702ms\n ✓ tests/api/products-media-ssot.test.js  (1 test) 1432ms\n\n Test Files  9 passed (9)\n      Tests  30 passed (30)\n   Start at  07:21:29\n   Duration  2.50s (transform 1.17s, setup 2ms, collect 2.05s, tests 3.32s, environment 7ms, prepare 2.74s)\n\n"
+    },
+    {
+      "name": "npm run test:ui",
+      "required": false,
+      "status": "pass",
+      "durationMs": 25651,
+      "detail": "\n> vipo-agents@0.1.1 test:ui\n> playwright test\n\n\nRunning 1 test using 1 worker\n\n  ok 1 [chromium] › e2e\\smoke.spec.ts:3:5 › home responds without server error (1.6s)\n\n  1 passed (22.9s)\n"
+    },
+    {
+      "name": "file:app/page.jsx",
+      "required": true,
+      "status": "pass",
+      "durationMs": 0,
+      "detail": "exists"
+    },
+    {
+      "name": "file:app/cart/page.jsx",
+      "required": true,
+      "status": "pass",
+      "durationMs": 0,
+      "detail": "exists"
+    },
+    {
+      "name": "file:app/checkout/page.jsx",
+      "required": true,
+      "status": "pass",
+      "durationMs": 0,
+      "detail": "exists"
+    },
+    {
+      "name": "file:app/checkout/success/page.jsx",
+      "required": true,
+      "status": "pass",
+      "durationMs": 0,
+      "detail": "exists"
+    },
+    {
+      "name": "file:app/checkout/cancel/page.jsx",
+      "required": true,
+      "status": "pass",
+      "durationMs": 0,
+      "detail": "exists"
+    },
+    {
+      "name": "file:app/(public)/login/page.jsx",
+      "required": true,
+      "status": "pass",
+      "durationMs": 0,
+      "detail": "exists"
+    },
+    {
+      "name": "file:app/privacy/page.jsx",
+      "required": true,
+      "status": "pass",
+      "durationMs": 0,
+      "detail": "exists"
+    },
+    {
+      "name": "file:app/terms/page.jsx",
+      "required": true,
+      "status": "pass",
+      "durationMs": 0,
+      "detail": "exists"
+    },
+    {
+      "name": "file:app/returns-policy/page.jsx",
+      "required": true,
+      "status": "pass",
+      "durationMs": 0,
+      "detail": "exists"
+    },
+    {
+      "name": "file:app/api/health/route.js",
+      "required": true,
+      "status": "pass",
+      "durationMs": 0,
+      "detail": "exists"
+    },
+    {
+      "name": "file:middleware.js",
+      "required": true,
+      "status": "pass",
+      "durationMs": 0,
+      "detail": "exists"
+    },
+    {
+      "name": "file:next.config.js",
+      "required": true,
+      "status": "pass",
+      "durationMs": 0,
+      "detail": "exists"
+    }
+  ]
+}

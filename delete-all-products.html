@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>מחיקת כל המוצרים</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .warning {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            color: #856404;
+        }
+        button {
+            width: 100%;
+            padding: 15px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+        .delete-btn {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+        .delete-btn:hover {
+            opacity: 0.9;
+        }
+        .delete-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        .cancel-btn {
+            background: #6c757d;
+            color: white;
+        }
+        .cancel-btn:hover {
+            background: #5a6268;
+        }
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            display: none;
+        }
+        .success {
+            background: #d4edda;
+            border: 2px solid #28a745;
+            color: #155724;
+        }
+        .error {
+            background: #f8d7da;
+            border: 2px solid #dc3545;
+            color: #721c24;
+        }
+        .info {
+            background: #d1ecf1;
+            border: 2px solid #17a2b8;
+            color: #0c5460;
+        }
+        .loading {
+            text-align: center;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🗑️ מחיקת כל המוצרים</h1>
+        
+        <div class="warning">
+            <strong>⚠️ אזהרה!</strong><br>
+            פעולה זו תמחק את <strong>כל המוצרים</strong> מהמערכת.<br>
+            לא ניתן לשחזר את המוצרים לאחר המחיקה!
+        </div>
+
+        <button class="delete-btn" id="deleteBtn" onclick="deleteAllProducts()">
+            מחק את כל המוצרים
+        </button>
+
+        <button class="cancel-btn" onclick="window.close()">
+            ביטול
+        </button>
+
+        <div id="result"></div>
+    </div>
+
+    <script>
+        async function deleteAllProducts() {
+            const btn = document.getElementById('deleteBtn');
+            const result = document.getElementById('result');
+            
+            // Confirm
+            if (!confirm('האם אתה בטוח שברצונך למחוק את כל המוצרים?\n\nפעולה זו בלתי הפיכה!')) {
+                return;
+            }
+
+            // Disable button
+            btn.disabled = true;
+            btn.textContent = 'מוחק...';
+            
+            // Show loading
+            result.style.display = 'block';
+            result.className = 'loading';
+            result.innerHTML = '⏳ מוחק את כל המוצרים...';
+
+            try {
+                // First, get all products
+                const getResponse = await fetch('https://vipo-agents-test.vercel.app/api/products');
+                if (!getResponse.ok) {
+                    throw new Error('שגיאה בטעינת המוצרים');
+                }
+
+                const data = await getResponse.json();
+                const products = data.products || [];
+                
+                if (products.length === 0) {
+                    result.className = 'info';
+                    result.innerHTML = 'ℹ️ אין מוצרים למחיקה';
+                    btn.disabled = false;
+                    btn.textContent = 'מחק את כל המוצרים';
+                    return;
+                }
+
+                result.innerHTML = `⏳ נמצאו ${products.length} מוצרים. מוחק...`;
+
+                // Delete each product (try both _id and legacyId)
+                let deleted = 0;
+                let failed = 0;
+
+                for (const product of products) {
+                    try {
+                        // Try to delete by _id first
+                        let deleteResponse = await fetch(`https://vipo-agents-test.vercel.app/api/products/${product._id}`, {
+                            method: 'DELETE',
+                            credentials: 'include'
+                        });
+
+                        // If failed and has legacyId, try with legacyId
+                        if (!deleteResponse.ok && product.legacyId) {
+                            deleteResponse = await fetch(`https://vipo-agents-test.vercel.app/api/products/${product.legacyId}`, {
+                                method: 'DELETE',
+                                credentials: 'include'
+                            });
+                        }
+
+                        if (deleteResponse.ok) {
+                            deleted++;
+                        } else {
+                            failed++;
+                            console.log('Failed to delete:', product.name, product._id, product.legacyId);
+                        }
+
+                        // Update progress
+                        result.innerHTML = `⏳ מוחק... (${deleted + failed}/${products.length})`;
+                    } catch (err) {
+                        failed++;
+                        console.error('Error deleting:', err);
+                    }
+                }
+
+                // Show result
+                if (deleted === products.length) {
+                    result.className = 'success';
+                    result.innerHTML = `✅ הצלחה!<br>נמחקו ${deleted} מוצרים`;
+                } else {
+                    result.className = 'error';
+                    result.innerHTML = `⚠️ נמחקו ${deleted} מוצרים<br>${failed} מוצרים נכשלו`;
+                }
+
+                btn.textContent = 'מחק את כל המוצרים';
+                btn.disabled = false;
+
+            } catch (error) {
+                result.className = 'error';
+                result.innerHTML = `❌ שגיאה: ${error.message}`;
+                btn.disabled = false;
+                btn.textContent = 'מחק את כל המוצרים';
+            }
+        }
+    </script>
+</body>
+</html>

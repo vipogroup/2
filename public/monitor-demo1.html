@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VIPO Monitor - Demo 1 (Enterprise)</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Inter', sans-serif; background: #0b0f1a; color: #e2e8f0; min-height: 100vh; overflow-x: hidden; }
+
+  /* Ambient Background */
+  .ambient-bg { position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
+  .ambient-bg .orb { position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.15; animation: float 12s ease-in-out infinite; }
+  .ambient-bg .orb:nth-child(1) { width: 400px; height: 400px; background: #1e3a8a; top: -100px; right: -100px; }
+  .ambient-bg .orb:nth-child(2) { width: 300px; height: 300px; background: #0891b2; bottom: -50px; left: -50px; animation-delay: -4s; }
+  .ambient-bg .orb:nth-child(3) { width: 200px; height: 200px; background: #6366f1; top: 50%; left: 50%; animation-delay: -8s; }
+  @keyframes float { 0%, 100% { transform: translate(0, 0) scale(1); } 33% { transform: translate(30px, -20px) scale(1.05); } 66% { transform: translate(-20px, 15px) scale(0.95); } }
+
+  .page { position: relative; z-index: 1; padding: 16px; max-width: 1400px; margin: 0 auto; }
+
+  /* Top Bar */
+  .top-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; padding: 10px 16px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; backdrop-filter: blur(12px); }
+  .top-bar .logo { display: flex; align-items: center; gap: 8px; }
+  .top-bar .logo-icon { width: 32px; height: 32px; border-radius: 8px; background: linear-gradient(135deg, #1e3a8a, #0891b2); display: flex; align-items: center; justify-content: center; color: white; font-weight: 900; font-size: 14px; }
+  .top-bar .logo-text { font-size: 18px; font-weight: 800; background: linear-gradient(135deg, #60a5fa, #22d3ee); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .top-bar .badge { padding: 3px 8px; border-radius: 6px; font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; background: rgba(34,211,238,0.12); color: #22d3ee; border: 1px solid rgba(34,211,238,0.2); }
+  .top-bar .actions { display: flex; align-items: center; gap: 8px; }
+  .top-bar .btn { padding: 6px 14px; border-radius: 8px; font-size: 11px; font-weight: 600; border: none; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.2s; }
+  .top-bar .btn-primary { background: linear-gradient(135deg, #1e3a8a, #0891b2); color: white; }
+  .top-bar .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(8,145,178,0.3); }
+  .top-bar .btn-ghost { background: rgba(255,255,255,0.06); color: #94a3b8; border: 1px solid rgba(255,255,255,0.08); }
+  .top-bar .btn-ghost:hover { background: rgba(255,255,255,0.1); color: white; }
+
+  /* System Health Hero */
+  .health-hero { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 16px; padding: 24px; margin-bottom: 16px; display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: center; position: relative; overflow: hidden; }
+  .health-hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(30,58,138,0.08) 0%, rgba(8,145,178,0.05) 100%); pointer-events: none; }
+  .health-hero .info { position: relative; z-index: 1; }
+  .health-hero .title { font-size: 22px; font-weight: 800; margin-bottom: 4px; }
+  .health-hero .title .gradient { background: linear-gradient(135deg, #60a5fa, #22d3ee); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .health-hero .subtitle { font-size: 12px; color: #64748b; }
+  .health-hero .live-dot { display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border-radius: 20px; background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.2); font-size: 10px; font-weight: 600; color: #4ade80; margin-top: 8px; }
+  .health-hero .live-dot::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: #4ade80; animation: pulse-dot 2s ease-in-out infinite; }
+  @keyframes pulse-dot { 0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(74,222,128,0.4); } 50% { opacity: 0.7; box-shadow: 0 0 0 6px rgba(74,222,128,0); } }
+
+  /* Health Ring */
+  .health-ring { position: relative; z-index: 1; width: 140px; height: 140px; }
+  .health-ring svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+  .health-ring .track { fill: none; stroke: rgba(255,255,255,0.06); stroke-width: 8; }
+  .health-ring .progress { fill: none; stroke: url(#healthGrad); stroke-width: 8; stroke-linecap: round; stroke-dasharray: 377; stroke-dashoffset: 38; transition: stroke-dashoffset 1.5s ease; }
+  .health-ring .center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .health-ring .score { font-size: 32px; font-weight: 900; background: linear-gradient(135deg, #4ade80, #22d3ee); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .health-ring .label { font-size: 9px; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+
+  /* Metrics Row */
+  .metrics-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 16px; }
+  .metric-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 16px; position: relative; overflow: hidden; transition: all 0.3s; }
+  .metric-card:hover { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.1); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.2); }
+  .metric-card .icon-wrap { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 10px; }
+  .metric-card .value { font-size: 28px; font-weight: 800; margin-bottom: 2px; }
+  .metric-card .label { font-size: 11px; color: #64748b; font-weight: 500; }
+  .metric-card .trend { position: absolute; top: 14px; left: 14px; font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 4px; }
+  .metric-card .sparkline { margin-top: 10px; height: 28px; }
+
+  /* Uptime Timeline */
+  .uptime-section { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 14px; padding: 18px; margin-bottom: 16px; }
+  .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+  .section-title { font-size: 13px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+  .section-title .icon { width: 28px; height: 28px; border-radius: 8px; display: flex; align-items: center; justify-content: center; background: rgba(99,102,241,0.12); }
+  .uptime-row { display: flex; align-items: center; gap: 12px; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
+  .uptime-row:last-child { border-bottom: none; }
+  .uptime-row .name { width: 80px; font-size: 11px; font-weight: 600; color: #94a3b8; }
+  .uptime-bar { flex: 1; height: 18px; display: flex; gap: 1px; border-radius: 4px; overflow: hidden; }
+  .uptime-bar .seg { flex: 1; border-radius: 2px; transition: all 0.2s; cursor: pointer; position: relative; }
+  .uptime-bar .seg:hover { transform: scaleY(1.3); }
+  .uptime-bar .seg.ok { background: #22c55e; }
+  .uptime-bar .seg.warn { background: #f59e0b; }
+  .uptime-bar .seg.err { background: #ef4444; }
+  .uptime-bar .seg.na { background: rgba(255,255,255,0.06); }
+  .uptime-row .pct { width: 50px; text-align: left; font-size: 11px; font-weight: 700; color: #4ade80; }
+
+  /* Services Grid */
+  .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 16px; }
+  .service-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 14px; position: relative; transition: all 0.3s; overflow: hidden; }
+  .service-card:hover { border-color: rgba(255,255,255,0.12); background: rgba(255,255,255,0.05); }
+  .service-card .status-line { position: absolute; top: 0; right: 0; left: 0; height: 2px; }
+  .service-card .status-line.ok { background: linear-gradient(90deg, #22c55e, #4ade80); }
+  .service-card .status-line.warn { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
+  .service-card .status-line.err { background: linear-gradient(90deg, #ef4444, #f87171); }
+  .service-card .top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+  .service-card .svc-name { font-size: 12px; font-weight: 700; }
+  .service-card .svc-badge { padding: 2px 8px; border-radius: 10px; font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+  .service-card .svc-badge.ok { background: rgba(34,197,94,0.12); color: #4ade80; }
+  .service-card .svc-badge.warn { background: rgba(245,158,11,0.12); color: #fbbf24; }
+  .service-card .svc-badge.err { background: rgba(239,68,68,0.12); color: #f87171; }
+  .service-card .svc-msg { font-size: 10px; color: #64748b; margin-bottom: 8px; }
+  .service-card .svc-meta { display: flex; gap: 12px; font-size: 9px; color: #475569; }
+  .service-card .svc-meta span { display: flex; align-items: center; gap: 3px; }
+  .service-card .mini-chart { margin-top: 8px; height: 24px; }
+
+  /* Response Time Chart */
+  .chart-section { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 14px; padding: 18px; margin-bottom: 16px; }
+  .chart-area { height: 120px; display: flex; align-items: flex-end; gap: 3px; padding-top: 10px; }
+  .chart-bar { flex: 1; border-radius: 3px 3px 0 0; transition: all 0.3s; cursor: pointer; position: relative; min-width: 4px; }
+  .chart-bar:hover { opacity: 0.8; }
+
+  /* Live Feed */
+  .feed-section { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 14px; overflow: hidden; margin-bottom: 16px; }
+  .feed-header { padding: 14px 18px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.04); }
+  .feed-list { max-height: 280px; overflow-y: auto; }
+  .feed-item { padding: 10px 18px; display: flex; align-items: flex-start; gap: 10px; border-bottom: 1px solid rgba(255,255,255,0.03); transition: background 0.2s; }
+  .feed-item:hover { background: rgba(255,255,255,0.02); }
+  .feed-item .dot { width: 8px; height: 8px; border-radius: 50%; margin-top: 4px; flex-shrink: 0; }
+  .feed-item .dot.info { background: #3b82f6; box-shadow: 0 0 8px rgba(59,130,246,0.4); }
+  .feed-item .dot.success { background: #22c55e; box-shadow: 0 0 8px rgba(34,197,94,0.4); }
+  .feed-item .dot.warning { background: #f59e0b; box-shadow: 0 0 8px rgba(245,158,11,0.4); }
+  .feed-item .dot.error { background: #ef4444; box-shadow: 0 0 8px rgba(239,68,68,0.4); }
+  .feed-item .content { flex: 1; }
+  .feed-item .msg { font-size: 11px; font-weight: 500; color: #cbd5e1; }
+  .feed-item .time { font-size: 9px; color: #475569; margin-top: 2px; }
+
+  /* Bottom Grid */
+  .bottom-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+  /* Tabs */
+  .tabs { display: flex; gap: 4px; margin-bottom: 12px; }
+  .tab { padding: 6px 14px; border-radius: 8px; font-size: 11px; font-weight: 600; cursor: pointer; border: none; background: rgba(255,255,255,0.04); color: #64748b; transition: all 0.2s; }
+  .tab.active { background: linear-gradient(135deg, #1e3a8a, #0891b2); color: white; box-shadow: 0 2px 8px rgba(8,145,178,0.3); }
+  .tab:hover:not(.active) { background: rgba(255,255,255,0.08); color: #94a3b8; }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
+
+  @media (max-width: 768px) {
+    .metrics-row { grid-template-columns: repeat(2, 1fr); }
+    .services-grid { grid-template-columns: 1fr; }
+    .health-hero { grid-template-columns: 1fr; text-align: center; }
+    .health-ring { margin: 0 auto; }
+    .bottom-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="ambient-bg">
+  <div class="orb"></div>
+  <div class="orb"></div>
+  <div class="orb"></div>
+</div>
+
+<div class="page">
+
+  <!-- Top Bar -->
+  <div class="top-bar">
+    <div class="logo">
+      <div class="logo-icon">V</div>
+      <span class="logo-text">VIPO</span>
+      <span class="badge">Monitor</span>
+    </div>
+    <div class="actions">
+      <button class="btn btn-ghost">
+        <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+        חזרה לדשבורד
+      </button>
+      <button class="btn btn-primary">
+        <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+        רענן הכל
+      </button>
+    </div>
+  </div>
+
+  <!-- System Health Hero -->
+  <div class="health-hero">
+    <div class="info">
+      <div class="title"><span class="gradient">בריאות המערכת</span></div>
+      <div class="subtitle">כל השירותים נבדקים באופן רציף | עדכון אחרון: 12:08:45</div>
+      <div class="live-dot">LIVE - כל המערכות פעילות</div>
+    </div>
+    <div class="health-ring">
+      <svg viewBox="0 0 128 128">
+        <defs>
+          <linearGradient id="healthGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#4ade80"/>
+            <stop offset="100%" style="stop-color:#22d3ee"/>
+          </linearGradient>
+        </defs>
+        <circle class="track" cx="64" cy="64" r="56"/>
+        <circle class="progress" cx="64" cy="64" r="56"/>
+      </svg>
+      <div class="center">
+        <div class="score">90%</div>
+        <div class="label">Health Score</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Metrics Row -->
+  <div class="metrics-row">
+    <div class="metric-card">
+      <div class="icon-wrap" style="background: rgba(59,130,246,0.12);">
+        <svg width="18" height="18" fill="none" stroke="#3b82f6" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+      </div>
+      <div class="value" style="color: #60a5fa;">8</div>
+      <div class="label">סה״כ שירותים</div>
+      <div class="sparkline">
+        <svg width="100%" height="28" viewBox="0 0 120 28">
+          <polyline points="0,20 15,16 30,18 45,10 60,14 75,8 90,12 105,6 120,10" fill="none" stroke="rgba(96,165,250,0.3)" stroke-width="1.5"/>
+          <polyline points="0,20 15,16 30,18 45,10 60,14 75,8 90,12 105,6 120,10" fill="none" stroke="#60a5fa" stroke-width="1.5" stroke-dasharray="200" stroke-dashoffset="200" style="animation: drawLine 2s ease forwards;"/>
+        </svg>
+      </div>
+    </div>
+    <div class="metric-card">
+      <div class="trend" style="background: rgba(34,197,94,0.12); color: #4ade80;">+2</div>
+      <div class="icon-wrap" style="background: rgba(34,197,94,0.12);">
+        <svg width="18" height="18" fill="none" stroke="#22c55e" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+      </div>
+      <div class="value" style="color: #4ade80;">5</div>
+      <div class="label">מחוברים</div>
+      <div class="sparkline">
+        <svg width="100%" height="28" viewBox="0 0 120 28">
+          <polyline points="0,22 15,20 30,18 45,16 60,12 75,10 90,8 105,6 120,4" fill="none" stroke="#22c55e" stroke-width="1.5" stroke-dasharray="200" stroke-dashoffset="200" style="animation: drawLine 2s ease 0.3s forwards;"/>
+        </svg>
+      </div>
+    </div>
+    <div class="metric-card">
+      <div class="icon-wrap" style="background: rgba(245,158,11,0.12);">
+        <svg width="18" height="18" fill="none" stroke="#f59e0b" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+      </div>
+      <div class="value" style="color: #fbbf24;">1</div>
+      <div class="label">אזהרות</div>
+      <div class="sparkline">
+        <svg width="100%" height="28" viewBox="0 0 120 28">
+          <polyline points="0,14 15,18 30,10 45,20 60,8 75,16 90,12 105,14 120,16" fill="none" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="200" stroke-dashoffset="200" style="animation: drawLine 2s ease 0.6s forwards;"/>
+        </svg>
+      </div>
+    </div>
+    <div class="metric-card">
+      <div class="icon-wrap" style="background: rgba(239,68,68,0.12);">
+        <svg width="18" height="18" fill="none" stroke="#ef4444" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+      </div>
+      <div class="value" style="color: #f87171;">2</div>
+      <div class="label">שגיאות</div>
+      <div class="sparkline">
+        <svg width="100%" height="28" viewBox="0 0 120 28">
+          <polyline points="0,18 15,14 30,20 45,10 60,22 75,8 90,16 105,12 120,14" fill="none" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="200" stroke-dashoffset="200" style="animation: drawLine 2s ease 0.9s forwards;"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <style>@keyframes drawLine { to { stroke-dashoffset: 0; } }</style>
+
+  <!-- Uptime Timeline -->
+  <div class="uptime-section">
+    <div class="section-header">
+      <div class="section-title">
+        <div class="icon"><svg width="14" height="14" fill="none" stroke="#818cf8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
+        Uptime - 30 הימים האחרונים
+      </div>
+      <span style="font-size: 10px; color: #4ade80; font-weight: 600;">99.7% Average</span>
+    </div>
+    <div>
+      <div class="uptime-row">
+        <span class="name">GitHub</span>
+        <div class="uptime-bar" id="uptimeGithub"></div>
+        <span class="pct">100%</span>
+      </div>
+      <div class="uptime-row">
+        <span class="name">MongoDB</span>
+        <div class="uptime-bar" id="uptimeMongo"></div>
+        <span class="pct">99.9%</span>
+      </div>
+      <div class="uptime-row">
+        <span class="name">Vercel</span>
+        <div class="uptime-bar" id="uptimeVercel"></div>
+        <span class="pct">100%</span>
+      </div>
+      <div class="uptime-row">
+        <span class="name">Cloudinary</span>
+        <div class="uptime-bar" id="uptimeCloud"></div>
+        <span class="pct">99.5%</span>
+      </div>
+      <div class="uptime-row">
+        <span class="name">SendGrid</span>
+        <div class="uptime-bar" id="uptimeSG"></div>
+        <span class="pct" style="color: #fbbf24;">98.2%</span>
+      </div>
+      <div class="uptime-row">
+        <span class="name">PayPlus</span>
+        <div class="uptime-bar" id="uptimePP"></div>
+        <span class="pct" style="color: #f87171;">95.0%</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Services Grid -->
+  <div class="section-header" style="margin-bottom: 12px;">
+    <div class="section-title">
+      <div class="icon" style="background: rgba(8,145,178,0.12);"><svg width="14" height="14" fill="none" stroke="#22d3ee" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2"/></svg></div>
+      סטטוס שירותים
+    </div>
+    <div class="tabs">
+      <button class="tab active">הכל</button>
+      <button class="tab">פעילים</button>
+      <button class="tab">שגיאות</button>
+    </div>
+  </div>
+
+  <div class="services-grid">
+    <div class="service-card">
+      <div class="status-line ok"></div>
+      <div class="top"><span class="svc-name">GitHub</span><span class="svc-badge ok">Connected</span></div>
+      <div class="svc-msg">גישה ל-GitHub תקינה - repo VIPO</div>
+      <div class="svc-meta"><span><svg width="10" height="10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3"/></svg> 45ms</span><span>Region: US-East</span></div>
+      <div class="mini-chart"><svg width="100%" height="24" viewBox="0 0 100 24"><polyline points="0,18 12,14 25,16 37,10 50,12 62,8 75,10 87,6 100,8" fill="none" stroke="rgba(74,222,128,0.4)" stroke-width="1.5"/></svg></div>
+    </div>
+    <div class="service-card">
+      <div class="status-line ok"></div>
+      <div class="top"><span class="svc-name">Vercel</span><span class="svc-badge ok">Connected</span></div>
+      <div class="svc-msg">Auto-deploy פעיל - Last Deploy: 2 שעות</div>
+      <div class="svc-meta"><span><svg width="10" height="10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3"/></svg> 120ms</span><span>Prod + Preview</span></div>
+      <div class="mini-chart"><svg width="100%" height="24" viewBox="0 0 100 24"><polyline points="0,12 12,16 25,10 37,14 50,8 62,12 75,6 87,10 100,8" fill="none" stroke="rgba(74,222,128,0.4)" stroke-width="1.5"/></svg></div>
+    </div>
+    <div class="service-card">
+      <div class="status-line ok"></div>
+      <div class="top"><span class="svc-name">MongoDB</span><span class="svc-badge ok">Connected</span></div>
+      <div class="svc-msg">Atlas M10 - 42 Collections | 1.2GB</div>
+      <div class="svc-meta"><span><svg width="10" height="10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3"/></svg> 23ms</span><span>Region: EU-West</span></div>
+      <div class="mini-chart"><svg width="100%" height="24" viewBox="0 0 100 24"><polyline points="0,16 12,12 25,14 37,8 50,10 62,6 75,8 87,4 100,6" fill="none" stroke="rgba(74,222,128,0.4)" stroke-width="1.5"/></svg></div>
+    </div>
+    <div class="service-card">
+      <div class="status-line warn"></div>
+      <div class="top"><span class="svc-name">Twilio</span><span class="svc-badge warn">Warning</span></div>
+      <div class="svc-msg">WhatsApp sandbox - rate limit approaching</div>
+      <div class="svc-meta"><span><svg width="10" height="10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3"/></svg> 340ms</span><span>75% quota used</span></div>
+      <div class="mini-chart"><svg width="100%" height="24" viewBox="0 0 100 24"><polyline points="0,8 12,14 25,10 37,18 50,12 62,20 75,14 87,16 100,18" fill="none" stroke="rgba(251,191,36,0.4)" stroke-width="1.5"/></svg></div>
+    </div>
+    <div class="service-card">
+      <div class="status-line err"></div>
+      <div class="top"><span class="svc-name">SendGrid</span><span class="svc-badge err">Error</span></div>
+      <div class="svc-msg">SENDGRID_API_KEY חסר - שליחת מיילים מושבתת</div>
+      <div class="svc-meta"><span><svg width="10" height="10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3"/></svg> timeout</span><span>Config missing</span></div>
+      <div class="mini-chart"><svg width="100%" height="24" viewBox="0 0 100 24"><polyline points="0,12 12,20 25,8 37,22 50,10 62,24 75,12 87,20 100,22" fill="none" stroke="rgba(248,113,113,0.4)" stroke-width="1.5"/></svg></div>
+    </div>
+    <div class="service-card">
+      <div class="status-line ok"></div>
+      <div class="top"><span class="svc-name">Cloudinary</span><span class="svc-badge ok">Connected</span></div>
+      <div class="svc-msg">ענן תמונות פעיל - 2,847 קבצים</div>
+      <div class="svc-meta"><span><svg width="10" height="10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3"/></svg> 89ms</span><span>12GB / 25GB</span></div>
+      <div class="mini-chart"><svg width="100%" height="24" viewBox="0 0 100 24"><polyline points="0,14 12,10 25,12 37,8 50,6 62,10 75,4 87,8 100,6" fill="none" stroke="rgba(74,222,128,0.4)" stroke-width="1.5"/></svg></div>
+    </div>
+    <div class="service-card">
+      <div class="status-line err"></div>
+      <div class="top"><span class="svc-name">PayPlus</span><span class="svc-badge err">Error</span></div>
+      <div class="svc-msg">חיבור PayPlus נכשל - בדוק API credentials</div>
+      <div class="svc-meta"><span><svg width="10" height="10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3"/></svg> N/A</span><span>Auth failed</span></div>
+      <div class="mini-chart"><svg width="100%" height="24" viewBox="0 0 100 24"><polyline points="0,10 12,18 25,6 37,20 50,4 62,22 75,8 87,16 100,20" fill="none" stroke="rgba(248,113,113,0.4)" stroke-width="1.5"/></svg></div>
+    </div>
+    <div class="service-card">
+      <div class="status-line ok"></div>
+      <div class="top"><span class="svc-name">Render</span><span class="svc-badge ok">Connected</span></div>
+      <div class="svc-msg">WhatsApp Server - uptime 99.9%</div>
+      <div class="svc-meta"><span><svg width="10" height="10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3"/></svg> 156ms</span><span>Oregon, US</span></div>
+      <div class="mini-chart"><svg width="100%" height="24" viewBox="0 0 100 24"><polyline points="0,12 12,8 25,14 37,6 50,10 62,8 75,4 87,6 100,4" fill="none" stroke="rgba(74,222,128,0.4)" stroke-width="1.5"/></svg></div>
+    </div>
+  </div>
+
+  <!-- Response Time Chart -->
+  <div class="chart-section">
+    <div class="section-header">
+      <div class="section-title">
+        <div class="icon" style="background: rgba(168,85,247,0.12);"><svg width="14" height="14" fill="none" stroke="#a855f7" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg></div>
+        זמני תגובה (24 שעות אחרונות)
+      </div>
+      <span style="font-size: 10px; color: #94a3b8;">Avg: 142ms | P95: 320ms | P99: 580ms</span>
+    </div>
+    <div class="chart-area" id="responseChart"></div>
+    <div style="display: flex; justify-content: space-between; margin-top: 6px; font-size: 9px; color: #475569;">
+      <span>00:00</span><span>04:00</span><span>08:00</span><span>12:00</span><span>16:00</span><span>20:00</span><span>עכשיו</span>
+    </div>
+  </div>
+
+  <!-- Bottom Grid -->
+  <div class="bottom-grid">
+    <!-- Live Feed -->
+    <div class="feed-section">
+      <div class="feed-header">
+        <div class="section-title">
+          <div class="icon" style="background: rgba(34,211,238,0.12);"><svg width="14" height="14" fill="none" stroke="#22d3ee" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg></div>
+          פעילות חיה
+        </div>
+        <span style="font-size: 9px; color: #64748b;">24 אירועים אחרונים</span>
+      </div>
+      <div class="feed-list">
+        <div class="feed-item"><div class="dot success"></div><div class="content"><div class="msg">MongoDB - Replica set healthy, 3/3 nodes</div><div class="time">לפני 12 שניות</div></div></div>
+        <div class="feed-item"><div class="dot info"></div><div class="content"><div class="msg">Vercel - Deploy #847 completed successfully</div><div class="time">לפני 2 דקות</div></div></div>
+        <div class="feed-item"><div class="dot warning"></div><div class="content"><div class="msg">Twilio - WhatsApp rate limit at 75%</div><div class="time">לפני 5 דקות</div></div></div>
+        <div class="feed-item"><div class="dot error"></div><div class="content"><div class="msg">SendGrid - Authentication failed (API key missing)</div><div class="time">לפני 8 דקות</div></div></div>
+        <div class="feed-item"><div class="dot success"></div><div class="content"><div class="msg">Cloudinary - Image optimization completed (42 files)</div><div class="time">לפני 15 דקות</div></div></div>
+        <div class="feed-item"><div class="dot error"></div><div class="content"><div class="msg">PayPlus - Connection timeout after 30s</div><div class="time">לפני 22 דקות</div></div></div>
+        <div class="feed-item"><div class="dot info"></div><div class="content"><div class="msg">GitHub - Webhook received: push to main branch</div><div class="time">לפני 35 דקות</div></div></div>
+        <div class="feed-item"><div class="dot success"></div><div class="content"><div class="msg">System - SSL certificates valid for 287 days</div><div class="time">לפני 1 שעה</div></div></div>
+      </div>
+    </div>
+
+    <!-- Server Stats -->
+    <div class="feed-section">
+      <div class="feed-header">
+        <div class="section-title">
+          <div class="icon" style="background: rgba(99,102,241,0.12);"><svg width="14" height="14" fill="none" stroke="#818cf8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg></div>
+          מידע שרת
+        </div>
+      </div>
+      <div style="padding: 16px;">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px;">
+          <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; padding: 12px;">
+            <div style="font-size: 9px; color: #64748b; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px;">Response Time</div>
+            <div style="font-size: 22px; font-weight: 800; color: #4ade80;">142<span style="font-size: 11px; color: #64748b;">ms</span></div>
+          </div>
+          <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; padding: 12px;">
+            <div style="font-size: 9px; color: #64748b; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px;">Uptime</div>
+            <div style="font-size: 22px; font-weight: 800; color: #22d3ee;">99.7<span style="font-size: 11px; color: #64748b;">%</span></div>
+          </div>
+          <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; padding: 12px;">
+            <div style="font-size: 9px; color: #64748b; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px;">Environment</div>
+            <div style="font-size: 14px; font-weight: 700; color: #e2e8f0;">Production</div>
+          </div>
+          <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; padding: 12px;">
+            <div style="font-size: 9px; color: #64748b; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px;">Version</div>
+            <div style="font-size: 14px; font-weight: 700; color: #e2e8f0;">v2.4.1</div>
+          </div>
+        </div>
+        <!-- Resource Usage -->
+        <div style="font-size: 10px; font-weight: 600; color: #94a3b8; margin-bottom: 10px;">ניצול משאבים</div>
+        <div style="margin-bottom: 8px;">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 3px;"><span style="font-size: 10px; color: #94a3b8;">CPU</span><span style="font-size: 10px; color: #4ade80; font-weight: 700;">34%</span></div>
+          <div style="height: 5px; background: rgba(255,255,255,0.06); border-radius: 3px; overflow: hidden;"><div style="width: 34%; height: 100%; background: linear-gradient(90deg, #22c55e, #4ade80); border-radius: 3px;"></div></div>
+        </div>
+        <div style="margin-bottom: 8px;">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 3px;"><span style="font-size: 10px; color: #94a3b8;">Memory</span><span style="font-size: 10px; color: #fbbf24; font-weight: 700;">67%</span></div>
+          <div style="height: 5px; background: rgba(255,255,255,0.06); border-radius: 3px; overflow: hidden;"><div style="width: 67%; height: 100%; background: linear-gradient(90deg, #f59e0b, #fbbf24); border-radius: 3px;"></div></div>
+        </div>
+        <div>
+          <div style="display: flex; justify-content: space-between; margin-bottom: 3px;"><span style="font-size: 10px; color: #94a3b8;">Disk</span><span style="font-size: 10px; color: #60a5fa; font-weight: 700;">48%</span></div>
+          <div style="height: 5px; background: rgba(255,255,255,0.06); border-radius: 3px; overflow: hidden;"><div style="width: 48%; height: 100%; background: linear-gradient(90deg, #3b82f6, #60a5fa); border-radius: 3px;"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// Generate uptime bars
+function generateUptime(id, errorRate) {
+  const el = document.getElementById(id);
+  for (let i = 0; i < 30; i++) {
+    const seg = document.createElement('div');
+    seg.className = 'seg';
+    const rand = Math.random();
+    if (rand < errorRate) seg.classList.add('err');
+    else if (rand < errorRate * 2.5) seg.classList.add('warn');
+    else seg.classList.add('ok');
+    el.appendChild(seg);
+  }
+}
+generateUptime('uptimeGithub', 0);
+generateUptime('uptimeMongo', 0.02);
+generateUptime('uptimeVercel', 0);
+generateUptime('uptimeCloud', 0.03);
+generateUptime('uptimeSG', 0.08);
+generateUptime('uptimePP', 0.12);
+
+// Generate response time chart
+const chart = document.getElementById('responseChart');
+const hours = 48;
+for (let i = 0; i < hours; i++) {
+  const bar = document.createElement('div');
+  bar.className = 'chart-bar';
+  const base = 80 + Math.random() * 120;
+  const spike = Math.random() > 0.9 ? Math.random() * 200 : 0;
+  const h = base + spike;
+  const maxH = 120;
+  const pct = Math.min(h / 400 * 100, 100);
+  bar.style.height = pct + '%';
+  if (h > 300) bar.style.background = 'linear-gradient(0deg, #ef4444, #f87171)';
+  else if (h > 200) bar.style.background = 'linear-gradient(0deg, #f59e0b, #fbbf24)';
+  else bar.style.background = 'linear-gradient(0deg, rgba(30,58,138,0.6), rgba(8,145,178,0.6))';
+  chart.appendChild(bar);
+}
+</script>
+</body>
+</html>

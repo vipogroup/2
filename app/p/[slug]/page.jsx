@@ -48,10 +48,10 @@ export default async function ProductPage({ params, searchParams }){
           {p.salePrice && <div className="text-sm text-gray-500 line-through">₪{p.price}</div>}
         </div>
 
-        {!isGroup and (
+        {!isGroup && (
           <Link className="btn w-full" href={`/checkout?slug=${p.slug}`}>הזמנה מאובטחת</Link>
         )}
-        {isGroup and (
+        {isGroup && (
           <Link className="btn w-full" href={`/group-join?slug=${p.slug}`}>מצטרף עכשיו (דמי רצינות)</Link>
         )}
 

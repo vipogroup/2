@@ -1,0 +1,215 @@
+[
+  {
+    "_id": "69af2da6f2e26431f82208e6",
+    "name": "גולשים בכיף",
+    "slug": "qwe",
+    "status": "active",
+    "ownerId": "69af2da6f2e26431f82208e5",
+    "platformCommissionRate": 5,
+    "branding": {
+      "logo": null,
+      "favicon": null,
+      "primaryColor": "#1e3a8a",
+      "secondaryColor": "#0891b2",
+      "accentColor": "#06b6d4",
+      "useGlobalBranding": true
+    },
+    "contact": {
+      "email": "israelelkayam20@gmail.com",
+      "phone": "0556693802",
+      "whatsapp": "0556693802",
+      "address": "ראשון לציון "
+    },
+    "social": {
+      "facebook": null,
+      "instagram": null,
+      "twitter": null,
+      "linkedin": null
+    },
+    "seo": {
+      "title": "גולשים בכיף",
+      "description": null,
+      "keywords": null
+    },
+    "features": {
+      "registration": true,
+      "groupPurchase": true,
+      "notifications": true,
+      "darkMode": false,
+      "agentSystem": true,
+      "coupons": true
+    },
+    "allowedMenus": [
+      "products",
+      "products_new",
+      "orders",
+      "users",
+      "agents",
+      "new_users_widget",
+      "recent_orders_widget"
+    ],
+    "allowedMenusConfigured": true,
+    "agentSettings": {
+      "defaultCommissionPercent": 12,
+      "defaultDiscountPercent": 10,
+      "commissionHoldDays": 30,
+      "groupPurchaseHoldDays": 100
+    },
+    "billing": {
+      "pendingBalance": 0,
+      "totalPaid": 0,
+      "lastPaymentAt": null,
+      "paymentMethod": null,
+      "bankDetails": {
+        "bankName": null,
+        "branchNumber": null,
+        "accountNumber": null,
+        "accountName": null
+      }
+    },
+    "stats": {
+      "totalSales": 0,
+      "totalOrders": 0,
+      "totalProducts": 0,
+      "totalAgents": 0,
+      "totalCustomers": 0
+    },
+    "createdAt": "2026-03-09T20:29:26.333Z",
+    "updatedAt": "2026-03-09T20:32:24.131Z"
+  },
+  {
+    "_id": "69af1eb25b011f0d0546bd05",
+    "name": "שיווק ומכירה yb",
+    "slug": "yby",
+    "status": "active",
+    "ownerId": "69af1eb25b011f0d0546bd04",
+    "platformCommissionRate": 5,
+    "branding": {
+      "logo": null,
+      "favicon": null,
+      "primaryColor": "#1e3a8a",
+      "secondaryColor": "#0891b2",
+      "accentColor": "#06b6d4",
+      "useGlobalBranding": true
+    },
+    "contact": {
+      "email": "a0527521153@gmail.com",
+      "phone": "0527521153",
+      "whatsapp": "0527521153",
+      "address": "אהבת שלום 7 בית שמש "
+    },
+    "social": {
+      "facebook": null,
+      "instagram": null,
+      "twitter": null,
+      "linkedin": null
+    },
+    "seo": {
+      "title": "שיווק ומכירה yb",
+      "description": null,
+      "keywords": null
+    },
+    "features": {
+      "registration": true,
+      "groupPurchase": true,
+      "notifications": true,
+      "darkMode": false,
+      "agentSystem": true,
+      "coupons": true
+    },
+    "allowedMenus": [
+      "users",
+      "agents",
+      "products",
+      "products_new",
+      "orders",
+      "reports",
+      "sales_status",
+      "commissions",
+      "withdrawals",
+      "transactions",
+      "analytics",
+      "settings",
+      "marketing",
+      "notifications",
+      "integrations",
+      "crm",
+      "bot_manager",
+      "site_texts",
+      "branding",
+      "new_users_widget",
+      "recent_orders_widget"
+    ],
+    "allowedMenusConfigured": true,
+    "agentSettings": {
+      "defaultCommissionPercent": 12,
+      "defaultDiscountPercent": 10,
+      "commissionHoldDays": 30,
+      "groupPurchaseHoldDays": 100
+    },
+    "billing": {
+      "pendingBalance": 0,
+      "totalPaid": 0,
+      "lastPaymentAt": null,
+      "paymentMethod": null,
+      "bankDetails": {
+        "bankName": null,
+        "branchNumber": null,
+        "accountNumber": null,
+        "accountName": null
+      }
+    },
+    "stats": {
+      "totalSales": 0,
+      "totalOrders": 0,
+      "totalProducts": 0,
+      "totalAgents": 0,
+      "totalCustomers": 0
+    },
+    "createdAt": "2026-03-09T19:25:38.188Z",
+    "updatedAt": "2026-03-09T21:32:27.917Z"
+  },
+  {
+    "_id": "6980e7a13862e2a30b667a62",
+    "name": "מחסני נירוסטה",
+    "slug": "vcv",
+    "status": "active",
+    "ownerId": "6965456e3b2bd7e6c52589bc",
+    "platformCommissionRate": 5,
+    "branding": {
+      "primaryColor": "#1e3a8a",
+      "secondaryColor": "#0891b2",
+      "accentColor": "#06b6d4",
+      "backgroundColor": "#f7fbff",
+      "dangerColor": "#dc2626",
+      "successColor": "#16a34a",
+      "textColor": "#0d1b2a",
+      "useGlobalBranding": true,
+      "warningColor": "#eab308"
+    },
+    "contact": {
+      "email": "m0533858881@gmail.com",
+      "phone": "0533858881",
+      "whatsapp": "0533858881",
+      "address": "באר יעקב"
+    },
+    "seo": {
+      "title": "מחסני נירוסטה"
+    },
+    "features": {
+      "registration": true,
+      "groupPurchase": true,
+      "notifications": true,
+      "agentSystem": true,
+      "coupons": true
+    },
+    "agentSettings": {
+      "defaultCommissionPercent": 12,
+      "defaultDiscountPercent": 10,
+      "commissionHoldDays": 30,
+      "groupPurchaseHoldDays": 100
+    },
+    "createdAt": "2026-02-11T04:27:56.279Z",
+    "updatedAt": "2026-03-09T17:32:24.010Z"
+  }
+]

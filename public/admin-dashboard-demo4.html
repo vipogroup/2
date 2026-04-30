@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VIPO - דשבורד מנהל | קונספט 4 - Glass Morphism</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --primary: #1e3a8a;
+    --secondary: #0891b2;
+    --gradient: linear-gradient(135deg, #1e3a8a 0%, #0891b2 100%);
+    --glass: rgba(255, 255, 255, 0.72);
+    --glass-border: rgba(255, 255, 255, 0.45);
+    --glass-shadow: 0 8px 32px rgba(30, 58, 138, 0.08);
+    --text: #1e293b;
+    --text-sec: #64748b;
+    --text-muted: #94a3b8;
+    --success: #16a34a;
+    --warning: #f59e0b;
+    --danger: #dc2626;
+    --radius: 16px;
+  }
+
+  body {
+    font-family: 'Heebo', sans-serif;
+    min-height: 100vh;
+    background: #eef2f7;
+    background-image:
+      radial-gradient(ellipse at 15% 10%, rgba(30, 58, 138, 0.06) 0%, transparent 50%),
+      radial-gradient(ellipse at 85% 90%, rgba(8, 145, 178, 0.06) 0%, transparent 50%);
+    color: var(--text);
+    padding-top: 32px;
+  }
+
+  /* ===== DEMO BANNER ===== */
+  .demo-banner {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 999;
+    background: linear-gradient(135deg, #fbbf24, #f59e0b);
+    color: #78350f; text-align: center; padding: 8px; font-size: 12px; font-weight: 700;
+  }
+
+  /* ===== TOP NAV ===== */
+  .topnav {
+    position: sticky; top: 32px; z-index: 40;
+    background: var(--glass);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--glass-border);
+    padding: 0 32px;
+    display: flex;
+    align-items: center;
+    height: 60px;
+    gap: 8px;
+  }
+
+  .topnav-logo {
+    display: flex; align-items: center; gap: 10px;
+    margin-left: 24px;
+  }
+
+  .topnav-logo-icon {
+    width: 36px; height: 36px; border-radius: 10px;
+    background: var(--gradient);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 900; font-size: 16px; color: white;
+  }
+
+  .topnav-logo-text {
+    font-size: 20px; font-weight: 800;
+    background: var(--gradient);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+
+  .topnav-links {
+    display: flex; align-items: center; gap: 2px; flex: 1;
+  }
+
+  .topnav-link {
+    display: flex; align-items: center; gap: 6px;
+    padding: 8px 14px; border-radius: 10px;
+    font-size: 13px; font-weight: 500; color: var(--text-sec);
+    text-decoration: none; transition: all 0.2s;
+    border: none; background: none; cursor: pointer;
+    font-family: 'Heebo', sans-serif;
+  }
+
+  .topnav-link:hover { background: rgba(8, 145, 178, 0.06); color: var(--primary); }
+
+  .topnav-link.active {
+    background: var(--gradient); color: white; font-weight: 600;
+    box-shadow: 0 2px 10px rgba(8, 145, 178, 0.25);
+  }
+
+  .topnav-link svg { width: 16px; height: 16px; }
+
+  .topnav-link .badge {
+    font-size: 10px; font-weight: 700;
+    background: rgba(239, 68, 68, 0.12); color: var(--danger);
+    padding: 1px 7px; border-radius: 8px;
+  }
+
+  .topnav-link.active .badge {
+    background: rgba(255,255,255,0.2); color: white;
+  }
+
+  .topnav-end {
+    display: flex; align-items: center; gap: 8px; margin-right: auto;
+  }
+
+  .topnav-btn {
+    width: 38px; height: 38px; border-radius: 10px;
+    background: white; border: 1px solid #e2e8f0;
+    color: var(--text-sec); display: flex; align-items: center; justify-content: center;
+    cursor: pointer; transition: all 0.2s; position: relative;
+  }
+
+  .topnav-btn:hover { border-color: var(--secondary); color: var(--secondary); }
+  .topnav-btn svg { width: 17px; height: 17px; }
+
+  .topnav-btn .dot {
+    position: absolute; top: -2px; left: -2px;
+    width: 14px; height: 14px; background: var(--danger);
+    border-radius: 50%; font-size: 8px; font-weight: 700;
+    color: white; display: flex; align-items: center; justify-content: center;
+    border: 2px solid #eef2f7;
+  }
+
+  .topnav-avatar {
+    width: 36px; height: 36px; border-radius: 10px;
+    background: var(--gradient); color: white;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 14px; cursor: pointer;
+  }
+
+  /* ===== MAIN ===== */
+  .main { max-width: 1440px; margin: 0 auto; padding: 24px 32px; }
+
+  /* ===== HERO STATS ===== */
+  .hero {
+    background: var(--gradient);
+    border-radius: 20px;
+    padding: 28px 32px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: white;
+    position: relative;
+    overflow: hidden;
+    animation: slideUp 0.5s ease forwards;
+    opacity: 0;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -40px; left: -40px;
+    width: 200px; height: 200px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 50%;
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -60px; right: 100px;
+    width: 300px; height: 300px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 50%;
+  }
+
+  .hero-text { position: relative; z-index: 1; }
+  .hero-title { font-size: 24px; font-weight: 800; margin-bottom: 4px; }
+  .hero-sub { font-size: 14px; opacity: 0.75; }
+
+  .hero-kpis {
+    display: flex; gap: 32px; position: relative; z-index: 1;
+  }
+
+  .hero-kpi { text-align: center; }
+
+  .hero-kpi-value {
+    font-size: 30px; font-weight: 800; line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .hero-kpi-label {
+    font-size: 12px; opacity: 0.7; font-weight: 500;
+  }
+
+  .hero-kpi-divider {
+    width: 1px; background: rgba(255,255,255,0.15); align-self: stretch;
+  }
+
+  /* ===== GLASS CARDS ===== */
+  .glass-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+
+  .glass-card {
+    background: var(--glass);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius);
+    padding: 18px;
+    box-shadow: var(--glass-shadow);
+    transition: all 0.3s;
+    animation: slideUp 0.5s ease forwards;
+    opacity: 0;
+  }
+
+  .glass-card:nth-child(1) { animation-delay: 0.1s; }
+  .glass-card:nth-child(2) { animation-delay: 0.15s; }
+  .glass-card:nth-child(3) { animation-delay: 0.2s; }
+  .glass-card:nth-child(4) { animation-delay: 0.25s; }
+
+  .glass-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(30, 58, 138, 0.12);
+    border-color: rgba(8, 145, 178, 0.3);
+  }
+
+  .gc-top {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 12px;
+  }
+
+  .gc-label { font-size: 12px; color: var(--text-muted); font-weight: 500; }
+
+  .gc-icon {
+    width: 36px; height: 36px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .gc-icon svg { width: 18px; height: 18px; }
+  .gc-icon.i1 { background: rgba(30, 58, 138, 0.08); color: var(--primary); }
+  .gc-icon.i2 { background: rgba(8, 145, 178, 0.08); color: var(--secondary); }
+  .gc-icon.i3 { background: rgba(22, 163, 74, 0.08); color: var(--success); }
+  .gc-icon.i4 { background: rgba(124, 58, 237, 0.08); color: #7c3aed; }
+
+  .gc-value { font-size: 26px; font-weight: 800; color: var(--text); margin-bottom: 4px; }
+
+  .gc-change {
+    display: flex; align-items: center; gap: 4px;
+    font-size: 12px; font-weight: 600; color: var(--success);
+  }
+
+  .gc-change svg { width: 13px; height: 13px; }
+
+  .gc-bar {
+    margin-top: 12px; height: 4px; border-radius: 4px;
+    background: rgba(0,0,0,0.04); overflow: hidden;
+  }
+
+  .gc-bar-fill {
+    height: 100%; border-radius: 4px;
+    background: var(--gradient);
+  }
+
+  /* ===== CONTENT ===== */
+  .content-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+
+  .content-row.two { grid-template-columns: 1.3fr 1fr; }
+
+  .g-card {
+    background: var(--glass);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius);
+    box-shadow: var(--glass-shadow);
+    overflow: hidden;
+    animation: slideUp 0.5s ease forwards;
+    opacity: 0;
+  }
+
+  .g-card:nth-child(1) { animation-delay: 0.3s; }
+  .g-card:nth-child(2) { animation-delay: 0.35s; }
+  .g-card:nth-child(3) { animation-delay: 0.4s; }
+
+  .g-header {
+    padding: 16px 18px;
+    display: flex; align-items: center; justify-content: space-between;
+    border-bottom: 1px solid rgba(0,0,0,0.04);
+  }
+
+  .g-title {
+    font-size: 15px; font-weight: 700; color: var(--text);
+    display: flex; align-items: center; gap: 8px;
+  }
+
+  .g-title svg { width: 18px; height: 18px; color: var(--secondary); }
+
+  .g-tag {
+    font-size: 11px; font-weight: 600; padding: 3px 10px;
+    border-radius: 20px;
+  }
+
+  .g-tag.blue { background: rgba(8, 145, 178, 0.08); color: var(--secondary); }
+  .g-tag.green { background: rgba(22, 163, 74, 0.08); color: var(--success); }
+
+  .g-body { padding: 16px 18px; }
+
+  /* ===== CHART ===== */
+  .chart-flex {
+    height: 180px; display: flex; align-items: flex-end; gap: 12px;
+  }
+
+  .chart-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px; }
+
+  .chart-pair { width: 100%; display: flex; gap: 3px; align-items: flex-end; height: 140px; }
+
+  .cbar {
+    flex: 1; border-radius: 4px 4px 1px 1px;
+    transition: all 0.3s; cursor: pointer; min-width: 12px;
+  }
+
+  .cbar:hover { filter: brightness(1.08); transform: scaleY(1.04); transform-origin: bottom; }
+  .cbar.a { background: var(--gradient); }
+  .cbar.b { background: rgba(8, 145, 178, 0.12); }
+
+  .clbl { font-size: 11px; color: var(--text-muted); }
+
+  /* ===== ACTIVITY ===== */
+  .act {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 12px 0; border-bottom: 1px solid rgba(0,0,0,0.04);
+  }
+
+  .act:last-child { border-bottom: none; }
+
+  .act-dot {
+    width: 32px; height: 32px; border-radius: 9px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .act-dot svg { width: 15px; height: 15px; }
+  .act-dot.d1 { background: rgba(30, 58, 138, 0.08); color: var(--primary); }
+  .act-dot.d2 { background: rgba(22, 163, 74, 0.08); color: var(--success); }
+  .act-dot.d3 { background: rgba(124, 58, 237, 0.08); color: #7c3aed; }
+  .act-dot.d4 { background: rgba(245, 158, 11, 0.08); color: var(--warning); }
+
+  .act-label { font-size: 13px; font-weight: 500; color: var(--text); }
+  .act-time { font-size: 11px; color: var(--text-muted); }
+  .act-val { margin-right: auto; font-size: 14px; font-weight: 700; color: var(--success); white-space: nowrap; }
+
+  /* ===== CONTAINER DONUT ===== */
+  .donut-wrap {
+    display: flex; align-items: center; gap: 20px;
+  }
+
+  .donut-ring { position: relative; width: 100px; height: 100px; flex-shrink: 0; }
+  .donut-ring svg { transform: rotate(-90deg); }
+  .dr-bg { fill: none; stroke: #e2e8f0; stroke-width: 10; }
+
+  .dr-fill {
+    fill: none; stroke: url(#dg1); stroke-width: 10;
+    stroke-linecap: round;
+    stroke-dasharray: 276; stroke-dashoffset: 110;
+    transition: stroke-dashoffset 1.2s ease;
+  }
+
+  .donut-center {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%); text-align: center;
+  }
+
+  .donut-pct { font-size: 24px; font-weight: 800; color: var(--text); line-height: 1; }
+  .donut-unit { font-size: 10px; color: var(--text-muted); }
+
+  .donut-stats { flex: 1; }
+
+  .ds-row {
+    display: flex; justify-content: space-between;
+    padding: 7px 0; font-size: 13px;
+    border-bottom: 1px solid rgba(0,0,0,0.04);
+  }
+
+  .ds-row:last-child { border: none; }
+  .ds-label { color: var(--text-sec); }
+  .ds-val { font-weight: 700; color: var(--text); }
+
+  /* ===== QUICK NAV ===== */
+  .nav-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .nav-card {
+    background: var(--glass);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--glass-border);
+    border-radius: 14px;
+    padding: 16px 14px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-decoration: none;
+    color: inherit;
+    box-shadow: var(--glass-shadow);
+    animation: slideUp 0.5s ease forwards;
+    opacity: 0;
+  }
+
+  .nav-card:nth-child(1) { animation-delay: 0.45s; }
+  .nav-card:nth-child(2) { animation-delay: 0.48s; }
+  .nav-card:nth-child(3) { animation-delay: 0.51s; }
+  .nav-card:nth-child(4) { animation-delay: 0.54s; }
+  .nav-card:nth-child(5) { animation-delay: 0.57s; }
+  .nav-card:nth-child(6) { animation-delay: 0.6s; }
+
+  .nav-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 35px rgba(30, 58, 138, 0.12);
+    border-color: rgba(8, 145, 178, 0.35);
+  }
+
+  .nav-icon {
+    width: 42px; height: 42px; border-radius: 12px;
+    margin: 0 auto 10px;
+    display: flex; align-items: center; justify-content: center;
+    transition: transform 0.3s;
+  }
+
+  .nav-card:hover .nav-icon { transform: scale(1.1); }
+  .nav-icon svg { width: 20px; height: 20px; }
+  .nav-icon.g { background: var(--gradient); color: white; }
+  .nav-icon.t { background: rgba(8, 145, 178, 0.1); color: var(--secondary); }
+  .nav-icon.p { background: rgba(124, 58, 237, 0.1); color: #7c3aed; }
+  .nav-icon.gn { background: rgba(22, 163, 74, 0.1); color: var(--success); }
+  .nav-icon.o { background: rgba(245, 158, 11, 0.1); color: var(--warning); }
+  .nav-icon.r { background: rgba(239, 68, 68, 0.1); color: var(--danger); }
+
+  .nav-title { font-size: 12px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+  .nav-desc { font-size: 10px; color: var(--text-muted); }
+
+  /* ===== BOTTOM ===== */
+  .bottom-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+
+  .bl-title {
+    font-size: 15px; font-weight: 700; color: var(--text);
+    display: flex; align-items: center; gap: 8px;
+    padding: 16px 18px; border-bottom: 1px solid rgba(0,0,0,0.04);
+  }
+
+  .bl-title svg { width: 18px; height: 18px; color: var(--secondary); }
+
+  .bl-row {
+    display: flex; align-items: center; gap: 12px;
+    padding: 11px 18px; border-bottom: 1px solid rgba(0,0,0,0.03);
+    transition: background 0.15s;
+  }
+
+  .bl-row:hover { background: rgba(8, 145, 178, 0.02); }
+
+  .bl-av {
+    width: 32px; height: 32px; border-radius: 8px;
+    background: var(--gradient); color: white;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 13px; flex-shrink: 0;
+  }
+
+  .bl-name { font-size: 13px; font-weight: 600; }
+  .bl-meta { font-size: 11px; color: var(--text-muted); }
+
+  .bl-badge {
+    margin-right: auto; font-size: 10px; font-weight: 600;
+    padding: 2px 10px; border-radius: 10px;
+  }
+
+  .bl-badge.c { background: rgba(30, 58, 138, 0.08); color: var(--primary); }
+  .bl-badge.a { background: rgba(124, 58, 237, 0.08); color: #7c3aed; }
+
+  .or-id { font-size: 13px; font-weight: 700; color: var(--primary); min-width: 55px; }
+  .or-prod { font-size: 13px; color: var(--text); flex: 1; }
+  .or-amt { font-size: 13px; font-weight: 700; }
+
+  .or-st {
+    font-size: 10px; font-weight: 600; padding: 2px 10px; border-radius: 10px;
+  }
+
+  .or-st.ok { background: rgba(22, 163, 74, 0.08); color: var(--success); }
+  .or-st.pn { background: rgba(245, 158, 11, 0.08); color: var(--warning); }
+
+  /* ===== ANIMATIONS ===== */
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; } 50% { opacity: 0.5; }
+  }
+
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+
+  @media (max-width: 1200px) {
+    .glass-grid { grid-template-columns: repeat(2, 1fr); }
+    .content-row { grid-template-columns: 1fr 1fr; }
+    .content-row.two { grid-template-columns: 1fr; }
+    .nav-grid { grid-template-columns: repeat(3, 1fr); }
+    .hero-kpis { gap: 20px; }
+  }
+
+  @media (max-width: 768px) {
+    .main { padding: 16px; }
+    .topnav { padding: 0 16px; overflow-x: auto; }
+    .glass-grid { grid-template-columns: 1fr; }
+    .content-row { grid-template-columns: 1fr; }
+    .nav-grid { grid-template-columns: repeat(2, 1fr); }
+    .bottom-row { grid-template-columns: 1fr; }
+    .hero { flex-direction: column; gap: 20px; text-align: center; }
+    .hero-kpis { gap: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="demo-banner">
+  קונספט 4 - "Glass Morphism" עם טופ-בר | רקע בהיר, כרטיסי זכוכית, Hero גרדיאנט | דמו ויזואלי בלבד
+</div>
+
+<!-- ===== TOP NAV ===== -->
+<nav class="topnav">
+  <div class="topnav-logo">
+    <div class="topnav-logo-icon">V</div>
+    <span class="topnav-logo-text">VIPO</span>
+  </div>
+
+  <div class="topnav-links">
+    <a class="topnav-link active" href="#">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1" stroke-width="1.5"/><rect x="14" y="3" width="7" height="4" rx="1" stroke-width="1.5"/><rect x="3" y="14" width="7" height="7" rx="1" stroke-width="1.5"/><rect x="14" y="10" width="7" height="11" rx="1" stroke-width="1.5"/></svg>
+      דשבורד
+    </a>
+    <a class="topnav-link" href="#">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+      משתמשים
+    </a>
+    <a class="topnav-link" href="#">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+      מוצרים
+    </a>
+    <a class="topnav-link" href="#">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+      הזמנות
+      <span class="badge">31</span>
+    </a>
+    <a class="topnav-link" href="#">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      כספים
+    </a>
+    <a class="topnav-link" href="#">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3" stroke-width="1.5"/></svg>
+      הגדרות
+    </a>
+  </div>
+
+  <div class="topnav-end">
+    <button class="topnav-btn">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+    </button>
+    <button class="topnav-btn">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+      <span class="dot">9</span>
+    </button>
+    <div class="topnav-avatar">M</div>
+  </div>
+</nav>
+
+<!-- ===== MAIN ===== -->
+<div class="main">
+
+  <!-- Hero Banner -->
+  <div class="hero">
+    <div class="hero-text">
+      <div class="hero-title">שלום, מנהל ראשי</div>
+      <div class="hero-sub">סקירה כללית של המערכת | 11 בפברואר 2026</div>
+    </div>
+    <div class="hero-kpis">
+      <div class="hero-kpi">
+        <div class="hero-kpi-value">&#8362;47,850</div>
+        <div class="hero-kpi-label">הכנסות החודש</div>
+      </div>
+      <div class="hero-kpi-divider"></div>
+      <div class="hero-kpi">
+        <div class="hero-kpi-value">31</div>
+        <div class="hero-kpi-label">הזמנות</div>
+      </div>
+      <div class="hero-kpi-divider"></div>
+      <div class="hero-kpi">
+        <div class="hero-kpi-value">18</div>
+        <div class="hero-kpi-label">סוכנים</div>
+      </div>
+      <div class="hero-kpi-divider"></div>
+      <div class="hero-kpi">
+        <div class="hero-kpi-value">6</div>
+        <div class="hero-kpi-label">חנויות</div>
+      </div>
+      <div class="hero-kpi-divider"></div>
+      <div class="hero-kpi">
+        <div class="hero-kpi-value">60%</div>
+        <div class="hero-kpi-label">מילוי מכולה</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Glass KPI Cards -->
+  <div class="glass-grid">
+    <div class="glass-card">
+      <div class="gc-top">
+        <span class="gc-label">הכנסות החודש</span>
+        <div class="gc-icon i1"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
+      </div>
+      <div class="gc-value">&#8362;47,850</div>
+      <div class="gc-change">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+        +12.5%
+      </div>
+      <div class="gc-bar"><div class="gc-bar-fill" style="width:75%"></div></div>
+    </div>
+
+    <div class="glass-card">
+      <div class="gc-top">
+        <span class="gc-label">הזמנות פעילות</span>
+        <div class="gc-icon i2"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg></div>
+      </div>
+      <div class="gc-value">31</div>
+      <div class="gc-change">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+        +8 היום
+      </div>
+      <div class="gc-bar"><div class="gc-bar-fill" style="width:62%"></div></div>
+    </div>
+
+    <div class="glass-card">
+      <div class="gc-top">
+        <span class="gc-label">סוכנים פעילים</span>
+        <div class="gc-icon i3"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg></div>
+      </div>
+      <div class="gc-value">18</div>
+      <div class="gc-change">3 אונליין</div>
+      <div class="gc-bar"><div class="gc-bar-fill" style="width:45%"></div></div>
+    </div>
+
+    <div class="glass-card">
+      <div class="gc-top">
+        <span class="gc-label">עמלת פלטפורמה</span>
+        <div class="gc-icon i4"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 8h6m-5 0a3 3 0 110 6H9l3 3m-3-6h6m6 1a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
+      </div>
+      <div class="gc-value">&#8362;2,392</div>
+      <div class="gc-change" style="color:var(--text-muted);">5% מהמכירות</div>
+      <div class="gc-bar"><div class="gc-bar-fill" style="width:100%"></div></div>
+    </div>
+  </div>
+
+  <!-- Content: Chart + Container + Activity -->
+  <div class="content-row">
+    <div class="g-card">
+      <div class="g-header">
+        <span class="g-title"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>מכירות</span>
+        <span class="g-tag blue">6 חודשים</span>
+      </div>
+      <div class="g-body">
+        <div class="chart-flex">
+          <div class="chart-col"><div class="chart-pair"><div class="cbar a" style="height:50%"></div><div class="cbar b" style="height:20%"></div></div><span class="clbl">ספט'</span></div>
+          <div class="chart-col"><div class="chart-pair"><div class="cbar a" style="height:62%"></div><div class="cbar b" style="height:26%"></div></div><span class="clbl">אוק'</span></div>
+          <div class="chart-col"><div class="chart-pair"><div class="cbar a" style="height:45%"></div><div class="cbar b" style="height:17%"></div></div><span class="clbl">נוב'</span></div>
+          <div class="chart-col"><div class="chart-pair"><div class="cbar a" style="height:72%"></div><div class="cbar b" style="height:30%"></div></div><span class="clbl">דצמ'</span></div>
+          <div class="chart-col"><div class="chart-pair"><div class="cbar a" style="height:80%"></div><div class="cbar b" style="height:34%"></div></div><span class="clbl">ינו'</span></div>
+          <div class="chart-col"><div class="chart-pair"><div class="cbar a" style="height:92%"></div><div class="cbar b" style="height:40%"></div></div><span class="clbl">פבר'</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="g-card">
+      <div class="g-header">
+        <span class="g-title"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>מילוי מכולה</span>
+        <span class="g-tag blue">60%</span>
+      </div>
+      <div class="g-body">
+        <div class="donut-wrap">
+          <div class="donut-ring">
+            <svg width="100" height="100" viewBox="0 0 100 100">
+              <defs><linearGradient id="dg1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#1e3a8a"/><stop offset="100%" stop-color="#0891b2"/></linearGradient></defs>
+              <circle class="dr-bg" cx="50" cy="50" r="44"/>
+              <circle class="dr-fill" cx="50" cy="50" r="44"/>
+            </svg>
+            <div class="donut-center"><div class="donut-pct">60%</div><div class="donut-unit">CBM</div></div>
+          </div>
+          <div class="donut-stats">
+            <div class="ds-row"><span class="ds-label">קיבולת</span><span class="ds-val">68 CBM</span></div>
+            <div class="ds-row"><span class="ds-label">מילוי</span><span class="ds-val">40.8 CBM</span></div>
+            <div class="ds-row"><span class="ds-label">שולמו</span><span class="ds-val">24</span></div>
+            <div class="ds-row"><span class="ds-label">ממתינות</span><span class="ds-val" style="color:var(--warning)">7</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="g-card">
+      <div class="g-header">
+        <span class="g-title"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>פעילות חיה</span>
+        <span class="g-tag green">LIVE</span>
+      </div>
+      <div class="g-body">
+        <div class="act">
+          <div class="act-dot d1"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg></div>
+          <div><div class="act-label">הזמנה #1247</div><div class="act-time">לפני 3 דקות</div></div>
+          <span class="act-val">&#8362;1,250</span>
+        </div>
+        <div class="act">
+          <div class="act-dot d2"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
+          <div><div class="act-label">תשלום התקבל</div><div class="act-time">לפני 15 דקות</div></div>
+          <span class="act-val">&#8362;3,400</span>
+        </div>
+        <div class="act">
+          <div class="act-dot d3"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/></svg></div>
+          <div><div class="act-label">סוכן חדש - יוסי כהן</div><div class="act-time">לפני 32 דקות</div></div>
+        </div>
+        <div class="act">
+          <div class="act-dot d4"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg></div>
+          <div><div class="act-label">בקשת משיכה - דני לוי</div><div class="act-time">לפני שעה</div></div>
+          <span class="act-val" style="color:var(--warning)">&#8362;850</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick Nav -->
+  <div style="margin-bottom: 14px;">
+    <h3 style="font-size: 16px; font-weight: 700; color: var(--text);">ניהול מהיר</h3>
+  </div>
+  <div class="nav-grid">
+    <a class="nav-card" href="#">
+      <div class="nav-icon g"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg></div>
+      <div class="nav-title">משתמשים</div>
+      <div class="nav-desc">24 רשומים</div>
+    </a>
+    <a class="nav-card" href="#">
+      <div class="nav-icon t"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg></div>
+      <div class="nav-title">חנויות</div>
+      <div class="nav-desc">6 פעילות</div>
+    </a>
+    <a class="nav-card" href="#">
+      <div class="nav-icon p"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg></div>
+      <div class="nav-title">CRM</div>
+      <div class="nav-desc">156 לקוחות</div>
+    </a>
+    <a class="nav-card" href="#">
+      <div class="nav-icon gn"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg></div>
+      <div class="nav-title">חיבורים</div>
+      <div class="nav-desc">5 מערכות</div>
+    </a>
+    <a class="nav-card" href="#">
+      <div class="nav-icon r"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg></div>
+      <div class="nav-title">אבטחה</div>
+      <div class="nav-desc">85%</div>
+    </a>
+    <a class="nav-card" href="#">
+      <div class="nav-icon o"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4"/></svg></div>
+      <div class="nav-title">גיבויים</div>
+      <div class="nav-desc">אוטומטי</div>
+    </a>
+  </div>
+
+  <!-- Bottom: Users + Orders -->
+  <div class="bottom-row">
+    <div class="g-card" style="animation-delay: 0.65s;">
+      <div class="bl-title"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/></svg>משתמשים חדשים</div>
+      <div class="bl-row">
+        <div class="bl-av">ד</div>
+        <div><div class="bl-name">דנה כהן</div><div class="bl-meta">היום, 09:32</div></div>
+        <span class="bl-badge c">לקוח</span>
+      </div>
+      <div class="bl-row">
+        <div class="bl-av" style="background:linear-gradient(135deg,#7c3aed,#a78bfa)">י</div>
+        <div><div class="bl-name">יוסי לוי</div><div class="bl-meta">היום, 08:15</div></div>
+        <span class="bl-badge a">סוכן</span>
+      </div>
+      <div class="bl-row">
+        <div class="bl-av">מ</div>
+        <div><div class="bl-name">מיכל אברהם</div><div class="bl-meta">אתמול, 22:44</div></div>
+        <span class="bl-badge c">לקוח</span>
+      </div>
+      <div class="bl-row">
+        <div class="bl-av" style="background:linear-gradient(135deg,#059669,#34d399)">ר</div>
+        <div><div class="bl-name">רונית שמש</div><div class="bl-meta">אתמול, 18:30</div></div>
+        <span class="bl-badge c">לקוח</span>
+      </div>
+    </div>
+
+    <div class="g-card" style="animation-delay: 0.7s;">
+      <div class="bl-title"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>הזמנות אחרונות</div>
+      <div class="bl-row">
+        <span class="or-id">#1247</span>
+        <span class="or-prod">שולחן אוכל מעץ אלון</span>
+        <span class="or-amt">&#8362;1,250</span>
+        <span class="or-st ok">שולם</span>
+      </div>
+      <div class="bl-row">
+        <span class="or-id">#1246</span>
+        <span class="or-prod">ספה פינתית דגם מילאנו</span>
+        <span class="or-amt">&#8362;3,400</span>
+        <span class="or-st ok">שולם</span>
+      </div>
+      <div class="bl-row">
+        <span class="or-id">#1245</span>
+        <span class="or-prod">כורסא מעוצבת</span>
+        <span class="or-amt">&#8362;890</span>
+        <span class="or-st pn">ממתין</span>
+      </div>
+      <div class="bl-row">
+        <span class="or-id">#1244</span>
+        <span class="or-prod">מנורת רצפה LED</span>
+        <span class="or-amt">&#8362;450</span>
+        <span class="or-st ok">שולם</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

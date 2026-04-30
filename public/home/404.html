@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>דף לא נמצא | קונים חכם</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+    <style>
+        .error-container {
+            min-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .error-code {
+            font-size: 8rem;
+            font-weight: 900;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+        
+        .error-message {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+        }
+        
+        .error-icon {
+            font-size: 5rem;
+            color: var(--accent-color);
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar - תמיד דבוק עליון -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">
+                <a href="/">
+                    <img src="images/logo.png" alt="קונים חכם" class="logo-img">
+                </a>
+            </div>
+            <div class="menu-toggle" id="mobile-menu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="/" class="nav-link">דף הבית</a></li>
+                <li><a href="/#about-vipo" class="nav-link">VIPO</a></li>
+                <li><a href="/#how-it-works" class="nav-link">איך זה עובד?</a></li>
+                <li><a href="/#faq" class="nav-link">מי אנחנו</a></li>
+                <li><a href="/#contact" class="nav-link">צור קשר</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Error Content -->
+    <main class="error-container">
+        <div class="error-icon">
+            <i class="fas fa-search"></i>
+        </div>
+        <h1 class="error-code">404</h1>
+        <h2 class="error-message">אופס! הדף שחיפשת לא נמצא</h2>
+        <p>נראה שהגעת לדף שאינו קיים או שהוסר מהאתר.</p>
+        <div class="cta-buttons" style="margin-top: 30px;">
+            <a href="/" class="btn btn-primary">חזרה לדף הבית</a>
+            <a href="/#contact" class="btn btn-secondary">צור קשר</a>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer id="contact" class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2025 קונים חכם. כל הזכויות שמורות.</p>
+                <div class="footer-legal">
+                    <a href="#">תנאי שימוש</a>
+                    <a href="#">מדיניות פרטיות</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- WhatsApp Button -->
+    <a href="https://chat.whatsapp.com/KP5UIdBHiKdGmOdyWeJySa?mode=ac_t" class="whatsapp-button" aria-label="צור קשר בוואטסאפ" target="_blank">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <!-- Scripts -->
+    <script src="js/main.js"></script>
+</body>
+</html>
