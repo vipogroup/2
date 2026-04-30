@@ -21,6 +21,15 @@ const nextConfig = {
   async headers() {
     return [
       {
+        source: "/api/marketplace/meta-feed",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, s-maxage=600, stale-while-revalidate=1200",
+          },
+        ],
+      },
+      {
         source: "/:path*",
         headers: [
           // Prevent clickjacking
