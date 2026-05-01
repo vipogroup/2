@@ -51,7 +51,9 @@ dist/
 /backups/
 backups/
 
-# Local tooling / artifacts
+# Local tooling / artifacts (ignore contents; keep folder via .gitkeep)
+/artifacts/*
+!/artifacts/.gitkeep
 .git.broken-worktree-pointer
 test-results/
 logs/
