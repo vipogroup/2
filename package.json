@@ -4,6 +4,7 @@
   "version": "0.1.0",
   "scripts": {
     "dev": "next dev -p 3001 -H 0.0.0.0",
+    "dev:3010": "next dev -p 3010 -H 0.0.0.0",
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
@@ -11,6 +12,8 @@
     "backup:full": "node scripts/backup/full-backup.js",
     "restore:db": "node scripts/db/restore-from-dir.js",
     "restore:full": "node scripts/backup/quick-restore.js",
+    "parity:apply": "cross-env SYNC_REPO=vipo-agents-stage-deploy node ../tools/apply-external-parity.mjs",
+    "sync:from-backup": "cross-env SYNC_REPO=vipo-agents-stage-deploy node ../tools/sync-from-backup.mjs",
     "tag:stable": "node scripts/tools/tag-latest-stable.js",
     "test:api": "cross-env NODE_ENV=test DISABLE_RATE_LIMIT=true vitest run",
     "test:ui": "playwright test",

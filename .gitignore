@@ -62,6 +62,9 @@ logs/
 # Local image studio tree (large; not web app)
 vipo */
 
+# Generated product feeds (local export; do not track)
+meta-feed.xml
+
 # Caches
 *.local
 *.cache

@@ -45,6 +45,9 @@ async function GETHandler(request) {
     });
   } catch (error) {
     console.error('LIST_USERS_ERROR:', error);
+    if (error?.status === 401 || error?.status === 403) {
+      return NextResponse.json({ success: false, error: error.message }, { status: error.status });
+    }
     return NextResponse.json({ success: false, error: 'Server error' }, { status: 500 });
   }
 }

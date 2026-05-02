@@ -353,9 +353,18 @@ function ProductsManager({ tenantId }) {
   useEffect(() => {
     async function load() {
       try {
-        const res = await fetch('/api/products?includeInactive=true', { credentials: 'include' });
+        if (!tenantId) {
+          setProducts([]);
+          return;
+        }
+        const tid = encodeURIComponent(String(tenantId));
+        const res = await fetch(
+          `/api/products?tenantId=${tid}&includeInactive=true`,
+          { credentials: 'include' },
+        );
         const data = await res.json();
-        setProducts(data.products || []);
+        const list = Array.isArray(data?.products) ? data.products : Array.isArray(data) ? data : [];
+        setProducts(list);
       } catch (err) {
         console.error(err);
       } finally {
@@ -363,7 +372,7 @@ function ProductsManager({ tenantId }) {
       }
     }
     load();
-  }, []);
+  }, [tenantId]);
 
   if (loading) {
     return (

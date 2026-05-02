@@ -5,10 +5,13 @@ import Product from '@/models/Product';
 import { requireAdminApi } from '@/lib/auth/server';
 import { isSuperAdminUser } from '@/lib/superAdmins';
 import { syncProductDelete } from '@/lib/productSync';
+import {
+  catalogRealDeleteGuardsOk,
+  CATALOG_DELETE_TARGET_COLLECTIONS,
+  normalizeList,
+} from '@/lib/catalogDeleteGuards';
 
 export const dynamic = 'force-dynamic';
-const CATALOG_DELETE_CONFIRM_TOKEN = 'DELETE_CATALOG_PRODUCTS_IRREVERSIBLE';
-const CATALOG_DELETE_TARGET_COLLECTIONS = ['products', 'auditlogs'];
 
 function blockedCatalogDeleteResponse() {
   return NextResponse.json(
@@ -18,18 +21,6 @@ function blockedCatalogDeleteResponse() {
     },
     { status: 403 },
   );
-}
-
-function normalizeList(value) {
-  if (!Array.isArray(value)) return [];
-  return [...new Set(value.map((item) => String(item || '').trim()).filter(Boolean))];
-}
-
-function hasExactCoverage(expectedItems, providedItems) {
-  if (expectedItems.length !== providedItems.length) return false;
-  const expected = [...expectedItems].sort();
-  const provided = [...providedItems].sort();
-  return expected.every((value, index) => value === provided[index]);
 }
 
 const hasCloudinaryConfig = () => Boolean(
@@ -67,7 +58,13 @@ const extractPublicIdFromUrl = (url) => {
  */
 async function POSTHandler(request) {
   try {
-    const admin = await requireAdminApi(request);
+    let admin;
+    try {
+      admin = await requireAdminApi(request);
+    } catch (authErr) {
+      const status = authErr?.status && Number.isFinite(authErr.status) ? authErr.status : 401;
+      return NextResponse.json({ error: authErr.message || 'Unauthorized' }, { status });
+    }
     if (!isSuperAdminUser(admin)) {
       return blockedCatalogDeleteResponse();
     }
@@ -147,6 +144,8 @@ async function POSTHandler(request) {
         dryRun: true,
         deleteEnabled: false,
         mediaDeleteEnabled: false,
+        /** Client must echo this as `confirmEnvironment` on the real delete request */
+        confirmEnvironmentHint: nodeEnv,
         requested: {
           tenantId: String(tenantId),
           tenantSlug: body?.tenantSlug ? String(body.tenantSlug) : '',
@@ -179,32 +178,15 @@ async function POSTHandler(request) {
       return blockedCatalogDeleteResponse();
     }
 
-    const confirm = String(body?.confirm || '').trim();
-    const acknowledgeDataLoss = body?.acknowledgeDataLoss === true;
-    const acknowledgeMediaDeletion = body?.acknowledgeMediaDeletion === true;
-    const reason = String(body?.reason || '').trim();
-    const confirmEnvironment = String(body?.confirmEnvironment || '').trim();
-    const confirmCollections = normalizeList(body?.confirmCollections);
-    const confirmProductIds = normalizeList(body?.confirmProductIds);
-    const confirmProductKeys = normalizeList(body?.confirmProductKeys);
-    const confirmTenantId = String(body?.confirmTenantId || '').trim();
-    const hasAllCollections = CATALOG_DELETE_TARGET_COLLECTIONS.every((name) =>
-      confirmCollections.includes(name),
-    );
-    const idsCovered = resolvedProductIds.length > 0
-      ? hasExactCoverage(resolvedProductIds, confirmProductIds)
-      : true;
-    const keysCovered = hasExactCoverage(requestedProductKeys, confirmProductKeys);
-    const guardsOk =
-      confirm === CATALOG_DELETE_CONFIRM_TOKEN &&
-      acknowledgeDataLoss === true &&
-      reason.length > 0 &&
-      confirmEnvironment === nodeEnv &&
-      hasAllCollections &&
-      confirmTenantId === String(tenantId) &&
-      idsCovered &&
-      keysCovered &&
-      (!mediaDeletionInvolved || acknowledgeMediaDeletion === true);
+    const guardsOk = catalogRealDeleteGuardsOk({
+      body,
+      nodeEnv,
+      allowCatalogDelete,
+      resolvedProductIds,
+      requestedProductKeys,
+      mediaDeletionInvolved,
+      tenantId,
+    });
 
     if (!guardsOk) {
       return blockedCatalogDeleteResponse();
@@ -289,7 +271,8 @@ async function POSTHandler(request) {
     });
   } catch (err) {
     console.error('catalog-manager delete-products error:', err);
-    return NextResponse.json({ error: err.message }, { status: 500 });
+    const status = err?.status && Number.isFinite(err.status) ? err.status : 500;
+    return NextResponse.json({ error: err.message }, { status });
   }
 }
 

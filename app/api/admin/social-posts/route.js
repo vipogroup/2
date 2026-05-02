@@ -5,8 +5,12 @@ import { requireAdminApi } from '@/lib/auth/server';
 import SocialPublishHistory from '@/models/SocialPublishHistory';
 
 async function handleGet(req) {
-  const authError = await requireAdminApi(req);
-  if (authError) return authError;
+  try {
+    await requireAdminApi(req);
+  } catch (e) {
+    const s = e?.status || 500;
+    return NextResponse.json({ error: e?.message || 'Unauthorized' }, { status: s });
+  }
 
   await connectMongo();
   const { searchParams } = new URL(req.url);

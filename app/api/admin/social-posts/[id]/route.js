@@ -53,8 +53,12 @@ async function doPublish(post, cfg) {
 }
 
 async function handlePatch(req, { params }) {
-  const authError = await requireAdminApi(req);
-  if (authError) return authError;
+  try {
+    await requireAdminApi(req);
+  } catch (e) {
+    const s = e?.status || 500;
+    return NextResponse.json({ error: e?.message || 'Unauthorized' }, { status: s });
+  }
 
   await connectMongo();
   const { id } = params;
@@ -107,8 +111,12 @@ async function handlePatch(req, { params }) {
 }
 
 async function handleDelete(req, { params }) {
-  const authError = await requireAdminApi(req);
-  if (authError) return authError;
+  try {
+    await requireAdminApi(req);
+  } catch (e) {
+    const s = e?.status || 500;
+    return NextResponse.json({ error: e?.message || 'Unauthorized' }, { status: s });
+  }
 
   await connectMongo();
   const { id } = params;

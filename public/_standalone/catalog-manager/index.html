@@ -7205,14 +7205,14 @@
         const roundedClientPrice = Math.round(clientPrice);
         const roundedGroupPrice = Math.round(groupPrice);
         const roundedScPrice = Math.round(scPrice);
-        const fallbackPrice = 12345;
-        const safeClientPrice = roundedClientPrice > 0 ? roundedClientPrice : fallbackPrice;
-        const safeGroupPrice = roundedGroupPrice > 0 ? roundedGroupPrice : fallbackPrice;
-        const safeScPrice = roundedScPrice > 0 ? roundedScPrice : fallbackPrice;
-        const safeOriginalPrice = Math.max(1, safeClientPrice * 3);
-        if (roundedClientPrice <= 0 || roundedGroupPrice <= 0) {
+        const safeClientPrice = roundedClientPrice > 0 ? roundedClientPrice : null;
+        const safeGroupPrice = roundedGroupPrice > 0 ? roundedGroupPrice : null;
+        const safeScPrice = roundedScPrice > 0 ? roundedScPrice : null;
+        if (safeClientPrice == null || safeGroupPrice == null) {
           fallbackPriceCount += 1;
         }
+        const baseForOriginal = safeClientPrice != null ? safeClientPrice : (safeGroupPrice != null ? safeGroupPrice : (safeScPrice != null ? safeScPrice : 0));
+        const safeOriginalPrice = baseForOriginal > 0 ? Math.max(1, baseForOriginal * 3) : null;
 
         const categoryCell = row.querySelector('.category-cell') || row.querySelector('td:nth-child(2)');
         const sizeCell = row.querySelector('.size-cell') || row.querySelector('td:nth-child(3)');
@@ -7256,7 +7256,7 @@
           title: productName,
           name: productName,
           category: category,
-          originalPrice: safeOriginalPrice,
+          originalPrice: safeOriginalPrice != null ? safeOriginalPrice : undefined,
           stainless: {
             length: stainlessLength ? Number(stainlessLength) : 0,
             width: stainlessWidth ? Number(stainlessWidth) : 0,
@@ -7270,7 +7270,7 @@
           warranty: '12 חודשים',
         };
 
-        if (selections.regular) {
+        if (selections.regular && safeClientPrice != null) {
           products.push({
             ...basePayload,
             description: 'שולחן נירוסטה ' + category + ' מידה ' + size,
@@ -7292,7 +7292,7 @@
           });
         }
 
-        if (selections.group) {
+        if (selections.group && safeGroupPrice != null) {
           products.push({
             ...basePayload,
             description: 'שולחן נירוסטה ' + category + ' מידה ' + size + ' - מחיר קבוצתי',
@@ -7323,7 +7323,7 @@
           });
         }
 
-        if (selections.sc) {
+        if (selections.sc && safeScPrice != null) {
           products.push({
             ...basePayload,
             description: 'שולחן נירוסטה ' + category + ' מידה ' + size + ' - מכולה משותפת',
@@ -7356,7 +7356,22 @@
       });
 
       if (fallbackPriceCount > 0) {
-        console.warn(`Fallback price applied to ${fallbackPriceCount} rows (USD price missing/zero).`);
+        alert(
+          'לא ניתן להעלות: יש שורות עם מחיר USD חסר או אפס (מחיר שקל לא חושב).\n' +
+            'עדכן מחיר USD בטבלה לכל המוצרים שנבחרו, ואז נסה שוב.\n' +
+            `שורות בעייתיות (לפחות): ${fallbackPriceCount}`
+        );
+        const earlyConfirmBtn = document.getElementById('uploadWizardConfirmBtn');
+        if (earlyConfirmBtn) {
+          earlyConfirmBtn.disabled = false;
+          earlyConfirmBtn.style.opacity = '1';
+          earlyConfirmBtn.style.cursor = 'pointer';
+        }
+        if (statusEl) {
+          statusEl.textContent = 'חסום: מחיר USD חסר';
+          statusEl.style.color = '#dc2626';
+        }
+        return;
       }
 
       const confirmBtn = document.getElementById('uploadWizardConfirmBtn');
@@ -7530,14 +7545,14 @@
         const roundedClientPrice = Math.round(clientPrice);
         const roundedGroupPrice = Math.round(groupPrice);
         const roundedScPrice = Math.round(scPrice);
-        const fallbackPrice = 12345;
-        const safeClientPrice = roundedClientPrice > 0 ? roundedClientPrice : fallbackPrice;
-        const safeGroupPrice = roundedGroupPrice > 0 ? roundedGroupPrice : fallbackPrice;
-        const safeScPrice = roundedScPrice > 0 ? roundedScPrice : fallbackPrice;
-        const safeOriginalPrice = Math.max(1, safeClientPrice * 3);
-        if (roundedClientPrice <= 0 || roundedGroupPrice <= 0) {
+        const safeClientPrice = roundedClientPrice > 0 ? roundedClientPrice : null;
+        const safeGroupPrice = roundedGroupPrice > 0 ? roundedGroupPrice : null;
+        const safeScPrice = roundedScPrice > 0 ? roundedScPrice : null;
+        if (safeClientPrice == null || safeGroupPrice == null) {
           fallbackPriceCount += 1;
         }
+        const baseForOriginal = safeClientPrice != null ? safeClientPrice : (safeGroupPrice != null ? safeGroupPrice : (safeScPrice != null ? safeScPrice : 0));
+        const safeOriginalPrice = baseForOriginal > 0 ? Math.max(1, baseForOriginal * 3) : null;
 
         const categoryCell = row.querySelector('.category-cell') || row.querySelector('td:nth-child(2)');
         const sizeCell = row.querySelector('.size-cell') || row.querySelector('td:nth-child(3)');
@@ -7620,7 +7635,7 @@
           shouldUpdateSc = true;
         }
 
-        if (shouldUpdateRegular) {
+        if (shouldUpdateRegular && safeClientPrice != null) {
           console.log(`Updating REGULAR product for ${sku} with stock ${stockCount}`);
           try {
             products.push({
@@ -7630,7 +7645,7 @@
               category: category,
               price: safeClientPrice,
               groupPrice: safeClientPrice,
-              originalPrice: safeOriginalPrice,
+              originalPrice: safeOriginalPrice != null ? safeOriginalPrice : undefined,
               commission: safeClientPrice * 0.1,
               stockCount: stockCount,
               inStock: true,
@@ -7662,7 +7677,7 @@
           }
         }
 
-        if (shouldUpdateGroup) {
+        if (shouldUpdateGroup && safeGroupPrice != null) {
           const groupPriceToSend = safeGroupPrice;
           products.push({
             title: productName,
@@ -7671,7 +7686,7 @@
             category: category,
             price: groupPriceToSend,
             groupPrice: groupPriceToSend,
-            originalPrice: safeOriginalPrice,
+            originalPrice: safeOriginalPrice != null ? safeOriginalPrice : undefined,
             commission: groupPriceToSend * 0.1,
             stockCount: 0,
             inStock: true,
@@ -7708,7 +7723,7 @@
           });
         }
 
-        if (shouldUpdateSc) {
+        if (shouldUpdateSc && safeScPrice != null) {
           const scPriceToSend = safeScPrice;
           products.push({
             title: productName,
@@ -7717,7 +7732,7 @@
             category: category,
             price: scPriceToSend,
             groupPrice: scPriceToSend,
-            originalPrice: safeOriginalPrice,
+            originalPrice: safeOriginalPrice != null ? safeOriginalPrice : undefined,
             commission: scPriceToSend * 0.1,
             stockCount: 0,
             inStock: true,
@@ -7760,7 +7775,16 @@
       // DEBUG: הצגת מה שהולך לעלות
       console.log('===== FINAL PRODUCTS TO UPLOAD =====');
       if (fallbackPriceCount > 0) {
-        console.warn(`Fallback price applied to ${fallbackPriceCount} rows (USD price missing/zero).`);
+        alert(
+          'לא ניתן להעלות/לעדכן: יש שורות עם מחיר USD חסר או אפס.\n' +
+            'עדכן מחיר USD בטבלה ונסה שוב.\n' +
+            `שורות בעייתיות (לפחות): ${fallbackPriceCount}`
+        );
+        if (statusEl) {
+          statusEl.textContent = 'חסום: מחיר USD חסר';
+          statusEl.style.color = '#dc2626';
+        }
+        return;
       }
       console.log(`Total products to upload: ${products.length}`);
       products.forEach((p, idx) => {
@@ -7870,6 +7894,7 @@
   // מחיקת מוצרים מהחנות
   // =========================================
   async function deleteFromStore() {
+    const CATALOG_DELETE_CONFIRM = 'DELETE_CATALOG_PRODUCTS_IRREVERSIBLE';
     const tenantId = document.getElementById('tenantSelect')?.value;
     const statusEl = document.getElementById('uploadStatus');
 
@@ -7889,7 +7914,6 @@
       return;
     }
 
-    // Collect SKUs from selected rows
     const skus = [];
     selectedRows.forEach(cb => {
       const row = cb.closest('tr.data-row');
@@ -7903,46 +7927,107 @@
       return;
     }
 
-    // Confirmation
     const tenantName = document.getElementById('tenantSelect')?.selectedOptions?.[0]?.textContent || tenantId;
     const confirmed = confirm(
-      `מחיקה לצמיתות!\n\n` +
-      `${skus.length} מוצרים יימחקו מהחנות "${tenantName}":\n` +
-      `- המוצרים יימחקו מהחנות (DB)\n` +
-      `- התמונות יימחקו מ-Cloudinary\n` +
-      `- המיפויים המקומיים יימחקו\n\n` +
-      `אין דרך חזרה! להמשיך?`
+      `שלב 1/2 — בדיקה יבשה (dry-run)\n\n` +
+      `${skus.length} מוצרים נבחרו למחיקה בחנות "${tenantName}".\n` +
+      `בשלב הבא יוצג מה השרת מצא, ואז תידרש אישור סופי.\n\n` +
+      `להמשיך לבדיקה?`
     );
     if (!confirmed) return;
 
     if (statusEl) {
-      statusEl.textContent = '⏳ מוחק מוצרים...';
-      statusEl.style.color = '#dc2626';
+      statusEl.textContent = '⏳ בודק מחיקה (dry-run)...';
+      statusEl.style.color = '#b45309';
     }
 
     try {
-      // 1. Delete from store (MongoDB + Cloudinary)
+      const dryRes = await fetch('/api/catalog-manager/delete-products', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ tenantId, skus, dryRun: true }),
+      });
+      const dryData = await dryRes.json().catch(() => ({}));
+      if (!dryRes.ok) {
+        throw new Error(dryData.message || dryData.error || ('Dry-run נכשל: ' + dryRes.status));
+      }
+      if (!dryData.dryRun) {
+        throw new Error('תשובת השרת אינה dry-run — מבוטל מטעמי בטיחות');
+      }
+
+      const matched = typeof dryData.matchedCount === 'number' ? dryData.matchedCount : (dryData.products || []).length;
+      const mediaNote = dryData.mediaDeletionInvolved
+        ? 'ימחקו גם קבצי מדיה ב-Cloudinary.'
+        : 'לא זוהו קבצי מדיה לניקוי בענן.';
+      const second = confirm(
+        `שלב 2/2 — אישור סופי\n\n` +
+        `נמצאו ${matched} מוצרים בשרת התואמים לבחירה.\n` +
+        `${mediaNote}\n\n` +
+        `מחיקה היא בלתי הפיכה. לאשר מחיקה אמיתית?`
+      );
+      if (!second) {
+        if (statusEl) statusEl.textContent = '';
+        return;
+      }
+
+      const reason = window.prompt('הזן סיבה למחיקה (חובה, לרישום ביקורת):');
+      if (!reason || !String(reason).trim()) {
+        alert('מחיקה בוטלה — חובה להזין סיבה.');
+        if (statusEl) statusEl.textContent = '';
+        return;
+      }
+
+      if (statusEl) {
+        statusEl.textContent = '⏳ מוחק מוצרים...';
+        statusEl.style.color = '#dc2626';
+      }
+
+      const confirmCollections = Array.isArray(dryData.targetCollections) && dryData.targetCollections.length
+        ? dryData.targetCollections
+        : ['products', 'auditlogs'];
+      const confirmProductIds = Array.isArray(dryData.resolvedProductIds) ? dryData.resolvedProductIds : [];
+      const confirmProductKeys = Array.isArray(dryData.requested?.productKeys)
+        ? dryData.requested.productKeys
+        : skus;
+      const confirmEnv = dryData.confirmEnvironmentHint || 'development';
+
       const res = await fetch('/api/catalog-manager/delete-products', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
-        body: JSON.stringify({ tenantId, skus }),
+        body: JSON.stringify({
+          tenantId,
+          skus,
+          dryRun: false,
+          confirm: CATALOG_DELETE_CONFIRM,
+          acknowledgeDataLoss: true,
+          acknowledgeMediaDeletion: dryData.mediaDeletionInvolved === true,
+          reason: String(reason).trim(),
+          confirmEnvironment: confirmEnv,
+          confirmCollections,
+          confirmProductIds,
+          confirmProductKeys,
+          confirmTenantId: String(tenantId),
+        }),
       });
 
-      const data = await res.json();
-
+      const data = await res.json().catch(() => ({}));
       if (!res.ok) {
-        throw new Error(data.error || 'מחיקה נכשלה');
+        throw new Error(data.message || data.error || ('מחיקה נכשלה: ' + res.status));
+      }
+      if (data.dryRun) {
+        throw new Error('השרת החזיר dry-run במקום מחיקה — בדוק הרשאות ו־ALLOW_CATALOG_PRODUCT_DELETE');
+      }
+      if (data.success !== true && typeof data.deletedCount !== 'number') {
+        throw new Error('תשובת שרת לא צפויה לאחר מחיקה');
       }
 
-      // 2. Remove local media mappings for deleted SKUs
       let mappingsRemoved = 0;
       skus.forEach(sku => {
         removeMediaMappingsForSku(sku);
         mappingsRemoved++;
       });
-
-      // 3. Clear local product status for deleted SKUs
       skus.forEach(sku => {
         try {
           tenantStorage.removeItem('product_status_' + sku);
@@ -7951,8 +8036,6 @@
           tenantStorage.removeItem('cbm_override_' + sku);
         } catch (e) { /* ignore */ }
       });
-
-      // 4. Remove deleted rows from the table
       skus.forEach(sku => {
         const row = document.querySelector('tr.data-row[data-id="' + sku + '"]');
         if (row) row.remove();
@@ -7962,19 +8045,19 @@
       saveBackupStateToStorage();
       if (typeof updateSelectedCount === 'function') updateSelectedCount();
 
+      const delCount = typeof data.deletedCount === 'number' ? data.deletedCount : 0;
+      const mediaDel = typeof data.cloudinaryDeleted === 'number' ? data.cloudinaryDeleted : 0;
       if (statusEl) {
-        statusEl.textContent = `נמחקו ${data.deletedCount} מוצרים + ${data.cloudinaryDeleted} קבצי מדיה`;
+        statusEl.textContent = `נמחקו ${delCount} מוצרים + ${mediaDel} קבצי מדיה`;
         statusEl.style.color = '#16a34a';
         setTimeout(() => { statusEl.textContent = ''; }, 5000);
       }
-
       alert(
         `מחיקה הושלמה!\n\n` +
-        `${data.deletedCount} מוצרים נמחקו מהחנות\n` +
-        `${data.cloudinaryDeleted} קבצי מדיה נמחקו מ-Cloudinary\n` +
+        `${delCount} מוצרים נמחקו מהחנות\n` +
+        `${mediaDel} קבצי מדיה נמחקו מ-Cloudinary\n` +
         `${mappingsRemoved} מיפויים מקומיים נוקו`
       );
-
     } catch (err) {
       console.error('deleteFromStore error:', err);
       if (statusEl) {

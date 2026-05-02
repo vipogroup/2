@@ -9,6 +9,10 @@ import { isDbUnavailableError } from '@/lib/dbOutageClassifier';
 import { isSuperAdminUser } from '@/lib/superAdmins';
 import { syncProductUpsert } from '@/lib/productSync';
 import { apiDebugLog } from '@/lib/apiDebugLog';
+import {
+  CATALOG_FORBIDDEN_PLACEHOLDER_PRICE,
+  isForbiddenCatalogPrice,
+} from '@/lib/catalogPriceGuards';
 
 export const dynamic = 'force-dynamic';
 
@@ -172,6 +176,28 @@ export async function POST(req) {
           : [];
         if (imageUrls.length < 5) {
           errors.push({ sku: catalogProduct.sku || 'unknown', error: `חובה להוסיף לפחות 5 תמונות (יש ${imageUrls.length}/5)` });
+          continue;
+        }
+
+        const priceNum = Number(catalogProduct.price);
+        const groupPriceNum = Number(
+          catalogProduct.groupPrice != null ? catalogProduct.groupPrice : catalogProduct.price,
+        );
+        if (
+          isForbiddenCatalogPrice(priceNum) ||
+          isForbiddenCatalogPrice(groupPriceNum) ||
+          Number(catalogProduct.originalPrice) === CATALOG_FORBIDDEN_PLACEHOLDER_PRICE
+        ) {
+          const isPh =
+            priceNum === CATALOG_FORBIDDEN_PLACEHOLDER_PRICE ||
+            groupPriceNum === CATALOG_FORBIDDEN_PLACEHOLDER_PRICE ||
+            Number(catalogProduct.originalPrice) === CATALOG_FORBIDDEN_PLACEHOLDER_PRICE;
+          errors.push({
+            sku: catalogProduct.sku || 'unknown',
+            error: isPh
+              ? 'מחיר placeholder (12345) אסור לפרסום — עדכן מחיר USD בטבלת הקטלוג.'
+              : 'מחיר לא תקין (חייב להיות חיובי).',
+          });
           continue;
         }
 

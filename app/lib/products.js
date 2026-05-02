@@ -198,20 +198,25 @@ const INITIAL_PRODUCTS = [
 // מערכת ניהול מוצרים דינמית
 let PRODUCTS = [...INITIAL_PRODUCTS];
 
-// טעינה מ-localStorage (client-side only)
-if (typeof window !== 'undefined') {
-  const savedProducts = localStorage.getItem('vipo_products');
-  if (savedProducts) {
-    try {
+/** לא לקרוא localStorage ברמת מודול — גורם להבדלי SSR/קליינט (hydration). */
+let mergedFromLocalStorage = false;
+function mergeFromLocalStorageOnce() {
+  if (typeof window === "undefined") return;
+  if (mergedFromLocalStorage) return;
+  mergedFromLocalStorage = true;
+  try {
+    const savedProducts = localStorage.getItem("vipo_products");
+    if (savedProducts) {
       PRODUCTS = JSON.parse(savedProducts);
-    } catch (e) {
-      console.error('Error loading products from localStorage:', e);
     }
+  } catch (e) {
+    console.error("Error loading products from localStorage:", e);
   }
 }
 
 // שמירה ב-localStorage
 function saveProducts() {
+  mergeFromLocalStorageOnce();
   if (typeof window !== 'undefined') {
     localStorage.setItem('vipo_products', JSON.stringify(PRODUCTS));
     // Trigger storage event for other tabs/windows
@@ -221,18 +226,22 @@ function saveProducts() {
 
 // פונקציות עזר
 export function getProducts() {
+  mergeFromLocalStorageOnce();
   return PRODUCTS.filter(p => p.active);
 }
 
 export function getAllProducts() {
+  mergeFromLocalStorageOnce();
   return [...PRODUCTS];
 }
 
 export function getProductById(id) {
+  mergeFromLocalStorageOnce();
   return PRODUCTS.find(p => p._id === id);
 }
 
 export function getProductsByCategory(category) {
+  mergeFromLocalStorageOnce();
   return PRODUCTS.filter(p => p.active && p.category === category);
 }
 
@@ -243,6 +252,7 @@ export function calculateCommission(productId) {
 
 // הוספת מוצר
 export function addProduct(product) {
+  mergeFromLocalStorageOnce();
   const newProduct = {
     ...product,
     _id: Date.now().toString(),
@@ -266,6 +276,7 @@ export function addProduct(product) {
 
 // עדכון מוצר
 export function updateProduct(id, updates) {
+  mergeFromLocalStorageOnce();
   const index = PRODUCTS.findIndex(p => p._id === id);
   if (index !== -1) {
     PRODUCTS[index] = {
@@ -282,6 +293,7 @@ export function updateProduct(id, updates) {
 
 // מחיקת מוצר
 export function deleteProduct(id) {
+  mergeFromLocalStorageOnce();
   const index = PRODUCTS.findIndex(p => p._id === id);
   if (index !== -1) {
     PRODUCTS.splice(index, 1);
@@ -293,6 +305,7 @@ export function deleteProduct(id) {
 
 // איפוס למוצרים ההתחלתיים
 export function resetProducts() {
+  mergeFromLocalStorageOnce();
   PRODUCTS = [...INITIAL_PRODUCTS];
   saveProducts();
 }

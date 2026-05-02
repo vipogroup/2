@@ -313,7 +313,7 @@ export default function MarketplaceHome() {
 
   return (
     <PageTextEditor pageKey="marketplace-home">
-    <div className="min-h-screen bg-gray-50/50" dir="rtl">
+    <div className="min-h-screen bg-gray-50/50 pl-14 sm:pl-16" dir="rtl">
       {/* Header + רקע ממשיך למטה */}
       <header className="text-white pt-[42px] pb-10 sm:pb-12 rounded-b-3xl" style={{ background: 'linear-gradient(135deg, #1e3a8a 0%, #0e7490 60%, #0891b2 100%)', marginTop: '-42px' }}>
         <div className="max-w-7xl mx-auto px-4 py-3 md:py-5">
@@ -401,7 +401,7 @@ export default function MarketplaceHome() {
               }`}
               style={selectedInventoryMode === 'shared_container' ? { background: gradientPrimary } : {}}
             >
-              מכולה משותפת
+              מכירה משותפת
             </button>
             )}
             </>
@@ -501,7 +501,7 @@ export default function MarketplaceHome() {
                     { value: 'all', label: 'הכל' },
                     { value: 'stock', label: 'זמין במלאי', visKey: 'marketplaceShowStock' },
                     { value: 'group', label: 'רכישה קבוצתית', visKey: 'marketplaceShowGroup' },
-                    { value: 'shared_container', label: 'מכולה משותפת', visKey: 'marketplaceShowSharedContainer' },
+                    { value: 'shared_container', label: 'מכירה משותפת', visKey: 'marketplaceShowSharedContainer' },
                   ].filter(opt => !opt.visKey || visibilityForUi[opt.visKey]).map(opt => (
                     <button
                       key={opt.value}
@@ -670,7 +670,7 @@ export default function MarketplaceHome() {
             <p className="text-gray-500 mb-4">
               {selectedInventoryMode === 'stock' && 'לא נמצאו מוצרים במלאי מיידי'}
               {selectedInventoryMode === 'group' && 'לא נמצאו מוצרים ברכישה קבוצתית'}
-              {selectedInventoryMode === 'shared_container' && 'לא נמצאו מוצרים במכולה משותפת'}
+              {selectedInventoryMode === 'shared_container' && 'לא נמצאו מוצרים במכירה משותפת'}
               {selectedInventoryMode === 'all' && 'לא נמצאו מוצרים התואמים לחיפוש'}
             </p>
             {(hasActiveFilters || selectedInventoryMode !== 'all') && (

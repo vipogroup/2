@@ -446,8 +446,10 @@ export async function GET(request) {
       Category.find({ type: 'product', active: false }).select('name').lean(),
     ]);
 
-    const products = listAgg?.pageItems ?? [];
-    const totalCount = listAgg?.totalCount?.[0]?.n ?? 0;
+    // aggregate() מחזיר מערך; $facet נמצא באיבר הראשון — לא listAgg.pageItems ישירות
+    const listAggRow = Array.isArray(listAgg) && listAgg.length ? listAgg[0] : listAgg;
+    const products = listAggRow?.pageItems ?? [];
+    const totalCount = listAggRow?.totalCount?.[0]?.n ?? 0;
 
     // הוספת פרטי העסק לכל מוצר
     const productsWithTenant = products.map(product => {
